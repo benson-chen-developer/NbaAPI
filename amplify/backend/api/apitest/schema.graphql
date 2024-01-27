@@ -1,0 +1,36 @@
+type Players @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  shards: Int
+  team: String
+  position: String
+  ppg: Float
+  apg: Float
+  rpg: Float
+  updatedToday: Boolean!
+  picture: String
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  email: String!
+  todayGames: [String]
+  score: Int
+  userId: String
+  playersArray: [AWSJSON]
+}
+
+type Matrix @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  player1Id: String
+  player2Id: String
+  Matrix: String
+  started: Boolean!
+  player1Ready: Boolean!
+  player2Ready: Boolean!
+  team1: String
+  team2: String
+  player1Cards: [String]
+  player2Cards: [String]
+}
+ 
