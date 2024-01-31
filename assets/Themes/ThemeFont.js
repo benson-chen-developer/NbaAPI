@@ -1,0 +1,1 @@
+export const ThemeFonts = "Roboto-Bold";

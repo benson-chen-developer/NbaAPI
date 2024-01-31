@@ -1,20 +1,11 @@
 import React from 'react';
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
 
-const Navbar = ({ setScreen }) => {
+export default function UpperTabs({ setGameScreen }){
   return (
     <View style={styles.navbar}>
-      <TouchableOpacity onPress={() => setScreen("Inventory")} style={styles.button}>
-        <Text style={styles.buttonText}>Inventory</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => setScreen("Games")} style={styles.button}>
-        <Text style={styles.buttonText}>Games</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => setScreen("Live")} style={styles.button}>
+      <TouchableOpacity onPress={() => setGameScreen("inventory")} style={styles.button}>
         <Text style={styles.buttonText}>Live</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => setScreen("Profile")} style={styles.button}>
-        <Text style={styles.buttonText}>Profile</Text>
       </TouchableOpacity>
     </View>
   );
@@ -40,5 +31,3 @@ const styles = StyleSheet.create({
     color: '#333',
   },
 });
-
-export default Navbar;

@@ -1,3 +1,36 @@
+// export const fakeMatrix = [
+//   [{
+//       p1Id: "ben",
+//       p2Id: "delong",
+//       p1Task: "Shoot 3s",
+//       p1Progress: [1, 3],
+//       p2Task: "Shoot 3s",
+//       p2Progress: [0, 3]
+//     }
+//     ,{},{},{},{}],
+//   [{},{},{},{},{}],
+//   [{},{},{},{},{}],
+//   [{},{},{},{},{}],
+//   [{},{},{},{},{}],
+// ]
+export const fakeMatrix = {
+  link: "https://cdn.nba.com/static/json/liveData/boxscore/boxscore_0022300673.json",
+  matrix: [
+    [{
+        p1Id: "ben",
+        p2Id: "delong",
+        p1Task: "Shoot 3s",
+        p1Progress: [1, 3],
+        p2Task: "Shoot 3s",
+        p2Progress: [0, 3]
+      }
+      ,{},{},{}],
+    [{},{},{},{}],
+    [{},{},{},{}],
+    [{},{},{},{}],
+  ]
+}
+
 export const fakeData = [
     {
         "id": 13167,

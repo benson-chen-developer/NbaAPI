@@ -12,6 +12,8 @@ import { getCurrentUser } from 'aws-amplify/auth';
 import Landing from './Unauthenticated/Landing';
 import { getCurrentUserWithAuth } from './functions/UserFunctions';
 import { UserProvider, useUser } from './Context/UserContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
 
 export default function MainContainer() {
 
@@ -61,26 +63,30 @@ export default function MainContainer() {
   else 
 
   return (
-    <View style={{flex:1}}>
-      {user ?
-        <View style={{flex:1, justifyContent:'center', alignItems:'center',}}>
-          {currentGame ? 
-            <InGame currentGame={currentGame} setCurrentGame={setCurrentGame}/>
-              :
-            <MainArea setCurrentGame={setCurrentGame}/>
-          }
+    <SafeAreaView style={{ flex: 1, backgroundColor:'#050614' }}>
+      <StatusBar style={{color: "white"}} />
 
-          {popUp ?
-            <PopUp popUp={popUp} setPopUp={setPopUp}/>
-              :
-            null
-          }
-        </View>
-          :
-        <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
-          <Landing />
-        </View>
-      }
-    </View>
+      <View style={{flex:1}}>
+        {user ?
+          <View style={{flex:1, justifyContent:'center', alignItems:'center',}}>
+            {currentGame ? 
+              <InGame currentGame={currentGame} setCurrentGame={setCurrentGame}/>
+                :
+              <MainArea setCurrentGame={setCurrentGame}/>
+            }
+
+            {popUp ?
+              <PopUp popUp={popUp} setPopUp={setPopUp}/>
+                :
+              null
+            }
+          </View>
+            :
+          <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+            <Landing />
+          </View>
+        }
+      </View>
+    </SafeAreaView>
   );
 }

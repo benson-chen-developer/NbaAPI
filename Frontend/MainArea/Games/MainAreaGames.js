@@ -4,10 +4,12 @@ import TeamItem from './TeamItem';
 import { useUser } from '../../Context/UserContext';
 import { fetchLiveGameFeed } from '../../functions/GamePlayFunctions';
 import { fakeData } from '../../functions/FakeGameData';
+import UpperTabs from './UpperTabs';
 
-export default function TeamSelection({setCurrentGame}) {
+export default function MainAreaGames({setCurrentGame}) {
 
     const [index, setIndex] = useState(0);
+    const [gameScreen, setGameScreen] = useState("MainAreaGames");
     const {user, setUser} = useUser();
     
     useEffect(() => {
@@ -28,6 +30,7 @@ export default function TeamSelection({setCurrentGame}) {
     if (user.todayGames.length > 0) {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <UpperTabs setGameScreen={setGameScreen} />
           <TeamItem game={user.todayGames[index]} />
         </View>
       );

@@ -6,3 +6,8 @@ call apitest when running amplify rebuild api
     - Helps when you get the out of sync values in the data error thing
 
 run amplify codegen to update the graphql in the src folder
+
+MAKE SURE TO REMOVE THE API KEY
+
+ npx react-native-asset
+    maybe call this for fonts

@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, useColorScheme, View } from 'react-native';
 import { useEffect, useState } from 'react'
 import { useUser } from '../../Context/UserContext';
 import PlayerCard from './PlayerCard';
@@ -10,22 +10,33 @@ export default function Inventory() {
     const [playerFilter, setPlayerFilter] = useState("all");
     
     useEffect(() => {
-        setOnScreenCards(user.playersArray);
+        // const playersArray = Object.values(user.playersArray);
+        const sortedPlayersArray = [...user.playersArray].sort((a, b) => b.shards - a.shards);
+
+        // console.log("inventory",...user.playersArray)
+
+        // console.log("Inventory",sortedPlayersArray)
+
+        setOnScreenCards(sortedPlayersArray);
     }, []);
 
     useEffect(() => {
         if(playerFilter === "all"){
-            setOnScreenCards(user.playersArray);
+            const playersArray = Object.values(user.playersArray);
+            const sortedPlayersArray = playersArray.sort((a, b) => b.shards - a.shards);
+            setOnScreenCards(sortedPlayersArray);
         }
     }, [playerFilter]);
 
     return (
         <View style={{ 
-            flex: 1, alignItems: 'center', justifyContent: 'center', width:"100%",
-         }}>
-            {onScreenCards.map((player, index) => (
-                <PlayerCard key={index} player={JSON.parse(player)}/>
-            ))}
+            flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%',
+        }}>
+            <View style={{ width: '90%', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                {onScreenCards.map((player, index) => (
+                    <PlayerCard index={index} player={JSON.parse(player)} />
+                ))}
+            </View>
         </View>
     );
 }
