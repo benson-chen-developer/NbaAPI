@@ -1,6 +1,6 @@
 import { generateClient } from 'aws-amplify/api';
-import { createMatrix, updateMatrix, deleteMatrix } from '../../src/graphql/mutations';
-import { listMatrices } from '../../src/graphql/queries';
+import {listGames, listUsers} from '../../src/graphql/queries';
+import {updateGame, createGame, updateUser} from '../../src/graphql/mutations';
 
 const client = generateClient();
 
@@ -12,15 +12,20 @@ const client = generateClient();
     How this function works is we first look for all the games and sort it in order of 
     first created and no two filled player ids.
 */
-export const startSearchForGame = async (joiningPlayerId, selectedTeam) => {
+export const startSearchForGame = async (joiningPlayerId, selectedTeam, opposingTeam) => {
     try {
-        let canJoinGames = await fetchMatrixes(selectedTeam);
+        const canJoinGames = await fetchGames(selectedTeam);
+        let game;
 
         if (canJoinGames.length > 0) {
-            return await joinGame(canJoinGames[0], joiningPlayerId, selectedTeam);
+            game = await joinGame(canJoinGames[0], joiningPlayerId, selectedTeam);
         } else {
-            return await createGame(joiningPlayerId, selectedTeam);
+            game = await createGameFuncion(joiningPlayerId, selectedTeam, opposingTeam);
         }
+
+        const newUsers = await addGameToUser(joiningPlayerId, game);
+
+        return newUsers;
     } catch (error) {
         console.error("Error fetching matrixes:", error);
         throw error;
@@ -28,71 +33,72 @@ export const startSearchForGame = async (joiningPlayerId, selectedTeam) => {
 }
 
 /* 
-    Returns all the matrixes in an array where the player2Id is not filled and the 
+    Returns all the games in an array where the player2Id is not filled and the 
     game that player2 is playing is also the opposing team
 */
-export const fetchMatrixes = async (selectedTeam) => {
+export const fetchGames = async (selectedTeam) => {
     try {
         const variables = {
             filter: {
-                and: [{ player2Id: { eq: null } }, { team1: { ne: selectedTeam } }]
+                and: [{ player2Id: { eq: null } }, { player2Team: { eq: selectedTeam } }]
             }
         };
         const result = await client.graphql({
-            query: listMatrices,
+            query: listGames,
             variables: variables
         });
 
-        console.log("All The Games (fetchMatrisses)", result.data.listMatrices.items)
-        return result.data.listMatrices.items;
+        const games = result.data.listGames.items;
+        // console.log("FetchGames/GameStartFunctions", games);
+
+        return games;
     } catch (error) {
         console.error("Error fetching data:", error);
     }
 };
 
-export const joinGame = async (game, joiningPlayerId, joiningTeam) => {
+export const joinGame = async (game, joiningPlayerId) => {
     try {
         const newGame = await client.graphql({
-            query: updateMatrix,
+            query: updateGame,
             variables: {
                 input: {
                     id: game.id,
-                    team2: joiningTeam,
                     player2Id: joiningPlayerId
                 }
             }
         });
 
-        return newGame.data.updateMatrix;
+        return newGame.data.updateGame;
 
     } catch (error) {
         console.error("Error fetching data:", error);
     }
 }
 
-export const createGame = async (joiningPlayerId, joiningTeam) => {
+export const createGameFuncion = async (joiningPlayerId, selectedTeam, opposingTeam) => {
     try {
         const newGame = await client.graphql({
-            query: createMatrix,
+            query: createGame,
             variables: {
                 input: {
                     "player1Id": joiningPlayerId,
                     "player2Id": null,
-                    "Matrix": "Lorem ipsum dolor sit amet",
+                    "matrix": "Lorem ipsum dolor sit amet",
                     "started": false,
                     "player1Ready": false,
                     "player2Ready": false,
-                    "team1": joiningTeam,
-                    "team2": null,
+                    "player1Team": selectedTeam, 
+                    "player2Team": opposingTeam,
                     "player1Cards": [],
                     "player2Cards": []
                 }
             }
         });
 
-        // console.log("createmax", newGame.data.createMatrix)
+        // console.log("createmax", newGame.data.createGame)
 
-        return newGame.data.createMatrix;
+        return newGame.data.createGame;
 
     } catch (error) {
         console.error("Error fetching data:", error);
@@ -166,4 +172,39 @@ export const readyUp = async (game, joiningPlayerId) => {
           }
         }
     });
+}
+
+export const addGameToUser = async (userId, game) => {
+
+    const variables = {
+        filter: {id: { eq: userId }}
+    };
+    const res = await client.graphql({
+        query: listUsers,
+        variables: variables
+    });
+    const oldUser = res.data.listUsers.items[0];
+
+    const newUser = await client.graphql({
+        query: updateUser,
+        variables: {
+          input: {
+            id: userId,
+            playerGames: [...oldUser.playerGames, 
+                {
+                    "gameId" : game.id,
+                    "player1Team": game.player1Team,
+                    "player2Team": game.player2Team,
+                    "timeStart": Date.now()
+                }
+            ]
+          }
+        }
+    });
+
+    return newUser.data.updateUser;
+}
+
+export const getGamesViaUserId = (userId) => {
+
 }

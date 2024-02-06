@@ -1,8 +1,18 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useEffect, useState } from 'react'
 import LiveGameSlip from './LiveGameSlip';
+import { useUser } from '../../Context/UserContext';
+import { PreGame } from './PreGame/PreGame';
 
 export default function MainAreaLive({setCurrentGame}) {
+
+    const {user} = useUser();
+    const [selectedLiveGameId, setSelectedLiveGameId] = useState(null);
+
+    const findGameById = (id) => {
+        return user.playerGames.find(element => JSON.parse(element).gameId === id);
+    }
+    
 
     useEffect(() => {
       // if(user.todayGames.length === 0){
@@ -12,23 +22,30 @@ export default function MainAreaLive({setCurrentGame}) {
       //     });
       //   })
       // }
-
-      // console.log("Type of user.todayGames[index]:", typeof JSON.parse(JSON.stringify(user.todayGames[index])));
+    //   console.log("MainAreaLive", selectedLiveGameId)
     }, []);
 
-    const game = {
-        player1Id: "112",
-        player2Id: "Benson",
-        team1: "Detroit Pistons",
-        team2: "Houston Rockets"
+    if(selectedLiveGameId){
+        return(
+            <View style={{flex:1, width:"100%", height:"100%", alignItems:'center',}}>
+                <PreGame game={findGameById(selectedLiveGameId)}/>
+            </View>
+        )
     }
+
     return(
         <View style={{
             flex:1, width:"100%", height:"100%", alignItems:'center',
         }}>
             <View style={{marginTop: 100}}/>
-            <LiveGameSlip game={game}/>
-            <LiveGameSlip game={game}/>
+
+            {user.playerGames.map((game, index) => {
+                return <LiveGameSlip 
+                    key={index} index={index} game={JSON.parse(game)} 
+                    setSelectedLiveGameId={setSelectedLiveGameId}
+                />;
+            })}
+
         </View>
     )
 }

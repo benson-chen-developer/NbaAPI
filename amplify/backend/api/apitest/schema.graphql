@@ -18,19 +18,20 @@ type User @model @auth(rules: [{allow: public}]) {
   score: Int
   userId: String
   playersArray: [AWSJSON]
+  name: String
+  playerGames: [AWSJSON]
 }
 
-type Matrix @model @auth(rules: [{allow: public}]) {
+type Game @model @auth(rules: [{allow: public}]) {
   id: ID!
   player1Id: String
   player2Id: String
-  Matrix: String
+  matrix: String
   started: Boolean!
   player1Ready: Boolean!
   player2Ready: Boolean!
-  team1: String
-  team2: String
   player1Cards: [String]
   player2Cards: [String]
-}
- 
+  player1Team: String
+  player2Team: String
+} 

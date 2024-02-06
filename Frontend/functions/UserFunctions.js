@@ -1,5 +1,5 @@
 import { generateClient } from 'aws-amplify/api';
-import { createUser } from '../../src/graphql/mutations';
+import { createUser, updateUser } from '../../src/graphql/mutations';
 import { listUsers } from '../../src/graphql/queries';
 
 const client = generateClient();
@@ -12,7 +12,8 @@ export const createUserFunction = async (userId, email) => {
                 email: email,
                 userId: userId,
                 "todayGames": [],
-                "score": 0
+                "score": 0,
+                "currentGames": []
             }
         }
     });

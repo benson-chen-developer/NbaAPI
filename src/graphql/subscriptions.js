@@ -67,6 +67,8 @@ export const onCreateUser = /* GraphQL */ `
       score
       userId
       playersArray
+      name
+      playerGames
       createdAt
       updatedAt
       __typename
@@ -82,6 +84,8 @@ export const onUpdateUser = /* GraphQL */ `
       score
       userId
       playersArray
+      name
+      playerGames
       createdAt
       updatedAt
       __typename
@@ -97,66 +101,68 @@ export const onDeleteUser = /* GraphQL */ `
       score
       userId
       playersArray
+      name
+      playerGames
       createdAt
       updatedAt
       __typename
     }
   }
 `;
-export const onCreateMatrix = /* GraphQL */ `
-  subscription OnCreateMatrix($filter: ModelSubscriptionMatrixFilterInput) {
-    onCreateMatrix(filter: $filter) {
+export const onCreateGame = /* GraphQL */ `
+  subscription OnCreateGame($filter: ModelSubscriptionGameFilterInput) {
+    onCreateGame(filter: $filter) {
       id
       player1Id
       player2Id
-      Matrix
+      matrix
       started
       player1Ready
       player2Ready
-      team1
-      team2
       player1Cards
       player2Cards
+      player1Team
+      player2Team
       createdAt
       updatedAt
       __typename
     }
   }
 `;
-export const onUpdateMatrix = /* GraphQL */ `
-  subscription OnUpdateMatrix($filter: ModelSubscriptionMatrixFilterInput) {
-    onUpdateMatrix(filter: $filter) {
+export const onUpdateGame = /* GraphQL */ `
+  subscription OnUpdateGame($filter: ModelSubscriptionGameFilterInput) {
+    onUpdateGame(filter: $filter) {
       id
       player1Id
       player2Id
-      Matrix
+      matrix
       started
       player1Ready
       player2Ready
-      team1
-      team2
       player1Cards
       player2Cards
+      player1Team
+      player2Team
       createdAt
       updatedAt
       __typename
     }
   }
 `;
-export const onDeleteMatrix = /* GraphQL */ `
-  subscription OnDeleteMatrix($filter: ModelSubscriptionMatrixFilterInput) {
-    onDeleteMatrix(filter: $filter) {
+export const onDeleteGame = /* GraphQL */ `
+  subscription OnDeleteGame($filter: ModelSubscriptionGameFilterInput) {
+    onDeleteGame(filter: $filter) {
       id
       player1Id
       player2Id
-      Matrix
+      matrix
       started
       player1Ready
       player2Ready
-      team1
-      team2
       player1Cards
       player2Cards
+      player1Team
+      player2Team
       createdAt
       updatedAt
       __typename

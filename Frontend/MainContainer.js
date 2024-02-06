@@ -32,14 +32,7 @@ export default function MainContainer() {
         const { username, userId, signInDetails } = await getCurrentUser();
   
         getCurrentUserWithAuth(userId).then(res => {
-          setUser({
-            id: res.id,
-            email: res.email,
-            userId: res.userId,
-            score: res.score,
-            todayGames: res.todayGames,
-            playersArray: res.playersArray
-          });
+          setUser(res);
   
           setLoading(false);
         });

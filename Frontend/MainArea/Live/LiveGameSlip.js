@@ -3,19 +3,20 @@ import { useEffect, useState } from 'react'
 import { ThemeFonts } from '../../../assets/Themes/ThemeFont';
 import { getTeamLogo } from '../../../assets/TeamLogos/getTeamLogo';
 
-export default function LiveGameSlip({game}) {
+export default function LiveGameSlip({setSelectedLiveGameId, game}) {
 
     useEffect(() => {
+        // console.log("LiveGameSlip", game)
     }, []);
 
     return(
-        <View style={{
+        <TouchableOpacity style={{
             width:"90%", height: 125, borderRadius: 5, backgroundColor:"white",
             margin: 15, flexDirection:'row', 
             justifyContent:'space-around', alignItems:'center'
-        }}>
+        }} onPress={() => setSelectedLiveGameId(game.gameId)}>
             <View>
-                <Image source={getTeamLogo(game.team1)} style={styles.logo}/>
+                <Image source={getTeamLogo(game.player1Team)} style={styles.logo}/>
             </View>
 
             <Text style={{
@@ -25,9 +26,9 @@ export default function LiveGameSlip({game}) {
             </Text>
 
             <View>
-                <Image source={getTeamLogo(game.team2)} style={styles.logo}/>
+                <Image source={getTeamLogo(game.player2Team)} style={styles.logo}/>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 

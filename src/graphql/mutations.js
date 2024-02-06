@@ -79,6 +79,8 @@ export const createUser = /* GraphQL */ `
       score
       userId
       playersArray
+      name
+      playerGames
       createdAt
       updatedAt
       __typename
@@ -97,6 +99,8 @@ export const updateUser = /* GraphQL */ `
       score
       userId
       playersArray
+      name
+      playerGames
       createdAt
       updatedAt
       __typename
@@ -115,75 +119,77 @@ export const deleteUser = /* GraphQL */ `
       score
       userId
       playersArray
+      name
+      playerGames
       createdAt
       updatedAt
       __typename
     }
   }
 `;
-export const createMatrix = /* GraphQL */ `
-  mutation CreateMatrix(
-    $input: CreateMatrixInput!
-    $condition: ModelMatrixConditionInput
+export const createGame = /* GraphQL */ `
+  mutation CreateGame(
+    $input: CreateGameInput!
+    $condition: ModelGameConditionInput
   ) {
-    createMatrix(input: $input, condition: $condition) {
+    createGame(input: $input, condition: $condition) {
       id
       player1Id
       player2Id
-      Matrix
+      matrix
       started
       player1Ready
       player2Ready
-      team1
-      team2
       player1Cards
       player2Cards
+      player1Team
+      player2Team
       createdAt
       updatedAt
       __typename
     }
   }
 `;
-export const updateMatrix = /* GraphQL */ `
-  mutation UpdateMatrix(
-    $input: UpdateMatrixInput!
-    $condition: ModelMatrixConditionInput
+export const updateGame = /* GraphQL */ `
+  mutation UpdateGame(
+    $input: UpdateGameInput!
+    $condition: ModelGameConditionInput
   ) {
-    updateMatrix(input: $input, condition: $condition) {
+    updateGame(input: $input, condition: $condition) {
       id
       player1Id
       player2Id
-      Matrix
+      matrix
       started
       player1Ready
       player2Ready
-      team1
-      team2
       player1Cards
       player2Cards
+      player1Team
+      player2Team
       createdAt
       updatedAt
       __typename
     }
   }
 `;
-export const deleteMatrix = /* GraphQL */ `
-  mutation DeleteMatrix(
-    $input: DeleteMatrixInput!
-    $condition: ModelMatrixConditionInput
+export const deleteGame = /* GraphQL */ `
+  mutation DeleteGame(
+    $input: DeleteGameInput!
+    $condition: ModelGameConditionInput
   ) {
-    deleteMatrix(input: $input, condition: $condition) {
+    deleteGame(input: $input, condition: $condition) {
       id
       player1Id
       player2Id
-      Matrix
+      matrix
       started
       player1Ready
       player2Ready
-      team1
-      team2
       player1Cards
       player2Cards
+      player1Team
+      player2Team
       createdAt
       updatedAt
       __typename

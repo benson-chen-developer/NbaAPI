@@ -7,7 +7,7 @@ import { ThemeFonts } from '../../../assets/Themes/ThemeFont';
 
 export default function TeamItem({game}) {
     const {mainSelectedColor} = themeColors;
-    const {user} = useUser();
+    const {user, setUser} = useUser();
     const [selected, setSelected] = useState(null);
 
     return (
@@ -41,10 +41,12 @@ export default function TeamItem({game}) {
                 borderRadius: 10, justifyContent:'center', alignItems:'center'
               }}
               onPress={() => {
-                startSearchForGame(user.userId, selected)
+                const opposingTeam = game.teams.home.name === selected.name ? game.teams.visitors : game.teams.home;
+                startSearchForGame(user.id, selected.name, opposingTeam.name)
                   .then((res) => {
-                  console.log("MainMenu", res)
-                  // setCurrentGame(res);
+                  console.log("TeamItem: Game after search", res)
+
+                  setUser(res);
               })
             }}>
               <Text style={{
@@ -53,6 +55,7 @@ export default function TeamItem({game}) {
                 Play
               </Text>
             </TouchableOpacity>
+
               : 
 
             <View 
@@ -78,12 +81,12 @@ export default function TeamItem({game}) {
 const SideBlock = ({team, setSelected, selected}) => {
   return(
     <TouchableOpacity style={{ 
-      borderWidth: team.nickname !== selected ? 2 : 3, 
-      borderColor: team.nickname !== selected ? 'grey' : "#b5932d", 
-      backgroundColor: team.nickname !== selected ? "white" : "#fcf528",
+      borderWidth: team.name !== selected?.name ? 2 : 3, 
+      borderColor: team.name !== selected?.name ? 'grey' : "#b5932d", 
+      backgroundColor: team.name !== selected?.name ? "white" : "#fcf528",
       borderRadius: 15, width:150, height:150, 
       justifyContent:'center', alignItems:'center' 
-    }} onPress={() => setSelected(team.nickname)}>
+    }} onPress={() => setSelected(team)}>
 
       <Image 
         source={{ uri: team.logo }}

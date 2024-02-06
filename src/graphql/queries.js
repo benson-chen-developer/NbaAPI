@@ -56,6 +56,8 @@ export const getUser = /* GraphQL */ `
       score
       userId
       playersArray
+      name
+      playerGames
       createdAt
       updatedAt
       __typename
@@ -76,6 +78,8 @@ export const listUsers = /* GraphQL */ `
         score
         userId
         playersArray
+        name
+        playerGames
         createdAt
         updatedAt
         __typename
@@ -85,45 +89,45 @@ export const listUsers = /* GraphQL */ `
     }
   }
 `;
-export const getMatrix = /* GraphQL */ `
-  query GetMatrix($id: ID!) {
-    getMatrix(id: $id) {
+export const getGame = /* GraphQL */ `
+  query GetGame($id: ID!) {
+    getGame(id: $id) {
       id
       player1Id
       player2Id
-      Matrix
+      matrix
       started
       player1Ready
       player2Ready
-      team1
-      team2
       player1Cards
       player2Cards
+      player1Team
+      player2Team
       createdAt
       updatedAt
       __typename
     }
   }
 `;
-export const listMatrices = /* GraphQL */ `
-  query ListMatrices(
-    $filter: ModelMatrixFilterInput
+export const listGames = /* GraphQL */ `
+  query ListGames(
+    $filter: ModelGameFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listMatrices(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listGames(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         player1Id
         player2Id
-        Matrix
+        matrix
         started
         player1Ready
         player2Ready
-        team1
-        team2
         player1Cards
         player2Cards
+        player1Team
+        player2Team
         createdAt
         updatedAt
         __typename

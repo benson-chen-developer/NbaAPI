@@ -1,8 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, Text, View, ScrollView } from 'react-native';
+import { generateMatrix } from '../../functions/GamePlayFunctions';
+import { fetchGames } from '../../functions/GameStartFunctions';
 import Tile from './Tile';
 
 export const Matrix = ({ matrix }) => {
+
+  const [makeShiftMatrx, setMakeShiftMatrx] = useState(
+    [
+      [{}, {}, {}, {}],
+      [{}, {}, {}, {}],
+      [{}, {}, {}, {}],
+      [{}, {}, {}, {}]
+    ]
+  );
 
   const getBoxScore = async (link) => {
     try {
@@ -21,11 +32,12 @@ export const Matrix = ({ matrix }) => {
   useEffect(() => {
     // console.log("Matrix", matrix)
 
-    const intervalId = setInterval(() => {
-        getBoxScore(matrix.link);
-    }, 10000);
+    // const intervalId = setInterval(() => {
+    //     getBoxScore(matrix.link);
+    // }, 10000);
 
-    return () => clearInterval(intervalId);
+    // return () => clearInterval(intervalId);
+    // setMakeShiftMatrx(generateMatrix());
   }, [])
 
   // const renderTile = ({ item, index }) => {
@@ -36,7 +48,7 @@ export const Matrix = ({ matrix }) => {
     <View style={{ flex: 1, marginTop: 100 }}>
     <ScrollView horizontal={true}>
 
-      <View style={{flexDirection:'column'}}>
+      {/* <View style={{flexDirection:'column'}}>
         <View style={{ flexDirection: 'row' }}>
           {matrix.matrix[0].map((item, index) => (
             <Tile key={index} item={item} />
@@ -57,8 +69,31 @@ export const Matrix = ({ matrix }) => {
             <Tile key={index} item={item} />
           ))}
         </View>
+      </View> */}
 
+      <View style={{flexDirection:'column'}}>
+        <View style={{ flexDirection: 'row' }}>
+          {makeShiftMatrx[0].map((item, index) => (
+            <Tile key={index} item={item} />
+          ))}
+        </View>
+        <View style={{ flexDirection: 'row' }}>
+          {makeShiftMatrx[1].map((item, index) => (
+            <Tile key={index} item={item} />
+          ))}
+        </View>
+        <View style={{ flexDirection: 'row' }}>
+          {makeShiftMatrx[2].map((item, index) => (
+            <Tile key={index} item={item} />
+          ))}
+        </View>
+        <View style={{ flexDirection: 'row' }}>
+          {makeShiftMatrx[3].map((item, index) => (
+            <Tile key={index} item={item} />
+          ))}
+        </View>
       </View>
+
     </ScrollView>
   </View>
   );
