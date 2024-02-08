@@ -8,8 +8,8 @@ export const generateMatrix2 = () => {
 
     const scoringOptions = pickRandomOptions(6,
         [
-            "PTS", "PTS+AST", "PTS+AST+REB", "PTS+REB",
-            "PTS", "PTS", "PTS", "PTS+AST", "PTS+REB", "PTS+AST+REB"
+            "PTS", "PTS+AST", "PTS+REB+AST", "PTS+REB",
+            "PTS", "PTS", "PTS", "PTS+AST", "PTS+REB", "PTS+REB+AST"
         ]
     )
     matrix = fillUpMatrix(matrix, scoringOptions)
@@ -40,7 +40,6 @@ export const generateMatrix2 = () => {
     fakeTeam1['3PM'] = 13.9;
     fakeTeam1['FTM'] = 16.9;
     fakeTeam1['FTA'] = 20.9;
-    fakeTeam1['FTM'] = 46.9;
     fakeTeam1['REB'] = 46.9;
     fakeTeam1['AST'] = 36.9;
     fakeTeam1['STL'] = 7.7;

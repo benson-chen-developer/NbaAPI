@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { Text, View, TouchableOpacity } from 'react-native';
 
-export default function Tile({index, item, row, setPopUpTile}) {
+export default function Tile({index, item, row, setPopUpTile, setSelectedTiles}) {
 
     useEffect(() => {
 
@@ -13,7 +13,11 @@ export default function Tile({index, item, row, setPopUpTile}) {
                 width: 150, height:125, backgroundColor:'#273447', 
                 marginLeft: 2, margin: 2,
                 borderRadius: 5
-            }} onPress={() => setPopUpTile(item)}>
+            }} onPress={() => setPopUpTile({
+                item: item,
+                index: index,
+                row: row
+            })}>
                 <Text style={{color:"white"}}>{item.name}</Text>
 
                 {/* <ProgressBar item={item} /> */}

@@ -4,7 +4,7 @@ import { generateMatrix } from '../../functions/GamePlayFunctions';
 import { fetchGames } from '../../functions/GameStartFunctions';
 import { generateMatrix2 } from '../../functions/MatrixFunctions';
 import Tile from './Tile';
-import TilePopUp from './TilePopUp';
+import TilePopUp from './TilePopUp/TilePopUp';
 
 export const PreGameMatrix = ({ matrix }) => {
 
@@ -23,9 +23,13 @@ export const PreGameMatrix = ({ matrix }) => {
   useEffect(() => {
     
     const retMat = generateMatrix2();
-    console.log("PreMatrix", retMat)
-    // setMakeShiftMatrx(generateMatrix2());
+    // console.log("PreMatrix", retMat)
+    setMakeShiftMatrx(generateMatrix2());
   }, [])
+
+  // useEffect(() => {
+  //   console.log("pregamematrix", popUpTile)
+  // }, [popUpTile])
 
   // const renderTile = ({ item, index }) => {
   //   return <Tile item={item} index={index} />;
@@ -51,7 +55,7 @@ export const PreGameMatrix = ({ matrix }) => {
           {makeShiftMatrx[0].map((item, index) => (
             <Tile 
               key={index} index={index} item={item} row={0} 
-              setPopUpTile={setPopUpTile}
+              setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
             />
           ))}
         </View>
@@ -59,7 +63,7 @@ export const PreGameMatrix = ({ matrix }) => {
           {makeShiftMatrx[1].map((item, index) => (
             <Tile 
               key={index} index={index} item={item} row={1} 
-              setPopUpTile={setPopUpTile}
+              setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
             />
           ))}
         </View>
@@ -67,7 +71,7 @@ export const PreGameMatrix = ({ matrix }) => {
           {makeShiftMatrx[2].map((item, index) => (
             <Tile 
               key={index} index={index} item={item} row={2} 
-              setPopUpTile={setPopUpTile}
+              setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
             />
           ))}
         </View>
@@ -75,14 +79,19 @@ export const PreGameMatrix = ({ matrix }) => {
           {makeShiftMatrx[3].map((item, index) => (
             <Tile 
               key={index} index={index} item={item} row={3} 
-              setPopUpTile={setPopUpTile}
+              setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
             />
           ))}
         </View>
       </View>
     </ScrollView>
 
-    <TilePopUp />
+    {popUpTile ?
+      <TilePopUp 
+        popUpTile={popUpTile} setPopUpTile={setPopUpTile} 
+        selectedTiles={selectedTiles} setSelectedTiles={setSelectedTiles}
+      /> : null
+    }
   </View>
   );
 };
