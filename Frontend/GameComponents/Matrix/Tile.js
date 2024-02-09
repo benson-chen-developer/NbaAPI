@@ -1,7 +1,7 @@
 import { useEffect } from "react"
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 
-export default function Tile({index, item, row, setPopUpTile, setSelectedTiles}) {
+export default function Tile({index, item, row, setPopUpTile, selectedTiles, setSelectedTiles}) {
 
     useEffect(() => {
 
@@ -9,15 +9,18 @@ export default function Tile({index, item, row, setPopUpTile, setSelectedTiles})
     
     if(item) 
         return (
-            <TouchableOpacity style={{
-                width: 150, height:125, backgroundColor:'#273447', 
-                marginLeft: 2, margin: 2,
-                borderRadius: 5
-            }} onPress={() => setPopUpTile({
-                item: item,
-                index: index,
-                row: row
-            })}>
+            <TouchableOpacity 
+                style={
+                    selectedTiles.find(a => a.index === index && a.row === row)
+                        ? styles.selected
+                        : styles.notSelected
+                }
+                onPress={() => setPopUpTile({
+                    item: item,
+                    index: index,
+                    row: row
+                }
+            )}>
                 <Text style={{color:"white"}}>{item.name}</Text>
 
                 {/* <ProgressBar item={item} /> */}
@@ -49,3 +52,16 @@ const ProgressBar = (item) => {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    notSelected : {
+        width: 150, height:125, backgroundColor:'#273447', 
+        marginLeft: 2, margin: 2,
+        borderRadius: 5
+    },
+    selected : {
+        width: 150, height:125, backgroundColor:'#273447', 
+        marginLeft: 2, margin: 2, borderColor: '#2bd6b2', borderWidth: 4,
+        borderRadius: 5
+    }
+})

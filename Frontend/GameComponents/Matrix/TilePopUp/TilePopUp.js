@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
-import { getFullNameOfStat } from "../Matrix";
 import { TilePopUpCarousel } from "./TilePopUpCarousel";
 import {useUser} from '../../../Context/UserContext';
 import { ThemeFonts } from "../../../../assets/Themes/ThemeFont";
 import { DefaultTilePopUp } from "./DefaultTilePopUp";
+import { SwitchSquaresMode } from "./SwitchSquaresMode";
 
 export default function TilePopUp({popUpTile, setPopUpTile, selectedTiles, setSelectedTiles}) {
     const {item, index, row} = popUpTile;
@@ -19,6 +19,7 @@ export default function TilePopUp({popUpTile, setPopUpTile, selectedTiles, setSe
         playerCards: []
     })
     const [mode, setMode] = useState("default");
+    const [switchTile, setSwitchTile] = useState(null);
 
     const player1Id = "ben";
     const player2Id = "87a07407-f69a-45b8-a51c-e37367c3ad28";
@@ -101,14 +102,32 @@ export default function TilePopUp({popUpTile, setPopUpTile, selectedTiles, setSe
                 playerCards: [...player1Cards]
             })
         }
-    },[]) 
+    },[])
     
-    if(mode === "default")
-        return (
-            <DefaultTilePopUp 
-                setSelectedTiles={setSelectedTiles} popUpTile={popUpTile}
-                selectedTiles={selectedTiles} setPopUpTile={setPopUpTile}
-                item={item} ourPlayer={ourPlayer}
-            />
-        )
+    return (
+        <View style={{
+            flex: 1, width:"100%", height:"100%", backgroundColor:'rgba(0,0,0, .5)', 
+            position:'absolute', justifyContent:'center', alignItems:"center"
+        }}>
+            {mode === "default" ? 
+                <DefaultTilePopUp 
+                    setSelectedTiles={setSelectedTiles} popUpTile={popUpTile}
+                    selectedTiles={selectedTiles} setPopUpTile={setPopUpTile}
+                    item={item} ourPlayer={ourPlayer} index={index} row={row}
+                    setMode={setMode} setSwitchTile={setSwitchTile}
+                /> : null
+            }
+
+            {mode === "switch" ? 
+                <SwitchSquaresMode 
+                    setSelectedTiles={setSelectedTiles} popUpTile={popUpTile}
+                    selectedTiles={selectedTiles} setPopUpTile={setPopUpTile}
+                    item={item} ourPlayer={ourPlayer} index={index} row={row}
+                    setMode={setMode}
+                    setSwitchTile={setSwitchTile} switchTile={switchTile}
+                /> : null
+            }           
+
+    </View>
+    )
 }
