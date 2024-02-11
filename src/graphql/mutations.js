@@ -80,7 +80,7 @@ export const createUser = /* GraphQL */ `
       userId
       playersArray
       name
-      playerGames
+      liveGames
       createdAt
       updatedAt
       __typename
@@ -100,7 +100,7 @@ export const updateUser = /* GraphQL */ `
       userId
       playersArray
       name
-      playerGames
+      liveGames
       createdAt
       updatedAt
       __typename
@@ -120,7 +120,7 @@ export const deleteUser = /* GraphQL */ `
       userId
       playersArray
       name
-      playerGames
+      liveGames
       createdAt
       updatedAt
       __typename
@@ -144,6 +144,9 @@ export const createGame = /* GraphQL */ `
       player2Cards
       player1Team
       player2Team
+      apiLink
+      selectedTiles
+      teams
       createdAt
       updatedAt
       __typename
@@ -167,6 +170,9 @@ export const updateGame = /* GraphQL */ `
       player2Cards
       player1Team
       player2Team
+      apiLink
+      selectedTiles
+      teams
       createdAt
       updatedAt
       __typename
@@ -190,6 +196,9 @@ export const deleteGame = /* GraphQL */ `
       player2Cards
       player1Team
       player2Team
+      apiLink
+      selectedTiles
+      teams
       createdAt
       updatedAt
       __typename

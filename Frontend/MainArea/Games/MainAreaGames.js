@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useEffect, useState } from 'react'
 import TeamItem from './TeamItem';
-import { useUser } from '../../Context/UserContext';
+import { useMyContext } from '../../Context/MyContext';
 import { fetchLiveGameFeed } from '../../functions/GamePlayFunctions';
 import { fakeData } from '../../functions/FakeGameData';
 import UpperTabs from './UpperTabs';
@@ -10,7 +10,7 @@ export default function MainAreaGames({setCurrentGame}) {
 
     const [index, setIndex] = useState(0);
     const [gameScreen, setGameScreen] = useState("MainAreaGames");
-    const {user, setUser} = useUser();
+    const {user, setUser} = useMyContext();
     
     useEffect(() => {
       // if(user.todayGames.length === 0){

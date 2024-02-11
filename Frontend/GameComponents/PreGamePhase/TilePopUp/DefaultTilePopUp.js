@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
-import { getFullNameOfStat } from "../PreGameMatrix";
 import { TilePopUpCarousel } from "./TilePopUpCarousel";
 import { ThemeFonts } from "../../../../assets/Themes/ThemeFont";
+import { getFullNameOfStat } from "../../../../assets/NameConversions";
 
 export const DefaultTilePopUp = ({
         setMode, setSwitchTile,

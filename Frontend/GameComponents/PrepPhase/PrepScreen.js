@@ -1,6 +1,5 @@
 import { Text, TouchableOpacity, View } from 'react-native';
-import { Matrix } from '../Matrix/Matrix';
-import { useEffect, useState } from 'react';
+import { Matrix } from '../PreGamePhase/Matrix';
 
 export default function PrepScreen({readyUpPress, handleLeaveGame, currentGame}) {
 

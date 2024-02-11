@@ -1,16 +1,16 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useEffect, useState } from 'react'
 import LiveGameSlip from './LiveGameSlip';
-import { useUser } from '../../Context/UserContext';
+import { useMyContext } from '../../Context/MyContext';
 import { PreGame } from './PreGame/PreGame';
 
-export default function MainAreaLive({setCurrentGame}) {
+export default function LiveMainArea({setCurrentGame}) {
 
-    const {user} = useUser();
+    const {user} = useMyContext();
     const [selectedLiveGameId, setSelectedLiveGameId] = useState(null);
 
     const findGameById = (id) => {
-        return user.playerGames.find(element => JSON.parse(element).gameId === id);
+        return user.liveGames.find(element => JSON.parse(element).id === id);
     }
     
 
@@ -39,7 +39,7 @@ export default function MainAreaLive({setCurrentGame}) {
         }}>
             <View style={{marginTop: 100}}/>
 
-            {user.playerGames.map((game, index) => {
+            {user.liveGames.map((game, index) => {
                 return <LiveGameSlip 
                     key={index} index={index} game={JSON.parse(game)} 
                     setSelectedLiveGameId={setSelectedLiveGameId}

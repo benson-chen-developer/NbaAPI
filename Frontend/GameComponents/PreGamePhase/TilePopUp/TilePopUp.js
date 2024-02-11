@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { TilePopUpCarousel } from "./TilePopUpCarousel";
-import {useUser} from '../../../Context/UserContext';
+import {useMyContext} from '../../../Context/MyContext';
 import { ThemeFonts } from "../../../../assets/Themes/ThemeFont";
 import { DefaultTilePopUp } from "./DefaultTilePopUp";
 import { SwitchSquaresMode } from "./SwitchSquaresMode";
 
 export default function TilePopUp({popUpTile, setPopUpTile, selectedTiles, setSelectedTiles}) {
     const {item, index, row} = popUpTile;
-    const {user} = useUser();
+    const {user} = useMyContext();
 
     const [ourPlayer, setOurPlayer] = useState({
         id: null,

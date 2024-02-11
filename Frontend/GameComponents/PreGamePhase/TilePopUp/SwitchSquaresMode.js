@@ -1,32 +1,24 @@
-import { View, Text } from "react-native"
+import { View, Text, TouchableOpacity } from "react-native"
+import { BackBtn, CloseBtn } from "../../../../assets/Buttons"
 import { ThemeFonts } from "../../../../assets/Themes/ThemeFont"
 import { ProgressBarTilePopUp } from "./ProgressBarTilePopUp"
-import { AntDesign } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
 
-export const SwitchSquaresMode = ({setMode, switchTile, setSwitchTile, selectedTiles}) => {
+export const SwitchSquaresMode = ({setPopUpTile, setMode, switchTile, setSwitchTile, selectedTiles}) => {
     return(
         <View style={{width:"90%", height:"90%", backgroundColor:"#273447", borderRadius: 8,alignItems:'center'}}>
             
             <View style={{height:75, width: "90%", flexDirection:'row', justifyContent:'space-between', alignItems:'center'}}>
-                <View style={{width:48, height:48, backgroundColor:"#16202e", borderRadius:5, alignItems:'center'}}>
-                    <View style={{width:48, height:44, backgroundColor:"#3f5980", borderRadius:5, justifyContent:'center', alignItems:'center'}}>
-                        <Ionicons name="arrow-back" size={35} color="white" />
-                    </View>
-                </View>
+                <BackBtn func={() => {
+                    setSwitchTile(null);
+                    setMode("default");
+                }}/>
                 
                 <View>
                     <Text style={{color:'black', fontFamily:ThemeFonts, fontSize:30, position:'absolute', top:3, left:3}}>Swap Squares</Text>
                     <Text style={{color:'white', fontFamily:ThemeFonts, fontSize:30}}>Swap Squares</Text>
                 </View>
 
-                <View style={{width:48, height:48, backgroundColor:"#16202e", borderRadius:5, alignItems:'center'}}>
-                    <View style={{width:48, height:44, backgroundColor:"#3f5980", borderRadius:5, justifyContent:'center', alignItems:'center'}}>
-                        {/* <AntDesign name="close" size={35} color="white" /> */}
-                        <FontAwesome name="close" size={32} color="white" />
-                    </View>
-                </View>
+                <CloseBtn func={() => setPopUpTile(null)}/>
             </View>
 
             <View style={{width:"100%", marginLeft: 30}}>

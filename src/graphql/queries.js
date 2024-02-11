@@ -57,7 +57,7 @@ export const getUser = /* GraphQL */ `
       userId
       playersArray
       name
-      playerGames
+      liveGames
       createdAt
       updatedAt
       __typename
@@ -79,7 +79,7 @@ export const listUsers = /* GraphQL */ `
         userId
         playersArray
         name
-        playerGames
+        liveGames
         createdAt
         updatedAt
         __typename
@@ -103,6 +103,9 @@ export const getGame = /* GraphQL */ `
       player2Cards
       player1Team
       player2Team
+      apiLink
+      selectedTiles
+      teams
       createdAt
       updatedAt
       __typename
@@ -128,6 +131,9 @@ export const listGames = /* GraphQL */ `
         player2Cards
         player1Team
         player2Team
+        apiLink
+        selectedTiles
+        teams
         createdAt
         updatedAt
         __typename

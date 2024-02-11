@@ -1,18 +1,18 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useState } from 'react'
 import MainAreaGames from './Games/MainAreaGames';
-import { useUser } from '../Context/UserContext';
+import { useMyContext } from '../Context/MyContext';
 import Inventory from './Inventory/Inventory';
 import Navbar from './NavBar/Navbar';
-import MainAreaLive from './Live/MainAreaLive';
-import { Matrix } from '../GameComponents/Matrix/Matrix';
+import LiveMainArea from './Live/LiveMainArea';
+import { Matrix } from '../GameComponents/PreGamePhase/Matrix';
 import { fakeMatrix } from '../functions/FakeGameData';
 
 export default function MainArea() {
 
     const [loading, setLoading] = useState(false);
     const [screen, setScreen] = useState("Games");
-    const { user } = useUser();
+    const { user } = useMyContext();
 
     if(!loading) { return (
       <View style={{
@@ -32,7 +32,7 @@ export default function MainArea() {
         }
 
         {screen === "Live" ?
-          <MainAreaLive /> 
+          <LiveMainArea /> 
             : 
           null
         }

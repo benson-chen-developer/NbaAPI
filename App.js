@@ -1,12 +1,12 @@
-import { UserProvider } from './Frontend/Context/UserContext';
+import { MyContextProvider } from './Frontend/Context/MyContext';
 import MainContainer from './Frontend/MainContainer'
 
 function App() {
 
   return (
-    <UserProvider>
+    <MyContextProvider>
       <MainContainer />
-    </UserProvider>
+    </MyContextProvider>
   );
 }
 

@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { View } from "react-native"
-import { PreGameMatrix } from "../../../GameComponents/Matrix/PreGameMatrix"
+import {PreGameMatrix} from '../../../GameComponents/PreGamePhase/PreGameMatrix'
 
 export const PreGame = ({game}) => {
 
@@ -10,7 +10,7 @@ export const PreGame = ({game}) => {
 
     return(
         <View style={{flex: 1}}>
-            <PreGameMatrix />
+            <PreGameMatrix game={game}/>
         </View>
     )
 }

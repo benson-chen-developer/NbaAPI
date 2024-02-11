@@ -1,6 +1,7 @@
 import { generateClient } from 'aws-amplify/api';
 import {listGames, listUsers} from '../../src/graphql/queries';
 import {updateGame, createGame, updateUser} from '../../src/graphql/mutations';
+import { generateMatrix2 } from './MatrixFunctions';
 
 const client = generateClient();
 
@@ -27,7 +28,7 @@ export const startSearchForGame = async (joiningPlayerId, selectedTeam, opposing
 
         return newUsers;
     } catch (error) {
-        console.error("Error fetching matrixes:", error);
+        console.error("Error (startSearchForGame)", error);
         throw error;
     }
 }
@@ -78,13 +79,21 @@ export const joinGame = async (game, joiningPlayerId) => {
 
 export const createGameFuncion = async (joiningPlayerId, selectedTeam, opposingTeam) => {
     try {
+
+        const matrix = generateMatrix2()
+        // console.log("GaneStartFunction", matrix)
+
+        const stringifyMatrix = JSON.stringify(matrix);
+        // console.log("GaneStartFunction", stringifyMatrix)
+
+
         const newGame = await client.graphql({
             query: createGame,
             variables: {
                 input: {
                     "player1Id": joiningPlayerId,
                     "player2Id": null,
-                    "matrix": "Lorem ipsum dolor sit amet",
+                    "matrix": matrix,
                     "started": false,
                     "player1Ready": false,
                     "player2Ready": false,
@@ -96,7 +105,7 @@ export const createGameFuncion = async (joiningPlayerId, selectedTeam, opposingT
             }
         });
 
-        // console.log("createmax", newGame.data.createGame)
+        console.log("createmax", newGame.data.createGame)
 
         return newGame.data.createGame;
 
@@ -176,6 +185,8 @@ export const readyUp = async (game, joiningPlayerId) => {
 
 export const addGameToUser = async (userId, game) => {
 
+    // console.log("game", userId);
+
     const variables = {
         filter: {id: { eq: userId }}
     };
@@ -190,13 +201,15 @@ export const addGameToUser = async (userId, game) => {
         variables: {
           input: {
             id: userId,
-            playerGames: [...oldUser.playerGames, 
-                {
-                    "gameId" : game.id,
-                    "player1Team": game.player1Team,
-                    "player2Team": game.player2Team,
-                    "timeStart": Date.now()
-                }
+            liveGames: [...oldUser.liveGames, 
+                JSON.stringify(
+                    {
+                        "gameId" : game.id,
+                        "player1Team": game.player1Team,
+                        "player2Team": game.player2Team,
+                        "timeStart": Date.now()
+                    }
+                )
             ]
           }
         }

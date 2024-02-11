@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View, Image } from 'react-native';
-import { useUser } from '../../Context/UserContext';
+import { useMyContext } from '../../Context/MyContext';
 import { startSearchForGame } from '../../functions/GameStartFunctions';
 import { themeColors } from '../../../assets/Themes/ThemeColors';
 import { ThemeFonts } from '../../../assets/Themes/ThemeFont';
 
 export default function TeamItem({game}) {
     const {mainSelectedColor} = themeColors;
-    const {user, setUser} = useUser();
+    const {user, setUser} = useMyContext();
     const [selected, setSelected] = useState(null);
 
     return (
