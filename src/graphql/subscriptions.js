@@ -126,6 +126,10 @@ export const onCreateGame = /* GraphQL */ `
       apiLink
       selectedTiles
       teams
+      matrixRow1
+      matrixRow2
+      matrixRow3
+      matrixRow4
       createdAt
       updatedAt
       __typename
@@ -149,6 +153,10 @@ export const onUpdateGame = /* GraphQL */ `
       apiLink
       selectedTiles
       teams
+      matrixRow1
+      matrixRow2
+      matrixRow3
+      matrixRow4
       createdAt
       updatedAt
       __typename
@@ -172,6 +180,10 @@ export const onDeleteGame = /* GraphQL */ `
       apiLink
       selectedTiles
       teams
+      matrixRow1
+      matrixRow2
+      matrixRow3
+      matrixRow4
       createdAt
       updatedAt
       __typename

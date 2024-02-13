@@ -37,8 +37,9 @@ export const getCurrentUserWithAuth = async (userId) => {
 
 export const getCurrentUserLiveGames = async (liveGames) => {
     let retArr = [];
-    
+
     for (const game of liveGames) {
+        // console.log("UserFunctions 1 Game:", JSON.parse(game));
         const id = JSON.parse(game).id;
 
         const result = await client.graphql({
@@ -47,7 +48,7 @@ export const getCurrentUserLiveGames = async (liveGames) => {
                 filter: { id: { eq: id } }
             }
         });
-        // console.log("UserFunctions 1 Game:", result.data.listGames.items);
+        // console.log("UserFunctions 1 Game:", result);
         retArr.push(result.data.listGames.items[0]);
     }
 

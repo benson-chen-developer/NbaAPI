@@ -10,7 +10,8 @@ export default function LiveMainArea({setCurrentGame}) {
     const [selectedLiveGameId, setSelectedLiveGameId] = useState(null);
 
     const findGameById = (id) => {
-        return user.liveGames.find(element => JSON.parse(element).id === id);
+        // console.log("LiveMainAreas.ks user", user.liveGames.find(element => JSON.parse(element).id === id))
+        return user.liveGames.find(element => JSON.parse(element).id === id)
     }
     
 
@@ -22,7 +23,8 @@ export default function LiveMainArea({setCurrentGame}) {
       //     });
       //   })
       // }
-    //   console.log("MainAreaLive", selectedLiveGameId)
+    //   user.liveGames.forEach(i => console.log( JSON.parse(i).id))
+    //   console.log("MainAreaLive", user.liveGames)
     }, []);
 
     if(selectedLiveGameId){

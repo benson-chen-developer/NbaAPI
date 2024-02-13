@@ -1,78 +1,88 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Text, View, ScrollView } from 'react-native';
 import { generateMatrix } from '../../functions/GamePlayFunctions';
-import { fetchGames } from '../../functions/GameStartFunctions';
+import { fetchGames, getGameViaId } from '../../functions/GameStartFunctions';
 import { generateMatrix2 } from '../../functions/MatrixFunctions';
 import {UpperPart} from './UpperPart';
 import Tile from './Tile';
 import TilePopUp from './TilePopUp/TilePopUp';
 
-export const PreGameMatrix = ({ game, matrix }) => {
+/*
+    Parse each individual element in matrix
+*/
+export const PreGameMatrix = ({ game }) => {
 
-  const [makeShiftMatrx, setMakeShiftMatrx] = useState(
-    [
-      [{}, {}, {}, {}],
-      [{}, {}, {}, {}],
-      [{}, {}, {}, {}],
-      [{}, {}, {}, {}]
-    ]
-  );
+  const [matrix, setMatrix] = useState([]);
 
   const [selectedTiles, setSelectedTiles] = useState([]);
   const [popUpTile, setPopUpTile] = useState(null);
 
   useEffect(() => {
-    
-    const retMat = generateMatrix2();
-    console.log("PreMatrix", retMat)
-    setMakeShiftMatrx(generateMatrix2());
-  }, [])
+    getGameViaId(game.id)
+      .then(res => {
+        setMatrix([
+          [...res.matrixRow1.map(JSON.parse)],
+          [...res.matrixRow2.map(JSON.parse)],
+          [...res.matrixRow3.map(JSON.parse)],
+          [...res.matrixRow4.map(JSON.parse)]
+        ]);
+      })
+      .catch(error => {
+        console.error("Error fetching game:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    console.log(matrix)
+  }, [matrix])
 
   return (
   <View style={{ flex: 1, marginTop: 100, width:"100%", height:"100%", alignItems: 'center'}}>
 
-    <UpperPart selectedTiles={selectedTiles} game={JSON.parse(game)}/>
+    <UpperPart selectedTiles={selectedTiles} game={game}/>
 
-    <ScrollView horizontal={true}>
-      <View style={{flexDirection:'column'}}>
-        <View style={{ flexDirection: 'row' }}>
-          {makeShiftMatrx[0].map((item, index) => (
-            <Tile 
-              key={index} index={index} item={item} row={0} 
-              selectedTiles={selectedTiles}
-              setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
-            />
-          ))}
+    {matrix.length === 4 ?
+      <ScrollView horizontal={true}>
+        <View style={{flexDirection:'column'}}>
+          <View style={{ flexDirection: 'row' }}>
+            {matrix[0].map((item, index) => (
+              <Tile 
+                key={index} index={index} item={item} row={0} 
+                selectedTiles={selectedTiles}
+                setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
+              />
+            ))}
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            {matrix[1].map((item, index) => (
+              <Tile 
+                key={index} index={index} item={item} row={1} 
+                selectedTiles={selectedTiles}
+                setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
+              />
+            ))}
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            {matrix[2].map((item, index) => (
+              <Tile 
+                key={index} index={index} item={item} row={2} 
+                selectedTiles={selectedTiles}
+                setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
+              />
+            ))}
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            {matrix[3].map((item, index) => (
+              <Tile 
+                key={index} index={index} item={item} row={3} 
+                selectedTiles={selectedTiles}
+                setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
+              />
+            ))}
+          </View>
         </View>
-        <View style={{ flexDirection: 'row' }}>
-          {makeShiftMatrx[1].map((item, index) => (
-            <Tile 
-              key={index} index={index} item={item} row={1} 
-              selectedTiles={selectedTiles}
-              setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
-            />
-          ))}
-        </View>
-        <View style={{ flexDirection: 'row' }}>
-          {makeShiftMatrx[2].map((item, index) => (
-            <Tile 
-              key={index} index={index} item={item} row={2} 
-              selectedTiles={selectedTiles}
-              setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
-            />
-          ))}
-        </View>
-        <View style={{ flexDirection: 'row' }}>
-          {makeShiftMatrx[3].map((item, index) => (
-            <Tile 
-              key={index} index={index} item={item} row={3} 
-              selectedTiles={selectedTiles}
-              setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
-            />
-          ))}
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView> : <Text style={{color:'white'}}>Loading</Text>
+    }
 
     {popUpTile ?
       <TilePopUp 

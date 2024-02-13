@@ -10,7 +10,7 @@ export const PreGame = ({game}) => {
 
     return(
         <View style={{flex: 1}}>
-            <PreGameMatrix game={game}/>
+            <PreGameMatrix game={JSON.parse(game)}/>
         </View>
     )
 }

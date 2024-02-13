@@ -11,3 +11,6 @@ MAKE SURE TO REMOVE THE API KEY
 
  npx react-native-asset
     maybe call this for fonts
+
+
+HOW TO DEAL WITH [AWSJSON] FIELDS

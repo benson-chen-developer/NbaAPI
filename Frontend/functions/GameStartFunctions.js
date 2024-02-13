@@ -80,12 +80,14 @@ export const joinGame = async (game, joiningPlayerId) => {
 export const createGameFuncion = async (joiningPlayerId, selectedTeam, opposingTeam) => {
     try {
 
+        const stringifyRow = (row) => {
+            let retRow = [];
+            row.forEach(i => retRow.push(JSON.stringify(i)));
+            return retRow;
+        }
+
         const matrix = generateMatrix2()
-        // console.log("GaneStartFunction", matrix)
-
-        const stringifyMatrix = JSON.stringify(matrix);
-        // console.log("GaneStartFunction", stringifyMatrix)
-
+        // console.log("GaneStartFunction", matrix[0])
 
         const newGame = await client.graphql({
             query: createGame,
@@ -100,7 +102,11 @@ export const createGameFuncion = async (joiningPlayerId, selectedTeam, opposingT
                     "player1Team": selectedTeam, 
                     "player2Team": opposingTeam,
                     "player1Cards": [],
-                    "player2Cards": []
+                    "player2Cards": [],
+                    "matrixRow1": stringifyRow(matrix[0]),
+                    "matrixRow2": stringifyRow(matrix[1]),
+                    "matrixRow3": stringifyRow(matrix[2]),
+                    "matrixRow4": stringifyRow(matrix[3])
                 }
             }
         });
@@ -204,10 +210,11 @@ export const addGameToUser = async (userId, game) => {
             liveGames: [...oldUser.liveGames, 
                 JSON.stringify(
                     {
-                        "gameId" : game.id,
-                        "player1Team": game.player1Team,
-                        "player2Team": game.player2Team,
-                        "timeStart": Date.now()
+                        id : game.id,
+                        player1Team: game.player1Team,
+                        player2Team: game.player2Team,
+                        timeStart: Date.now(),
+                        teams: [game.player1Team, game.player2Team]
                     }
                 )
             ]
@@ -218,6 +225,21 @@ export const addGameToUser = async (userId, game) => {
     return newUser.data.updateUser;
 }
 
-export const getGamesViaUserId = (userId) => {
+export const getGameViaId = async (gameId) => {
+    try {
+        const variables = {
+            filter: { id: { eq: gameId } }
+        };
+        const result = await client.graphql({
+            query: listGames,
+            variables: variables
+        });
 
+        const games = result.data.listGames.items[0];
+        // console.log("FetchGames/GameStartFunctions", games);
+
+        return games;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
 }

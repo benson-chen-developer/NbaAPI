@@ -36,7 +36,7 @@ export default function MainContainer() {
           setUser(userRes);
 
           getCurrentUserLiveGames(userRes.liveGames).then(liveGamesRes => {
-            console.log("MainContainer: LiveGames", JSON.stringify(liveGamesRes, null, 2));
+            // console.log("MainContainer: LiveGames", JSON.stringify(liveGamesRes, null, 2));
             setLiveGames(liveGamesRes)
           })
           setLoading(false);

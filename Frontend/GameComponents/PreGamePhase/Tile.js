@@ -4,7 +4,7 @@ import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 export default function Tile({index, item, row, setPopUpTile, selectedTiles, setSelectedTiles}) {
 
     useEffect(() => {
-
+        // console.log(item)
     },[])
     
     if(item) 
