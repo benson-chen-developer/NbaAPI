@@ -18,6 +18,7 @@ export const PreGameMatrix = ({ game }) => {
   const [popUpTile, setPopUpTile] = useState(null);
 
   useEffect(() => {
+    // console.log(game)
     getGameViaId(game.id)
       .then(res => {
         setMatrix([
@@ -33,7 +34,7 @@ export const PreGameMatrix = ({ game }) => {
   }, []);
 
   useEffect(() => {
-    console.log(matrix)
+    // console.log(matrix)
   }, [matrix])
 
   return (

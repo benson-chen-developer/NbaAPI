@@ -31,9 +31,17 @@ export const MyContextProvider = ({ children }) => {
   */
   const [liveGames, setLiveGames] = useState([]);
 
+  const [todayGames, setTodayGames] = useState([]);
+
+  /*
+    [
+      {awayTeam: {teamName}}, {homeTeam: {teamName}}
+    ]
+  */
   const value = {
     user, setUser,
-    liveGames, setLiveGames
+    liveGames, setLiveGames,
+    todayGames, setTodayGames
   };
 
   return (

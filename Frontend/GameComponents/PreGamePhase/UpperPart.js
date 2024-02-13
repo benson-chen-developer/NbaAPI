@@ -3,7 +3,7 @@ import { getFullNameOfStat } from '../../../assets/NameConversions';
 import { getTeamLogo } from '../../../assets/TeamLogos/getTeamLogo';
 
 export const UpperPart = ({game, selectedTiles}) => {
-    
+
     return(
         <View style={{width: "100%", alignItems: 'space-between', height: 80, backgroundColor:'red', justifyContent:'center'}}>
             {selectedTiles.length === 3 ?
@@ -13,6 +13,7 @@ export const UpperPart = ({game, selectedTiles}) => {
 
                     <View style={{height:"100%", justifyContent:'center'}}>
                         <Text>DET vs CHA</Text>
+                        <Text></Text>
                     </View>   
 
                     <Image source={getTeamLogo(game.player2Team)} style={styles.img}/>
