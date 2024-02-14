@@ -10,7 +10,7 @@ export const GameCard = ({game}) => {
 
     return(
         <View style={{
-            width: "95%", backgroundColor:'white',height:250, borderRadius: 10, 
+            width: "95%", backgroundColor:'white',height:250, borderRadius: 10, marginTop: 30,
             shadowColor:'white', shadowOffset: { width: 5, height: 5 }, shadowRadius:5, elevation: 5,
         }}>
 
