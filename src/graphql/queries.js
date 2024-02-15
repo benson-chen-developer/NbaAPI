@@ -52,12 +52,14 @@ export const getUser = /* GraphQL */ `
     getUser(id: $id) {
       id
       email
-      todayGames
       score
       userId
       playersArray
       name
-      liveGames
+      liveGames {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -74,12 +76,10 @@ export const listUsers = /* GraphQL */ `
       items {
         id
         email
-        todayGames
         score
         userId
         playersArray
         name
-        liveGames
         createdAt
         updatedAt
         __typename
@@ -95,7 +95,6 @@ export const getGame = /* GraphQL */ `
       id
       player1Id
       player2Id
-      matrix
       started
       player1Ready
       player2Ready
@@ -110,6 +109,7 @@ export const getGame = /* GraphQL */ `
       matrixRow2
       matrixRow3
       matrixRow4
+      userID
       createdAt
       updatedAt
       __typename
@@ -127,7 +127,6 @@ export const listGames = /* GraphQL */ `
         id
         player1Id
         player2Id
-        matrix
         started
         player1Ready
         player2Ready
@@ -142,6 +141,50 @@ export const listGames = /* GraphQL */ `
         matrixRow2
         matrixRow3
         matrixRow4
+        userID
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const gamesByUserID = /* GraphQL */ `
+  query GamesByUserID(
+    $userID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelGameFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    gamesByUserID(
+      userID: $userID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        player1Id
+        player2Id
+        started
+        player1Ready
+        player2Ready
+        player1Cards
+        player2Cards
+        player1Team
+        player2Team
+        apiLink
+        selectedTiles
+        teams
+        matrixRow1
+        matrixRow2
+        matrixRow3
+        matrixRow4
+        userID
         createdAt
         updatedAt
         __typename

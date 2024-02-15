@@ -3,7 +3,6 @@ import {leaveGame, readyUp} from '../functions/GameStartFunctions';
 import { useEffect, useState } from 'react';
 import * as subscriptions from '../../src/graphql/subscriptions';
 import { generateClient } from 'aws-amplify/api';
-import LoadingScreen from './LoadingPhase/LoadingScreen';
 import PrepScreen from './PrepPhase/PrepScreen';
 
 export default function InGame({user, currentGame, setCurrentGame}) {

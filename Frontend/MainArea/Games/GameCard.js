@@ -3,10 +3,31 @@ import { View, Text, Image, TouchableOpacity } from "react-native"
 import { getTeamLogo } from "../../../assets/TeamLogos/getTeamLogo"
 import { playBtnColor } from "../../../assets/Themes/ThemeColors"
 import { ThemeFonts } from "../../../assets/Themes/ThemeFont"
+import { useMyContext } from "../../Context/MyContext"
+import { startSearchForGame } from "../../functions/GameStartFunctions"
 
 export const GameCard = ({game}) => {
 
+    const {user, setUser, loading, setLoading, setLiveGames} = useMyContext();
     const [pickedTeam, setPickedTeam] = useState(null);
+
+    // const isAlreadyPlaying = user.liveGames.find((liveGame) => liveGame.teams[0] === game.homeTeam.teamName || liveGame.teams[1] === game.awayTeam.teamName);
+
+    // console.log(user.liveGames)
+
+    const pressPlay = async () => {
+        setLoading(true);
+
+        try{
+            const newGame = await startSearchForGame(user, pickedTeam, game.homeTeam.teamName, game.awayTeam.teamName);
+            
+            setLiveGames(p => [...p, newGame]);
+            setLoading(false);
+        } catch {
+            setLoading(false);
+            console.log("GameCard Error", err);
+        }
+    }
 
     return(
         <View style={{
@@ -33,10 +54,10 @@ export const GameCard = ({game}) => {
 
             <View style={{width:"100%", height: 20, flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
                 
-                {pickedTeam ?
+                {pickedTeam && (pickedTeam === game.homeTeam.teamName || pickedTeam === game.awayTeam.teamName)?
                     <TouchableOpacity style={{
                         height:40, width:100, backgroundColor:playBtnColor(pickedTeam).shadow, borderRadius:10
-                    }}>
+                    }} onPress={() => pressPlay()}>
                         <View style={{
                             height: 38, width:"100%", backgroundColor: playBtnColor(pickedTeam).main, 
                             borderRadius:10, alignItems:'center', justifyContent:'center'

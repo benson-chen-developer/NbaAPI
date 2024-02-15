@@ -6,7 +6,7 @@ import { getTeamLogo } from '../../../assets/TeamLogos/getTeamLogo';
 export default function LiveGameSlip({setSelectedLiveGameId, game}) {
 
     useEffect(() => {
-        // console.log("LiveGameSlip", game)
+        console.log("LiveGameSlip", game.teams)
     }, []);
 
     return(

@@ -10,49 +10,50 @@ import PopUp from './PopUp/PopUp';
 import MainArea from './MainArea/MainArea';
 import { getCurrentUser } from 'aws-amplify/auth';
 import Landing from './Unauthenticated/Landing';
-import { getCurrentUserLiveGames, getCurrentUserWithAuth } from './functions/UserFunctions';
+import { getLiveGames, getCurrentUserWithAuth } from './functions/UserFunctions';
 import { useMyContext } from './Context/MyContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import { LoadingScreen } from './LoadingScreen';
 
 export default function MainContainer() {
 
   const [currentGame, setCurrentGame] = useState(null);
   const [popUp, setPopUp] = useState(null);
 
-  const [loading, setLoading] = useState(false);
-  const { user, setUser, liveGames, setLiveGames } = useMyContext();
+  const [userLoading, setUserLoading] = useState(false);
+  const { user, setUser, loading, liveGames, setLiveGames } = useMyContext();
 
   
   useEffect(() => {
     async function fetchUser() {
-      setLoading(true);
+      setUserLoading(true);
   
       try {
-        const { username, userId, signInDetails } = await getCurrentUser();
+        // const { username, userId, signInDetails } = await getCurrentUser();
   
-        getCurrentUserWithAuth(userId).then(userRes => {
-          // console.log("MainContainer: User", JSON.stringify(userRes, null, 2));
-          setUser(userRes);
+        getCurrentUserWithAuth(user).then(userRes => {
+            // console.log("MainContainer: User", JSON.stringify(userRes, null, 2));
+            setUser(userRes);
 
-          getCurrentUserLiveGames(userRes.liveGames).then(liveGamesRes => {
-            // console.log("MainContainer: LiveGames", JSON.stringify(liveGamesRes, null, 2));
-            setLiveGames(liveGamesRes)
-          })
-          setLoading(false);
+            getLiveGames(userRes).then(liveGamesRes => {
+              // console.log("MainContainer: LiveGames", JSON.stringify(liveGamesRes, null, 2));
+              setLiveGames([liveGamesRes]);
+              setUserLoading(false);
+            })
         });
       } catch (err) {
   
         console.log("App.js, the user is not logged in basically.")
         console.log(err);
-        setLoading(false);
+        setUserLoading(false);
       }
     }
     
     fetchUser();
   }, [])
 
-  if(loading){
+  if(userLoading){
     return(
       <Text>Loading</Text>
     )
@@ -61,7 +62,7 @@ export default function MainContainer() {
   else 
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor:'#050614' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor:'#121724' }}>
       <StatusBar style={{color: "white"}} />
 
       <View style={{flex:1}}>
@@ -85,6 +86,10 @@ export default function MainContainer() {
           </View>
         }
       </View>
+
+      {loading ?
+        <LoadingScreen /> : null
+      }
     </SafeAreaView>
   );
 }

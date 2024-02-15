@@ -75,12 +75,14 @@ export const createUser = /* GraphQL */ `
     createUser(input: $input, condition: $condition) {
       id
       email
-      todayGames
       score
       userId
       playersArray
       name
-      liveGames
+      liveGames {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -95,12 +97,14 @@ export const updateUser = /* GraphQL */ `
     updateUser(input: $input, condition: $condition) {
       id
       email
-      todayGames
       score
       userId
       playersArray
       name
-      liveGames
+      liveGames {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -115,12 +119,14 @@ export const deleteUser = /* GraphQL */ `
     deleteUser(input: $input, condition: $condition) {
       id
       email
-      todayGames
       score
       userId
       playersArray
       name
-      liveGames
+      liveGames {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -136,7 +142,6 @@ export const createGame = /* GraphQL */ `
       id
       player1Id
       player2Id
-      matrix
       started
       player1Ready
       player2Ready
@@ -151,6 +156,7 @@ export const createGame = /* GraphQL */ `
       matrixRow2
       matrixRow3
       matrixRow4
+      userID
       createdAt
       updatedAt
       __typename
@@ -166,7 +172,6 @@ export const updateGame = /* GraphQL */ `
       id
       player1Id
       player2Id
-      matrix
       started
       player1Ready
       player2Ready
@@ -181,6 +186,7 @@ export const updateGame = /* GraphQL */ `
       matrixRow2
       matrixRow3
       matrixRow4
+      userID
       createdAt
       updatedAt
       __typename
@@ -196,7 +202,6 @@ export const deleteGame = /* GraphQL */ `
       id
       player1Id
       player2Id
-      matrix
       started
       player1Ready
       player2Ready
@@ -211,6 +216,7 @@ export const deleteGame = /* GraphQL */ `
       matrixRow2
       matrixRow3
       matrixRow4
+      userID
       createdAt
       updatedAt
       __typename

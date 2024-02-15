@@ -1,6 +1,6 @@
 import { generateClient } from 'aws-amplify/api';
 import { createUser, updateUser } from '../../src/graphql/mutations';
-import { getGame, listGames, listUsers } from '../../src/graphql/queries';
+import { gamesByUserID, getGame, getUser, listGames, listUsers } from '../../src/graphql/queries';
 
 const client = generateClient();
 
@@ -11,7 +11,6 @@ export const createUserFunction = async (userId, email) => {
             input: {
                 email: email,
                 userId: userId,
-                "todayGames": [],
                 "score": 0,
                 "currentGames": []
             }
@@ -21,36 +20,24 @@ export const createUserFunction = async (userId, email) => {
     return newUser;
 }
 
-export const getCurrentUserWithAuth = async (userId) => {
+export const getCurrentUserWithAuth = async (user) => {
     const result = await client.graphql({
-        query: listUsers,
-        variables: {
-            filter: {
-              userId: { eq: userId }
-            }
-        }
-    });
+        query: getUser,
+        variables: { id: '39485f21-c5c4-42bf-a224-ce1aa3db9f81' }
+      });
 
-    // console.log("userFunction user", result.data.listUsers.items)
-    return result.data.listUsers.items[0];
+    // console.log("userFunction user (getUser):", JSON.stringify(result.data.getUser, null, 2));
+    return result.data.getUser
 }
 
-export const getCurrentUserLiveGames = async (liveGames) => {
-    let retArr = [];
+export const getLiveGames = async (user) => {
+    const games = await client.graphql({
+        query: gamesByUserID,
+        variables: {userID: user.id}
+    });
 
-    for (const game of liveGames) {
-        // console.log("UserFunctions 1 Game:", JSON.parse(game));
-        const id = JSON.parse(game).id;
+    const ret = games.data.gamesByUserID.items;
+    // console.log("getLiveGames", typeof games.data.gamesByUserID.items)
 
-        const result = await client.graphql({
-            query: listGames,
-            variables: {
-                filter: { id: { eq: id } }
-            }
-        });
-        // console.log("UserFunctions 1 Game:", result);
-        retArr.push(result.data.listGames.items[0]);
-    }
-
-    return retArr;
+    return ret;
 }

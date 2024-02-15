@@ -12,26 +12,10 @@ export const useMyContext = () => {
 
 export const MyContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-
-  /* liveGames
-    id: String,
-    info: {
-        teams: "Home vs Away",
-        startTime: Date?
-    }
-    player1Id: String,
-    player2Id: String,
-    player1Team: String,
-    player2Team: String,
-
-    selectedTiles: {
-      "input player1 id" : [{index, row}]
-      "input player2 id" : [{index, row}]
-    }
-  */
-  const [liveGames, setLiveGames] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [todayGames, setTodayGames] = useState([]);
+  const [liveGames, setLiveGames] = useState([]);
 
   /*
     [
@@ -40,8 +24,9 @@ export const MyContextProvider = ({ children }) => {
   */
   const value = {
     user, setUser,
+    todayGames, setTodayGames,
     liveGames, setLiveGames,
-    todayGames, setTodayGames
+    loading, setLoading
   };
 
   return (

@@ -63,12 +63,14 @@ export const onCreateUser = /* GraphQL */ `
     onCreateUser(filter: $filter) {
       id
       email
-      todayGames
       score
       userId
       playersArray
       name
-      liveGames
+      liveGames {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -80,12 +82,14 @@ export const onUpdateUser = /* GraphQL */ `
     onUpdateUser(filter: $filter) {
       id
       email
-      todayGames
       score
       userId
       playersArray
       name
-      liveGames
+      liveGames {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -97,12 +101,14 @@ export const onDeleteUser = /* GraphQL */ `
     onDeleteUser(filter: $filter) {
       id
       email
-      todayGames
       score
       userId
       playersArray
       name
-      liveGames
+      liveGames {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -115,7 +121,6 @@ export const onCreateGame = /* GraphQL */ `
       id
       player1Id
       player2Id
-      matrix
       started
       player1Ready
       player2Ready
@@ -130,6 +135,7 @@ export const onCreateGame = /* GraphQL */ `
       matrixRow2
       matrixRow3
       matrixRow4
+      userID
       createdAt
       updatedAt
       __typename
@@ -142,7 +148,6 @@ export const onUpdateGame = /* GraphQL */ `
       id
       player1Id
       player2Id
-      matrix
       started
       player1Ready
       player2Ready
@@ -157,6 +162,7 @@ export const onUpdateGame = /* GraphQL */ `
       matrixRow2
       matrixRow3
       matrixRow4
+      userID
       createdAt
       updatedAt
       __typename
@@ -169,7 +175,6 @@ export const onDeleteGame = /* GraphQL */ `
       id
       player1Id
       player2Id
-      matrix
       started
       player1Ready
       player2Ready
@@ -184,6 +189,7 @@ export const onDeleteGame = /* GraphQL */ `
       matrixRow2
       matrixRow3
       matrixRow4
+      userID
       createdAt
       updatedAt
       __typename

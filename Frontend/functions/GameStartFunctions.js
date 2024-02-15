@@ -13,20 +13,20 @@ const client = generateClient();
     How this function works is we first look for all the games and sort it in order of 
     first created and no two filled player ids.
 */
-export const startSearchForGame = async (joiningPlayerId, selectedTeam, opposingTeam) => {
+export const startSearchForGame = async (user, selectedTeam, homeTeam, awayTeam) => {
+    const joiningPlayerId = user.id;
+
     try {
-        const canJoinGames = await fetchGames(selectedTeam);
+        const canJoinGames = await fetchGames(selectedTeam === homeTeam ? awayTeam : homeTeam);
         let game;
 
         if (canJoinGames.length > 0) {
             game = await joinGame(canJoinGames[0], joiningPlayerId, selectedTeam);
         } else {
-            game = await createGameFuncion(joiningPlayerId, selectedTeam, opposingTeam);
+            game = await createGameFuncion(joiningPlayerId, selectedTeam, homeTeam, awayTeam);
         }
 
-        const newUsers = await addGameToUser(joiningPlayerId, game);
-
-        return newUsers;
+        return game;
     } catch (error) {
         console.error("Error (startSearchForGame)", error);
         throw error;
@@ -37,11 +37,11 @@ export const startSearchForGame = async (joiningPlayerId, selectedTeam, opposing
     Returns all the games in an array where the player2Id is not filled and the 
     game that player2 is playing is also the opposing team
 */
-export const fetchGames = async (selectedTeam) => {
+export const fetchGames = async (opposingTeam) => {
     try {
         const variables = {
             filter: {
-                and: [{ player2Id: { eq: null } }, { player2Team: { eq: selectedTeam } }]
+                and: [{ player2Id: { eq: null } }, { player2Team: { eq: opposingTeam } }]
             }
         };
         const result = await client.graphql({
@@ -77,7 +77,7 @@ export const joinGame = async (game, joiningPlayerId) => {
     }
 }
 
-export const createGameFuncion = async (joiningPlayerId, selectedTeam, opposingTeam) => {
+export const createGameFuncion = async (joiningPlayerId, selectedTeam, homeTeam, awayTeam) => {
     try {
 
         const stringifyRow = (row) => {
@@ -95,18 +95,19 @@ export const createGameFuncion = async (joiningPlayerId, selectedTeam, opposingT
                 input: {
                     "player1Id": joiningPlayerId,
                     "player2Id": null,
-                    "matrix": matrix,
                     "started": false,
                     "player1Ready": false,
                     "player2Ready": false,
                     "player1Team": selectedTeam, 
-                    "player2Team": opposingTeam,
+                    "player2Team": selectedTeam === homeTeam ? awayTeam : homeTeam,
+                    "teams": [homeTeam, awayTeam],
                     "player1Cards": [],
                     "player2Cards": [],
                     "matrixRow1": stringifyRow(matrix[0]),
                     "matrixRow2": stringifyRow(matrix[1]),
                     "matrixRow3": stringifyRow(matrix[2]),
-                    "matrixRow4": stringifyRow(matrix[3])
+                    "matrixRow4": stringifyRow(matrix[3]),
+                    "userID": joiningPlayerId
                 }
             }
         });
@@ -207,17 +208,7 @@ export const addGameToUser = async (userId, game) => {
         variables: {
           input: {
             id: userId,
-            liveGames: [...oldUser.liveGames, 
-                JSON.stringify(
-                    {
-                        id : game.id,
-                        player1Team: game.player1Team,
-                        player2Team: game.player2Team,
-                        timeStart: Date.now(),
-                        teams: [game.player1Team, game.player2Team]
-                    }
-                )
-            ]
+            liveGames: [...oldUser.liveGames, game.id]
           }
         }
     });

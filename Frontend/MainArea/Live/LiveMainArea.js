@@ -6,13 +6,13 @@ import { PreGame } from './PreGame/PreGame';
 
 export default function LiveMainArea({setCurrentGame}) {
 
-    const {user} = useMyContext();
+    const {user, liveGames} = useMyContext();
     const [selectedLiveGameId, setSelectedLiveGameId] = useState(null);
 
-    const findGameById = (id) => {
-        // console.log("LiveMainAreas.ks user", user.liveGames.find(element => JSON.parse(element).id === id))
-        return user.liveGames.find(element => JSON.parse(element).id === id)
-    }
+    // const findGameById = (id) => {
+    //     // console.log("LiveMainAreas.ks user", user.liveGames.find(element => JSON.parse(element).id === id))
+    //     return user.liveGames.find(element => JSON.parse(element).id === id)
+    // }
     
 
     useEffect(() => {
@@ -41,9 +41,9 @@ export default function LiveMainArea({setCurrentGame}) {
         }}>
             <View style={{marginTop: 100}}/>
 
-            {user.liveGames.map((game, index) => {
+            {liveGames.map((game, index) => {
                 return <LiveGameSlip 
-                    key={index} index={index} game={JSON.parse(game)} 
+                    key={index} index={index} game={game} 
                     setSelectedLiveGameId={setSelectedLiveGameId}
                 />;
             })}

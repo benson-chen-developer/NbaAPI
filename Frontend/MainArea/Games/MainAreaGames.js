@@ -5,6 +5,7 @@ import { fetchLiveGameFeed } from '../../functions/GamePlayFunctions';
 import { fakeData } from '../../functions/FakeGameData';
 import { getGamesToday } from '../../functions/AsyncStorage';
 import { GameCard } from './GameCard';
+import { CapacityGames } from './CapacityGames';
 import { GamesCarousel } from './GamesCarousel';
 
 export default function MainAreaGames({setCurrentGame}) {
@@ -33,6 +34,8 @@ export default function MainAreaGames({setCurrentGame}) {
         <View style={{ flex: 1, alignItems: 'center', width:"100%"}}>
 
           <View style={{marginTop: 100}}/>
+
+          <CapacityGames />
 
           <GamesCarousel games={todayGames} selectedGame={selectedGame} setSelectedGame={setSelectedGame}/>
 
