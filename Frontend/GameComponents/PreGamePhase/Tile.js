@@ -2,12 +2,12 @@ import { useEffect } from "react"
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default function Tile({index, item, row, setPopUpTile, selectedTiles, setSelectedTiles}) {
-
+    const tileStats = JSON.parse(item);
     useEffect(() => {
         // console.log(item)
     },[])
     
-    if(item) 
+    if(tileStats) 
         return (
             <TouchableOpacity 
                 style={
@@ -16,14 +16,14 @@ export default function Tile({index, item, row, setPopUpTile, selectedTiles, set
                         : styles.notSelected
                 }
                 onPress={() => setPopUpTile({
-                    item: item,
+                    item: tileStats,
                     index: index,
                     row: row
                 }
             )}>
-                <Text style={{color:"white"}}>{item.name}</Text>
+                <Text style={{color:"white"}}>{tileStats.name}</Text>
 
-                {/* <ProgressBar item={item} /> */}
+                {/* <ProgressBar item={tileStats} /> */}
             </TouchableOpacity>
         )
         

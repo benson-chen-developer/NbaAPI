@@ -16,15 +16,15 @@ import Lakers from './Lakers.png';
 export const getTeamLogo = (name) => {
     if(name === "Pistons"){
         return Pistons;
-    } else if(name === "Houston Rockets"){
+    } else if(name === "Rockets"){
         return Rockets;
-    } else if(name === "Charlotte Hornets"){
+    } else if(name === "Hornets"){
         return Hornets;
     } else if(name === "Nets"){
         return Nets;
     } else if(name === "Celtics"){
         return Celtics;
-    } else if(name === "Charlotte Hornets"){
+    } else if(name === "Hornets"){
         return Hornets;
     } else if(name === "Thunder"){
         return Thunder;

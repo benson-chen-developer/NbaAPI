@@ -2,12 +2,12 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { useEffect, useState } from 'react'
 import LiveGameSlip from './LiveGameSlip';
 import { useMyContext } from '../../Context/MyContext';
-import { PreGame } from './PreGame/PreGame';
+import { PreGameMatrix } from '../../GameComponents/PreGamePhase/PreGameMatrix';
 
 export default function LiveMainArea({setCurrentGame}) {
 
     const {user, liveGames} = useMyContext();
-    const [selectedLiveGameId, setSelectedLiveGameId] = useState(null);
+    const [selectedLiveGame, setSelectedLiveGame] = useState(null);
 
     // const findGameById = (id) => {
     //     // console.log("LiveMainAreas.ks user", user.liveGames.find(element => JSON.parse(element).id === id))
@@ -27,10 +27,10 @@ export default function LiveMainArea({setCurrentGame}) {
     //   console.log("MainAreaLive", user.liveGames)
     }, []);
 
-    if(selectedLiveGameId){
+    if(selectedLiveGame){
         return(
             <View style={{flex:1, width:"100%", height:"100%", alignItems:'center',}}>
-                <PreGame game={findGameById(selectedLiveGameId)}/>
+                <PreGameMatrix game={selectedLiveGame}/>
             </View>
         )
     }
@@ -44,7 +44,7 @@ export default function LiveMainArea({setCurrentGame}) {
             {liveGames.map((game, index) => {
                 return <LiveGameSlip 
                     key={index} index={index} game={game} 
-                    setSelectedLiveGameId={setSelectedLiveGameId}
+                    setSelectedLiveGameId={setSelectedLiveGame}
                 />;
             })}
 

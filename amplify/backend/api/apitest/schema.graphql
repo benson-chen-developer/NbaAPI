@@ -19,6 +19,7 @@ type User @model @auth(rules: [{allow: public}]) {
   playersArray: [AWSJSON]
   name: String
   liveGames: [Game] @hasMany(indexName: "byUser", fields: ["id"])
+  xp: Int
 }
 
 type Game @model @auth(rules: [{allow: public}]) {

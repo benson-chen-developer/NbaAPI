@@ -60,6 +60,7 @@ export const getUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      xp
       createdAt
       updatedAt
       __typename
@@ -80,6 +81,7 @@ export const listUsers = /* GraphQL */ `
         userId
         playersArray
         name
+        xp
         createdAt
         updatedAt
         __typename

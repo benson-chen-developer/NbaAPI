@@ -6,7 +6,7 @@ import { getTeamLogo } from '../../../assets/TeamLogos/getTeamLogo';
 export default function LiveGameSlip({setSelectedLiveGameId, game}) {
 
     useEffect(() => {
-        console.log("LiveGameSlip", game.teams)
+        // console.log("LiveGameSlip", game)
     }, []);
 
     return(
@@ -14,7 +14,7 @@ export default function LiveGameSlip({setSelectedLiveGameId, game}) {
             width:"90%", height: 125, borderRadius: 5, backgroundColor:"white",
             margin: 15, flexDirection:'row', 
             justifyContent:'space-around', alignItems:'center'
-        }} onPress={() => setSelectedLiveGameId(game.id)}>
+        }} onPress={() => setSelectedLiveGameId(game)}>
             <View>
                 <Image source={getTeamLogo(game.teams[0])} style={styles.logo}/>
             </View>

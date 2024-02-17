@@ -19,22 +19,23 @@ export const PreGameMatrix = ({ game }) => {
 
   useEffect(() => {
     // console.log(game)
-    getGameViaId(game.id)
-      .then(res => {
-        setMatrix([
-          [...res.matrixRow1.map(JSON.parse)],
-          [...res.matrixRow2.map(JSON.parse)],
-          [...res.matrixRow3.map(JSON.parse)],
-          [...res.matrixRow4.map(JSON.parse)]
-        ]);
-      })
-      .catch(error => {
-        console.error("Error fetching game:", error);
-      });
+    // getGameViaId(game.id)
+    //   .then(res => {
+    //   })
+    //   .catch(error => {
+    //     console.error("Error fetching game:", error);
+    //   });
+
+    setMatrix([
+      game.matrixRow1,
+      game.matrixRow2,
+      game.matrixRow3,
+      game.matrixRow4,
+    ])
   }, []);
 
   useEffect(() => {
-    // console.log(matrix)
+    // console.log("pre",matrix)
   }, [matrix])
 
   return (

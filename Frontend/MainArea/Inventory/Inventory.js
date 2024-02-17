@@ -2,6 +2,7 @@ import { Text, TouchableOpacity, useColorScheme, View } from 'react-native';
 import { useEffect, useState } from 'react'
 import { useMyContext } from '../../Context/MyContext';
 import PlayerCard from './PlayerCard';
+import { getPlayerStatsToday } from '../../functions/AsyncStorage';
 
 export default function Inventory() {
 
@@ -16,6 +17,17 @@ export default function Inventory() {
         // console.log("inventory",...user.playersArray)
 
         // console.log("Inventory",sortedPlayersArray)
+
+        const fetchPlayerStats = async () => {
+            try {
+                const playerStatsRes = await getPlayerStatsToday();
+                // console.log("Inventory", playerStatsRes);
+            } catch (error) {
+                console.error("Error fetching player stats:", error);
+            }
+        };
+    
+        fetchPlayerStats();
 
         setOnScreenCards(sortedPlayersArray);
     }, []);

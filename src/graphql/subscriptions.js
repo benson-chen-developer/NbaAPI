@@ -71,6 +71,7 @@ export const onCreateUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      xp
       createdAt
       updatedAt
       __typename
@@ -90,6 +91,7 @@ export const onUpdateUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      xp
       createdAt
       updatedAt
       __typename
@@ -109,6 +111,7 @@ export const onDeleteUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      xp
       createdAt
       updatedAt
       __typename

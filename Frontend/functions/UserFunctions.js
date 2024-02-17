@@ -37,7 +37,7 @@ export const getLiveGames = async (user) => {
     });
 
     const ret = games.data.gamesByUserID.items;
-    // console.log("getLiveGames", typeof games.data.gamesByUserID.items)
+    // console.log("getLiveGames", ret)
 
     return ret;
 }
