@@ -12,6 +12,14 @@ import Kings from './Kings.png';
 import Timberwolves from './Timberwolves.png';
 import TrailBlazers from './Trailblazers.png';
 import Lakers from './Lakers.png';
+import Cavaliers from './Cavaliers.png';
+import Knicks from './Knicks.png';
+import Sixers from './Sixers.png';
+import Pacers from './Pacers.png';
+import Bulls from './Bulls.png';
+import Hawks from './Hawks.png';
+import Raptors from './Raptors.png';
+import Wizards from './Wizards.png';
 
 export const getTeamLogo = (name) => {
     if(name === "Pistons"){
@@ -46,5 +54,21 @@ export const getTeamLogo = (name) => {
         return TrailBlazers;
     } else if(name === "Lakers"){
         return Lakers;
+    } else if(name === "Cavaliers"){
+        return Cavaliers;
+    } else if(name === "Knicks"){
+        return Knicks;
+    } else if(name === "76ers"){
+        return Sixers;
+    } else if(name === "Pacers"){
+        return Pacers;
+    } else if(name === "Bulls"){
+        return Bulls;
+    } else if(name === "Hawks"){
+        return Hawks;
+    } else if(name === "Raptors"){
+        return Raptors;
+    } else if(name === "Wizards"){
+        return Wizards;
     }
 }

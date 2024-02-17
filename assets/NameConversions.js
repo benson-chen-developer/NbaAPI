@@ -18,6 +18,11 @@ export const getFullNameOfStat = (sortName) => {
     else "Err"
 }
 
-export const teamNameConversion = ({}) => {
-
+/*
+    If toShort is true then turn the name to short otherwise return long one
+*/
+export const teamNameConversion = ({name, toShort}) => {
+    if(toShort){
+        // if()
+    }
 }

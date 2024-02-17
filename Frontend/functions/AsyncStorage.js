@@ -70,25 +70,26 @@ export const getPlayerStatsToday = async () => {
                     const playersArrayRet = [];
                     
                     linesToProcess.map(line => {
-                        const playerNameAndStats = line.split(" ").filter(word => word.trim() !== "").slice(3)
+                        const playerNameAndStats = line.split(" ").filter(word => word.trim() !== "")
                         
                         playersArrayRet.push({
-                            ["name"]: playerNameAndStats[1] + playerNameAndStats[0],
-                            ["FG"]: playerNameAndStats[6],
-                            ["FGA"]: playerNameAndStats[7],
-                            ["FG3"]: playerNameAndStats[9],
-                            ["FG3A"]: playerNameAndStats[10],
-                            ["FT"]: playerNameAndStats[12],
-                            ["FTA"]: playerNameAndStats[13],
-                            ["REB"]: playerNameAndStats[17],
-                            ["AST"]: playerNameAndStats[18],
-                            ["PF"]: playerNameAndStats[19],
-                            ["STL"]: playerNameAndStats[21],
-                            ["TO"]: playerNameAndStats[22],
-                            ["BLK"]: playerNameAndStats[23],
-                            ["PTS"]: playerNameAndStats[24],
-                            ["PPG"]: playerNameAndStats[25],
-                            ["Games Played"]: playerNameAndStats[3]
+                            ["name"]: `${playerNameAndStats[4] + playerNameAndStats[3]}`.replace(',', ' ').slice(0, -1),
+                            ["FG"]: playerNameAndStats[9],
+                            ["FGA"]: playerNameAndStats[10],
+                            ["FG3"]: playerNameAndStats[12],
+                            ["FG3A"]: playerNameAndStats[13],
+                            ["FT"]: playerNameAndStats[15],
+                            ["FTA"]: playerNameAndStats[16],
+                            ["REB"]: playerNameAndStats[20],
+                            ["AST"]: playerNameAndStats[21],
+                            ["PF"]: playerNameAndStats[22],
+                            ["STL"]: playerNameAndStats[24],
+                            ["TO"]: playerNameAndStats[25],
+                            ["BLK"]: playerNameAndStats[26],
+                            ["PTS"]: playerNameAndStats[27],
+                            ["PPG"]: playerNameAndStats[28],
+                            ["Games Played"]: playerNameAndStats[6],
+                            ["team"]: playerNameAndStats[1]
                         });
                     });
     
@@ -119,7 +120,7 @@ export const getPlayerStatsToday = async () => {
         } else {
             // console.log("AsynceStorage: We did cache (players):");
 
-            return playersToday;
+            return JSON.parse(playersToday);
         }
     } catch(err) {
         console.log("AsyncStorage Error, players", err)

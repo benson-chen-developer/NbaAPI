@@ -16,6 +16,7 @@ export const MyContextProvider = ({ children }) => {
 
   const [todayGames, setTodayGames] = useState([]);
   const [liveGames, setLiveGames] = useState([]);
+  const [playerStats, setPlayerStats] = useState([]);
 
   /*
     [
@@ -26,6 +27,7 @@ export const MyContextProvider = ({ children }) => {
     user, setUser,
     todayGames, setTodayGames,
     liveGames, setLiveGames,
+    playerStats, setPlayerStats,
     loading, setLoading
   };
 
