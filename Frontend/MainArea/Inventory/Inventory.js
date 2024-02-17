@@ -6,14 +6,15 @@ import { getPlayerStatsToday } from '../../functions/AsyncStorage';
 import { IsAnActualPlayers } from '../../../assets/AcutalPlayers';
 import { InventoryTopBar } from './InventoryTopBar';
 import { TeamPickerPopUp } from './TeamPickerPopUp';
+import { PlayerPopUp } from './PlayerPopUp';
 
 export default function Inventory() {
 
     const {user, setUser, playerStats, setPlayerStats} = useMyContext();
     const [onScreenCards, setOnScreenCards] = useState([]);
-    const [currentTeam, setCurrentTeam] = useState('BOS');
-    const [popUp, setPopUp] = useState(false);
-    const [playerFilter, setPlayerFilter] = useState("all");
+    const [currentTeam, setCurrentTeam] = useState({name: "Celtics", abbreviated: 'BOS'});
+    const [currentPlayer, setCurrentPlayer] = useState(null);
+    const [popUp, setPopUp] = useState("");
     
     const fetchPlayerStats = async () => {
         try {
@@ -28,13 +29,11 @@ export default function Inventory() {
 
     const setOnScreenCardsViaCurrentTeam = (allPlayerStats) => {
         let setArr = [];
-
-        allPlayerStats.forEach(playerStat => {
-            if(playerStat["team"] === currentTeam && IsAnActualPlayers(playerStat["name"])){
-                setArr.push(playerStat);
-            }
-        })
-
+            allPlayerStats.forEach(playerStat => {
+                if(playerStat["abbreviated"] === currentTeam.abbreviated && IsAnActualPlayers(playerStat["name"])){
+                    setArr.push(playerStat);
+                }
+            })
         setOnScreenCards(setArr);
     }
 
@@ -42,19 +41,11 @@ export default function Inventory() {
         fetchPlayerStats().then(playerStatsRes => {
             setOnScreenCardsViaCurrentTeam(playerStatsRes);
         })
-    }, []);
+    }, [currentTeam]);
 
     // useEffect(() => {
-    //     if(playerFilter === "all"){
-    //         const playersArray = Object.values(user.playersArray);
-    //         const sortedPlayersArray = playersArray.sort((a, b) => b.shards - a.shards);
-    //         setOnScreenCards(sortedPlayersArray);
-    //     }
-    // }, [playerFilter]);
-
-    // useEffect(() => {
-    //     console.log("inv", onScreenCards)
-    // }, [onScreenCards]);
+    //     console.log('inv', onScreenCards)
+    // }, [onScreenCards])
 
     return (
         <View style={{ 
@@ -62,19 +53,31 @@ export default function Inventory() {
         }}>
             <View style={{height:100}}/>
 
-            <InventoryTopBar setPopUp={setPopUp}/>
+            <InventoryTopBar currentTeam={currentTeam} setPopUp={setPopUp}/>
 
             <ScrollView style={{ width: '90%' }}>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
                     {onScreenCards.map((player, index) => (
-                        <PlayerCard key={index} player={player} />
+                        <PlayerCard 
+                            key={index} player={player} setCurrentPlayer={setCurrentPlayer}
+                            setPopUp={setPopUp}
+                        />
                     ))}
                 </View>
             </ScrollView>
 
-            {popUp ?
+            {popUp === "Team" ?
                 <TeamPickerPopUp 
                     currentTeam={currentTeam} setCurrentTeam={setCurrentTeam} setPopUp={setPopUp}
+                /> 
+                    : 
+                null
+            }
+
+            {popUp === "Player" ?
+                <PlayerPopUp 
+                    currentPlayer={currentPlayer} setCurrentPlayer={setCurrentPlayer} 
+                    setPopUp={setPopUp} currentTeam={currentTeam}
                 /> 
                     : 
                 null

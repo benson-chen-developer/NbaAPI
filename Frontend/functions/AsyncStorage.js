@@ -89,7 +89,7 @@ export const getPlayerStatsToday = async () => {
                             ["PTS"]: playerNameAndStats[27],
                             ["PPG"]: playerNameAndStats[28],
                             ["Games Played"]: playerNameAndStats[6],
-                            ["team"]: playerNameAndStats[1]
+                            ["abbreviated"]: playerNameAndStats[1]
                         });
                     });
     

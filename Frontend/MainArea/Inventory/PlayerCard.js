@@ -9,7 +9,7 @@ const levelBarColor = "#14cc14";
 const levelBarDarkColor = "#111111";
 const playerNameColor = "#FFFFFF";
 
-export default function PlayerCard({player}) {
+export default function PlayerCard({player, setCurrentPlayer, setPopUp}) {
 
     const [playerNameBackGroundColor, setPlayerNameBackGroundColor] = useState("#111111");
     const [playerBarProgress, setPlayerBarProgress] = useState("0%");
@@ -25,10 +25,13 @@ export default function PlayerCard({player}) {
     }, []);
 
     return(
-        <View style={{
+        <TouchableOpacity style={{
             width:"46%", height: 250, alignItems:'center', backgroundColor:innerCardColor,
             borderWidth: 2, borderColor: cardBorderColor, borderRadius: 10,
             justifyContent: 'space-between', marginBottom: 20
+        }} onPress={() => {
+            setCurrentPlayer(player);
+            setPopUp("Player");
         }}>
             {/* Picture */}
             <Image 
@@ -70,7 +73,7 @@ export default function PlayerCard({player}) {
                     {playerBarUpperNumber}
                 </Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 

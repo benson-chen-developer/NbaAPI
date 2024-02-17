@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { View, Image, TouchableOpacity, Text } from "react-native"
 import { getTeamLogo } from "../../../assets/TeamLogos/getTeamLogo"
+import { ThemeFonts } from "../../../assets/Themes/ThemeFont";
+import { FontAwesome } from '@expo/vector-icons';
 
 export const TeamPickerPopUp = ({currentTeam, setCurrentTeam, setPopUp}) => {
 
@@ -25,7 +27,6 @@ export const TeamPickerPopUp = ({currentTeam, setCurrentTeam, setPopUp}) => {
         {name: 'Spurs', abbreviated: "SA"},
         {name: 'empty', abbreviated: "DET"},
     ]
-
     const eastTeams = [
         {name: 'Celtics', abbreviated: "BOS"},
         {name: 'Cavaliers', abbreviated: "CLE"},
@@ -47,23 +48,36 @@ export const TeamPickerPopUp = ({currentTeam, setCurrentTeam, setPopUp}) => {
 
     useEffect(() => {
         setCoastTeams(eastTeams)
-        // console.log(JSON.stringify(eastTeams, null, 2));
     }, [])
 
     return(
-        <View style={{
-            height:"100%", width:"100%", backgroundColor:'rgba(0,0,0,.5)', position:'absolute',
-            justifyContent:'center', alignItems:'center'
-        }}>
+        // Whole Screen including black part
+        <View style={{height:"100%", width:"100%", backgroundColor:'rgba(0,0,0,.5)', position:'absolute',justifyContent:'center', alignItems:'center'}}>
+            
+            {/* White Box */}
             <View style={{
                 height: "75%", width:"90%", backgroundColor:'white', borderRadius:10, alignItems:'center'
             }}>
                 {/* First Row */}
-                <View style={{width:"90%", marginTop:30, flexDirection:'row'}}>
-                    <TeamSquare team={{name: 'Celtics'}} />
-                    <Text>
-                        {currentTeam.name}
-                    </Text>
+                <View style={{width:"90%", marginTop:30, flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
+                    <View style={{flexDirection:'row', height:"100%", alignItems:'center'}}>
+                        <View style={{width:70, height:70, justifyContent:'center', alignItems:'center', backgroundColor: "#162438", borderRadius: 5}}>
+                            <View style={{
+                                width:70, height:70, justifyContent:'center', alignItems:'center',
+                                position:'absolute', top: -4, left:-4, backgroundColor: "#283f60", borderRadius:5
+                            }}>
+                                <Image source={getTeamLogo(currentTeam.name)} style={{width:50, height:50}}/>
+                            </View>
+                        </View>
+                        <Text style={{fontFamily: 'Roboto-BlackItalic', fontSize: 30, marginLeft: 15}}>
+                            {currentTeam.name.toUpperCase()}
+                        </Text>
+                    </View>
+                    <View style={{height: "100%", alignItems:'flex-start'}}>
+                        <TouchableOpacity onPress={() => setPopUp("")}>
+                            <FontAwesome name="close" size={35} color="black" />
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
                 {/* Second Row (Btns) */}
@@ -144,8 +158,8 @@ const TeamSquare = ({team, setCurrentTeam, setPopUp}) => {
             backgroundColor: "#162438", borderRadius: 5
             // backgroundColor: "#283f60", borderRadius:5
         }} onPress={() => {
-            setCurrentTeam(team.abbreviated);
-            setPopUp(false);
+            setCurrentTeam(team);
+            setPopUp("");
         }}>
             <View style={{
                 width:70, height:70, justifyContent:'center', alignItems:'center',
