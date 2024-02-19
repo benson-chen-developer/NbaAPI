@@ -61,6 +61,7 @@ export const getUser = /* GraphQL */ `
         __typename
       }
       xp
+      teamDepth
       createdAt
       updatedAt
       __typename
@@ -82,6 +83,7 @@ export const listUsers = /* GraphQL */ `
         playersArray
         name
         xp
+        teamDepth
         createdAt
         updatedAt
         __typename

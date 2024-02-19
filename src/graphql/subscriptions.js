@@ -72,6 +72,7 @@ export const onCreateUser = /* GraphQL */ `
         __typename
       }
       xp
+      teamDepth
       createdAt
       updatedAt
       __typename
@@ -92,6 +93,7 @@ export const onUpdateUser = /* GraphQL */ `
         __typename
       }
       xp
+      teamDepth
       createdAt
       updatedAt
       __typename
@@ -112,6 +114,7 @@ export const onDeleteUser = /* GraphQL */ `
         __typename
       }
       xp
+      teamDepth
       createdAt
       updatedAt
       __typename

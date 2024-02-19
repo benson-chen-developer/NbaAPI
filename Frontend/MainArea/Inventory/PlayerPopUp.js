@@ -52,6 +52,8 @@ export const PlayerPopUp = ({currentPlayer, setCurrentPlayer, setPopUp, currentT
 
                 {/* Fourth (Stats) */}
                 <StatBar currentPlayer={currentPlayer}/>
+
+                <PickBtn currentPlayer={currentPlayer}/>
             </View>
         </View>
     )
@@ -73,6 +75,27 @@ const StatBar = ({currentPlayer}) => {
                 <Text style={{fontFamily:ThemeFonts, fontSize:25, color:statColor}}>AST</Text>
                 <Text style={{fontFamily:ThemeFonts, fontSize:20, color:numberColor}}>{(currentPlayer.AST / currentPlayer['Games Played']).toFixed(1)}</Text>
             </View>
+        </View>
+    )
+}
+
+import { useNavigation } from '@react-navigation/native';
+const PickBtn = ({currentPlayer}) => {
+    const navigation = useNavigation();
+
+    return(
+        <View style={{width:"80%", marginTop:30, flexDirection:'row', alignItems:'center', justifyContent:'center'}}>
+                
+            <TouchableOpacity 
+                style={{width:100, height: 50, backgroundColor:'#007a34', borderRadius:5 }}
+                onPress={() => navigation.navigate('TeamDepth', { currentPlayer: currentPlayer, prevScreen: "Inventory" })}
+            >
+                <View style={{width:100, height: 48, backgroundColor:'#12b411', borderRadius:5, justifyContent:'center', alignItems:'center'}}>
+                    <Text style={{fontFamily:ThemeFonts, fontSize:25, color:'white'}}>
+                        Pick
+                    </Text>
+                </View>
+            </TouchableOpacity>
         </View>
     )
 }

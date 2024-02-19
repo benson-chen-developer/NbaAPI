@@ -33,7 +33,7 @@ export default function MainAreaGames({setCurrentGame}) {
       return (
         <View style={{ flex: 1, alignItems: 'center', width:"100%"}}>
 
-          <View style={{marginTop: 100}}/>
+          <View style={{marginTop: 50}}/>
 
           <CapacityGames />
 
