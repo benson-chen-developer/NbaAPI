@@ -8,25 +8,21 @@ import { TeamDepthBench } from "./TeamDepthBench";
 import { TeamDepthStarters } from "./TeamDepthStarters";
 import { TeamDepthPickedPlayer } from "./TeamDepthPickedPlayer";
 import { setPlayerTeamDepth } from "../functions/UserFunctions";
+import { setAsyncTeamDepth } from "../functions/AsyncStorage";
 
 export const TeamDepth = ({ route }) => {
 
     const { currentPlayer, prevScreen } = route.params;
-    const {user, playerStats} = useMyContext();
+    const {user, playerStats, teamDepthArray} = useMyContext();
 
     const [selectedStat, setSelectedStat] = useState("PTS");
     const [teamDepth, setTeamDepth] = useState([]);
 
     useEffect(() => {
-        let ret = [];
-        user.teamDepth.forEach(i => {
-            // console.log("Teamdept",  JSON.parse(i))
-            if(JSON.parse(i).abbreviated === "BOS"){
-                ret.push(JSON.parse(i))
-            }
-        })
+        const foundTeam = teamDepthArray.find((team) => team.abbreviated === currentPlayer.abbreviated);
+        // console.log("Teamdept", foundTeam.team)
 
-        setTeamDepth(ret);
+        setTeamDepth(foundTeam.team);
     }, [])
 
     // useEffect(() => {
@@ -37,9 +33,9 @@ export const TeamDepth = ({ route }) => {
     if(teamDepth.length > 0)
     return(
         <View style={{flex:1, height:"100%", width:"100%"}}>
-            <View style={{flex:1, height:40, width:"100%", alignItems:'center'}}>
+            {/* <View style={{flex:1, height:40, width:"100%", alignItems:'center'}}>
                 <Text>Celtics</Text>
-            </View>
+            </View> */}
 
             <TeamDepthPickedPlayer 
                 player={currentPlayer} selectedStat={selectedStat}
@@ -53,18 +49,25 @@ export const TeamDepth = ({ route }) => {
     )
 }
 
+import { useNavigation } from '@react-navigation/native';
 export const TeamDepthPlayerCard = ({player, currentPlayer}) => {
-    const {user} = useMyContext();
+    const {setTeamDepthArray} = useMyContext();
     const firstName = player.name.split(' ')[0];
     const lastName = player.name.split(' ')[1];
+    const navigation = useNavigation();
+
+    const swapPlayers = async () => {
+        const newTeamDepth = await setAsyncTeamDepth(player, currentPlayer);
+        // console.log("TeamDepth", newTeamDepth)
+        setTeamDepthArray(newTeamDepth);
+        navigation.navigate('Main');
+    }
 
     return(
         <TouchableOpacity style={{
             height:130, width: "30%", backgroundColor:'#515482', borderRadius:10,
             justifyContent:'center', alignItems:'center'
-        }} onPress={() => {
-            setPlayerTeamDepth(player, currentPlayer, user);
-        }}>
+        }} onPress={() => swapPlayers()}>
             {player.name === "" ?
                 <Text style={{fontFamily:ThemeFonts, fontSize:24, color:'white'}}>
                     Empty

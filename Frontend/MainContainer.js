@@ -15,6 +15,7 @@ import { useMyContext } from './Context/MyContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { LoadingScreen } from './LoadingScreen';
+import { getAsyncTeamDepth } from './functions/AsyncStorage';
 
 export default function MainContainer() {
 
@@ -22,7 +23,7 @@ export default function MainContainer() {
   const [popUp, setPopUp] = useState(null);
 
   const [userLoading, setUserLoading] = useState(false);
-  const { user, setUser, loading, liveGames, setLiveGames } = useMyContext();
+  const { user, setUser, loading, liveGames, setLiveGames, setTeamDepthArray } = useMyContext();
 
   
   useEffect(() => {
@@ -40,6 +41,10 @@ export default function MainContainer() {
               // console.log("MainContainer: LiveGames", JSON.stringify(liveGamesRes, null, 2));
               setLiveGames(liveGamesRes);
               setUserLoading(false);
+            })
+
+            getAsyncTeamDepth().then(teamDepthRes => {
+              setTeamDepthArray(teamDepthRes)
             })
         });
       } catch (err) {
