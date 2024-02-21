@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { TilePopUpCarousel } from "./TilePopUpCarousel";
 import { ThemeFonts } from "../../../../assets/Themes/ThemeFont";
 import { getFullNameOfStat } from "../../../../assets/NameConversions";
+import { setAsyncPreGameBoards } from "../../../functions/AsyncStorage/AsyncPreGameBoards";
 
 export const DefaultTilePopUp = ({
         setMode, setSwitchTile,
@@ -56,6 +57,7 @@ const SelectBtn = ({setSwitchTile, setMode, isSelected, popUpTile, selectedTiles
                 setMode("switch");
                 setSwitchTile(popUpTile);
             } else {
+                setAsyncPreGameBoards(popUpTile.gameId, [...selectedTiles, popUpTile]);
                 setSelectedTiles(p => [...p, popUpTile])
                 setPopUpTile(null);
             }

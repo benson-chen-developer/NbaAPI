@@ -6,6 +6,7 @@ import { generateMatrix2 } from '../../functions/MatrixFunctions';
 import {UpperPart} from './UpperPart';
 import Tile from './Tile';
 import TilePopUp from './TilePopUp/TilePopUp';
+import { setAsyncPreGameBoards, getAsyncPreGameBoards, clearAsyncPreGameBoards } from '../../functions/AsyncStorage/AsyncPreGameBoards';
 
 /*
     Parse each individual element in matrix
@@ -18,20 +19,16 @@ export const PreGameMatrix = ({ game }) => {
   const [popUpTile, setPopUpTile] = useState(null);
 
   useEffect(() => {
-    // console.log(game)
-    // getGameViaId(game.id)
-    //   .then(res => {
-    //   })
-    //   .catch(error => {
-    //     console.error("Error fetching game:", error);
-    //   });
-
-    setMatrix([
-      game.matrixRow1,
-      game.matrixRow2,
-      game.matrixRow3,
-      game.matrixRow4,
-    ])
+    // clearAsyncPreGameBoards()
+    getAsyncPreGameBoards(game.id).then(selectedTilesRes => {
+      setSelectedTiles(selectedTilesRes.selected);
+      setMatrix([
+        game.matrixRow1,
+        game.matrixRow2,
+        game.matrixRow3,
+        game.matrixRow4,
+      ])
+    })
   }, []);
 
   useEffect(() => {
@@ -50,7 +47,7 @@ export const PreGameMatrix = ({ game }) => {
             {matrix[0].map((item, index) => (
               <Tile 
                 key={index} index={index} item={item} row={0} 
-                selectedTiles={selectedTiles}
+                selectedTiles={selectedTiles} game={game}
                 setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
               />
             ))}
@@ -59,7 +56,7 @@ export const PreGameMatrix = ({ game }) => {
             {matrix[1].map((item, index) => (
               <Tile 
                 key={index} index={index} item={item} row={1} 
-                selectedTiles={selectedTiles}
+                selectedTiles={selectedTiles} game={game}
                 setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
               />
             ))}
@@ -68,7 +65,7 @@ export const PreGameMatrix = ({ game }) => {
             {matrix[2].map((item, index) => (
               <Tile 
                 key={index} index={index} item={item} row={2} 
-                selectedTiles={selectedTiles}
+                selectedTiles={selectedTiles} game={game}
                 setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
               />
             ))}
@@ -77,7 +74,7 @@ export const PreGameMatrix = ({ game }) => {
             {matrix[3].map((item, index) => (
               <Tile 
                 key={index} index={index} item={item} row={3} 
-                selectedTiles={selectedTiles}
+                selectedTiles={selectedTiles} game={game}
                 setPopUpTile={setPopUpTile} setSelectedTiles={setSelectedTiles}
               />
             ))}

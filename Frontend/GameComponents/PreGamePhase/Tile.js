@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 
-export default function Tile({index, item, row, setPopUpTile, selectedTiles, setSelectedTiles}) {
+export default function Tile({index, item, row, setPopUpTile, selectedTiles, setSelectedTiles, game}) {
     const tileStats = JSON.parse(item);
     useEffect(() => {
         // console.log(item)
@@ -16,6 +16,7 @@ export default function Tile({index, item, row, setPopUpTile, selectedTiles, set
                         : styles.notSelected
                 }
                 onPress={() => setPopUpTile({
+                    gameId: game.id,
                     item: tileStats,
                     index: index,
                     row: row
