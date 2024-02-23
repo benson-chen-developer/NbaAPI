@@ -19,7 +19,7 @@ export default function MainAreaGames({setCurrentGame}) {
     useEffect(() => {
       // clearGamesToday()
       getGamesToday().then(todayGamesRes => {
-        console.log("MainAreaGames.js",todayGamesRes)
+        // console.log("MainAreaGames.js",todayGamesRes)
         setTodayGames(todayGamesRes);
         setSelectedGame(todayGamesRes[0]);
       })
