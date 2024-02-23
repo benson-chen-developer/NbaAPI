@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useMyContext } from '../../Context/MyContext';
 import { fetchLiveGameFeed } from '../../functions/GamePlayFunctions';
 import { fakeData } from '../../functions/FakeGameData';
-import { getGamesToday } from '../../functions/AsyncStorage';
+import { clearGamesToday, getGamesToday } from '../../functions/AsyncStorage/AsyncGetTodayGames';
 import { GameCard } from './GameCard';
 import { CapacityGames } from './CapacityGames';
 import { GamesCarousel } from './GamesCarousel';
@@ -17,8 +17,9 @@ export default function MainAreaGames({setCurrentGame}) {
     const {user, setUser, todayGames, setTodayGames} = useMyContext();
     
     useEffect(() => {
+      // clearGamesToday()
       getGamesToday().then(todayGamesRes => {
-        // console.log(todayGamesRes)
+        console.log("MainAreaGames.js",todayGamesRes)
         setTodayGames(todayGamesRes);
         setSelectedGame(todayGamesRes[0]);
       })
@@ -37,9 +38,22 @@ export default function MainAreaGames({setCurrentGame}) {
 
           <CapacityGames />
 
-          <GamesCarousel games={todayGames} selectedGame={selectedGame} setSelectedGame={setSelectedGame}/>
+          {todayGames[0].homeTeam !== "No Games" ?
+            <GamesCarousel 
+              games={todayGames} 
+              selectedGame={selectedGame} setSelectedGame={setSelectedGame}
+            /> : null
+          }
 
-          <GameCard key={index} game={selectedGame} />
+          {todayGames[0].homeTeam !== "No Games" ?
+            <GameCard key={index} game={selectedGame} /> : null
+          }
+
+          {todayGames[0].homeTeam === "No Games" ? 
+            <Text style={{color:'white'}}>No games today</Text> 
+              : 
+            null
+          }
 
         </View>
       );
