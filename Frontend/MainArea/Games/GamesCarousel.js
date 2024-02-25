@@ -26,12 +26,12 @@ const Game = ({game, setSelectedGame, selectedGame}) => {
             backgroundColor:'white', marginLeft: 10, marginTop:20
         }} onPress={() => setSelectedGame(game)}>
 
-            <Image source={getTeamLogo(game.awayTeam.teamName)} style={{width:iconSize, height:iconSize}}/>
+            <Image source={getTeamLogo(game.homeTeam.teamName)} style={{width:iconSize, height:iconSize}}/>
             <View style={{alignItems:'center'}}>
                 <Text style={{fontFamily:"Roboto-Black", fontSize:17, color:'rgba(0,0,0,1)'}}>7:30</Text>
                 <Text style={{fontFamily:"Roboto-Black", fontSize:13, marginLeft:5, color:'rgba(0,0,0,.5)'}}>PM EST</Text>
             </View>
-            <Image source={getTeamLogo(game.homeTeam.teamName)} style={{width:iconSize, height:iconSize}}/>
+            <Image source={getTeamLogo(game.awayTeam.teamName)} style={{width:iconSize, height:iconSize}}/>
         
             {selectedGame.awayTeam.teamName === game.awayTeam.teamName && selectedGame.homeTeam.teamName === game.homeTeam.teamName ?
                 <View style={{position:'absolute', top: -10, left: -10}}>

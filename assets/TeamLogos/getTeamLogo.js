@@ -21,6 +21,8 @@ import Hawks from './Hawks.png';
 import Raptors from './Raptors.png';
 import Wizards from './Wizards.png';
 
+import teamsData from './logos.json';
+
 export const getTeamLogo = (name) => {
     if(name === "Pistons"){
         return Pistons;
@@ -71,4 +73,34 @@ export const getTeamLogo = (name) => {
     } else if(name === "Wizards"){
         return Wizards;
     }
+}
+
+// export const getTeamLogoCdn = (nameAbbreviated) => {
+//     const teams = [
+//         "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/orl.png&h=200&w=200",
+//         "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/lal.png&h=200&w=200",
+//         "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/sa.png&h=200&w=200"
+//     ]
+
+//     const matchingLogo = teams.find(url => {
+//         const startIndex = url.indexOf('/500/') + '/500/'.length;
+//         const endIndex = url.indexOf('.png');
+//         const teamAbbreviation = url.substring(startIndex, endIndex);
+//         return teamAbbreviation === nameAbbreviated.toLowerCase();
+//     });
+
+//     console.log("getTeamLogo", matchingLogo);
+
+//     return matchingLogo;
+// }
+
+export const abbreviateName = (name) => {
+    const n = name.toLowerCase();
+
+    if(n === "lakers")
+        return "lal"
+    else if(n === "spurs")
+        return "sa"
+    else 
+        return "";
 }

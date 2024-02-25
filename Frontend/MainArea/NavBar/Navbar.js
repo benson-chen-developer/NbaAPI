@@ -1,7 +1,11 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
 
 const Navbar = ({ setScreen }) => {
+  
+  const navigation = useNavigation();
+
   return (
     <View style={styles.navbar}>
       <TouchableOpacity onPress={() => setScreen("Inventory")} style={styles.button}>
@@ -13,7 +17,16 @@ const Navbar = ({ setScreen }) => {
       <TouchableOpacity onPress={() => setScreen("Live")} style={styles.button}>
         <Text style={styles.buttonText}>Live</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => setScreen("Profile")} style={styles.button}>
+      <TouchableOpacity 
+        onPress={() => navigation.navigate("GameHome", { 
+          homeTeam: "Lakers",
+          awayTeam: "Spurs",
+          player1Team: ["LeBron James", "D'Angelo Russell"],
+          player2Team: ["Victor Wembanyama", "Jeremy Sochan"],
+          api: 'https://cdn.nba.com/static/json/liveData/boxscore/boxscore_0022300813.json'
+        })}
+        style={styles.button}
+      >
         <Text style={styles.buttonText}>Profile</Text>
       </TouchableOpacity>
     </View>
