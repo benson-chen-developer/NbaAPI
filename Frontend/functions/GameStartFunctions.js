@@ -1,6 +1,6 @@
 import { generateClient } from 'aws-amplify/api';
 import {listGames, listUsers} from '../../src/graphql/queries';
-import {updateGame, createGame, updateUser} from '../../src/graphql/mutations';
+import {updateGame, createGame, updateUser, createUserGame} from '../../src/graphql/mutations';
 import { generateMatrix2 } from './MatrixFunctions';
 
 const client = generateClient();
@@ -96,8 +96,6 @@ export const createGameFuncion = async (joiningPlayerId, selectedTeam, homeTeam,
                     "player1Id": joiningPlayerId,
                     "player2Id": null,
                     "started": false,
-                    "player1Ready": false,
-                    "player2Ready": false,
                     "player1Team": selectedTeam, 
                     "player2Team": selectedTeam === homeTeam ? awayTeam : homeTeam,
                     "teams": [homeTeam, awayTeam],
@@ -107,17 +105,32 @@ export const createGameFuncion = async (joiningPlayerId, selectedTeam, homeTeam,
                     "matrixRow2": stringifyRow(matrix[1]),
                     "matrixRow3": stringifyRow(matrix[2]),
                     "matrixRow4": stringifyRow(matrix[3]),
-                    "userID": joiningPlayerId
+                    "player1LastActionNumber": 0,
+                    "player2LastActionNumber": 0,
+                    "timeStart": null,
                 }
             }
         });
 
-        console.log("createmax", newGame.data.createGame)
+        console.log("newGame", newGame.data.createGame.id)
+
+        const newUserGame = await client.graphql({
+            query: createUserGame,
+            variables: {
+                input: {
+                    userId: joiningPlayerId,
+                    gameId: newGame.data.createGame.id,
+                },
+            }
+        });
+        
+
+        console.log("createmax", newUserGame)
 
         return newGame.data.createGame;
 
     } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("CreateGameFunction err", error);
     }
 }
 

@@ -56,10 +56,22 @@ export const getCurrentUserWithAuth = async (user) => {
     return result.data.getUser
 }
 
-export const getLiveGames = async (user) => {
+// export const getLiveGames = async (user) => {
+//     const games = await client.graphql({
+//         query: gamesByUserID,
+//         variables: {userID: user.id}
+//     });
+
+//     const ret = games.data.gamesByUserID.items;
+//     // console.log("getLiveGames", ret)
+
+//     return ret;
+// }
+
+export const getLiveGamesViaUserId = async (userID) => {
     const games = await client.graphql({
         query: gamesByUserID,
-        variables: {userID: user.id}
+        variables: {userID: userID}
     });
 
     const ret = games.data.gamesByUserID.items;

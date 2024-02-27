@@ -79,12 +79,12 @@ export const createUser = /* GraphQL */ `
       userId
       playersArray
       name
+      xp
+      teamDepth
       liveGames {
         nextToken
         __typename
       }
-      xp
-      teamDepth
       createdAt
       updatedAt
       __typename
@@ -103,12 +103,12 @@ export const updateUser = /* GraphQL */ `
       userId
       playersArray
       name
+      xp
+      teamDepth
       liveGames {
         nextToken
         __typename
       }
-      xp
-      teamDepth
       createdAt
       updatedAt
       __typename
@@ -127,12 +127,12 @@ export const deleteUser = /* GraphQL */ `
       userId
       playersArray
       name
+      xp
+      teamDepth
       liveGames {
         nextToken
         __typename
       }
-      xp
-      teamDepth
       createdAt
       updatedAt
       __typename
@@ -149,8 +149,6 @@ export const createGame = /* GraphQL */ `
       player1Id
       player2Id
       started
-      player1Ready
-      player2Ready
       player1Cards
       player2Cards
       player1Team
@@ -164,6 +162,7 @@ export const createGame = /* GraphQL */ `
       matrixRow4
       player1LastActionNumber
       player2LastActionNumber
+      timeStart
       users {
         nextToken
         __typename
@@ -184,8 +183,6 @@ export const updateGame = /* GraphQL */ `
       player1Id
       player2Id
       started
-      player1Ready
-      player2Ready
       player1Cards
       player2Cards
       player1Team
@@ -199,6 +196,7 @@ export const updateGame = /* GraphQL */ `
       matrixRow4
       player1LastActionNumber
       player2LastActionNumber
+      timeStart
       users {
         nextToken
         __typename
@@ -219,8 +217,6 @@ export const deleteGame = /* GraphQL */ `
       player1Id
       player2Id
       started
-      player1Ready
-      player2Ready
       player1Cards
       player2Cards
       player1Team
@@ -234,6 +230,7 @@ export const deleteGame = /* GraphQL */ `
       matrixRow4
       player1LastActionNumber
       player2LastActionNumber
+      timeStart
       users {
         nextToken
         __typename
@@ -271,8 +268,6 @@ export const createUserGame = /* GraphQL */ `
         player1Id
         player2Id
         started
-        player1Ready
-        player2Ready
         player1Cards
         player2Cards
         player1Team
@@ -286,6 +281,7 @@ export const createUserGame = /* GraphQL */ `
         matrixRow4
         player1LastActionNumber
         player2LastActionNumber
+        timeStart
         createdAt
         updatedAt
         __typename
@@ -323,8 +319,6 @@ export const updateUserGame = /* GraphQL */ `
         player1Id
         player2Id
         started
-        player1Ready
-        player2Ready
         player1Cards
         player2Cards
         player1Team
@@ -338,6 +332,7 @@ export const updateUserGame = /* GraphQL */ `
         matrixRow4
         player1LastActionNumber
         player2LastActionNumber
+        timeStart
         createdAt
         updatedAt
         __typename
@@ -375,8 +370,6 @@ export const deleteUserGame = /* GraphQL */ `
         player1Id
         player2Id
         started
-        player1Ready
-        player2Ready
         player1Cards
         player2Cards
         player1Team
@@ -390,6 +383,7 @@ export const deleteUserGame = /* GraphQL */ `
         matrixRow4
         player1LastActionNumber
         player2LastActionNumber
+        timeStart
         createdAt
         updatedAt
         __typename

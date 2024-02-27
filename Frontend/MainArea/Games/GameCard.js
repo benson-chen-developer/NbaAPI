@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { View, Text, Image, TouchableOpacity } from "react-native"
-import { getTeamLogo } from "../../../assets/TeamLogos/getTeamLogo"
+import { abbreviateName, getTeamLogo } from "../../../assets/TeamLogos/getTeamLogo"
 import { playBtnColor } from "../../../assets/Themes/ThemeColors"
 import { ThemeFonts } from "../../../assets/Themes/ThemeFont"
 import { useMyContext } from "../../Context/MyContext"
@@ -77,6 +77,7 @@ export const GameCard = ({game}) => {
 }
 
 const TeamPicAndStats = ({team, isHome, pickedTeam, setPickedTeam}) => {
+    // console.log(team.teamName)
     return(
         <TouchableOpacity style={{
             alignItems:'center', paddingTop:10, width: "35%", alignItems:'center', 
@@ -85,7 +86,7 @@ const TeamPicAndStats = ({team, isHome, pickedTeam, setPickedTeam}) => {
         }} onPress={() => setPickedTeam(team.teamName)}>
 
              <View style={{alignItems:'center'}}>
-                <Image source={getTeamLogo(team.teamName)} style={{
+                <Image source={`https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${abbreviateName(team.teamName)}.png&h=200&w=200`} style={{
                     width: pickedTeam === team.teamName ? 90 : 60, 
                     height: pickedTeam === team.teamName ? 90 : 60, 
                 }}/>
