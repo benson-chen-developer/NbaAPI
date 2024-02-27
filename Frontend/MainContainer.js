@@ -15,7 +15,7 @@ import { useMyContext } from './Context/MyContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { LoadingScreen } from './LoadingScreen';
-import { getAsyncTeamDepth } from './functions/AsyncStorage';
+import { getAsyncTeamDepth, getTodayTmrGames } from './functions/AsyncStorage';
 
 export default function MainContainer() {
 
@@ -23,12 +23,15 @@ export default function MainContainer() {
   const [popUp, setPopUp] = useState(null);
 
   const [userLoading, setUserLoading] = useState(false);
-  const { user, setUser, loading, liveGames, setLiveGames, setTeamDepthArray } = useMyContext();
+  const [todayTmrGamesLoading, setTodayTmrGamesLoading] = useState(false);
+
+  const { user, setUser, loading, liveGames, setLiveGames, setTeamDepthArray, setTodayGames } = useMyContext();
 
   
   useEffect(() => {
     async function fetchUser() {
       setUserLoading(true);
+      setTodayTmrGamesLoading(true);
   
       try {
         // const { username, userId, signInDetails } = await getCurrentUser();
@@ -37,14 +40,20 @@ export default function MainContainer() {
             // console.log("MainContainer: User", JSON.stringify(userRes, null, 2));
             setUser(userRes);
 
-            getLiveGames(userRes).then(liveGamesRes => {
-              // console.log("MainContainer: LiveGames", JSON.stringify(liveGamesRes, null, 2));
-              setLiveGames(liveGamesRes);
-              setUserLoading(false);
-            })
+            // getLiveGames(userRes).then(liveGamesRes => {
+            //   console.log("MainContainer: LiveGames", JSON.stringify(liveGamesRes, null, 2));
+            //   setLiveGames(liveGamesRes);
+            //   setUserLoading(false);
+            // })
 
             getAsyncTeamDepth().then(teamDepthRes => {
               setTeamDepthArray(teamDepthRes)
+              setUserLoading(false);
+            })
+
+            getTodayTmrGames().then(todayTmrGamesRes => {
+              setTodayGames(todayTmrGamesRes);
+              setTodayTmrGamesLoading(false);
             })
         });
       } catch (err) {
@@ -58,7 +67,7 @@ export default function MainContainer() {
     fetchUser();
   }, [])
 
-  if(userLoading){
+  if(userLoading || todayTmrGamesLoading){
     return(
       <Text>Loading</Text>
     )

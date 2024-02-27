@@ -18,7 +18,7 @@ type User @model @auth(rules: [{allow: public}]) {
   userId: String
   playersArray: [AWSJSON]
   name: String
-  liveGames: [Game] @hasMany(indexName: "byUser", fields: ["id"])
+  liveGames: [Game] @manyToMany(relationName: "UserGame")
   xp: Int
   teamDepth: [AWSJSON]
 }
@@ -41,5 +41,8 @@ type Game @model @auth(rules: [{allow: public}]) {
   matrixRow2: [AWSJSON]
   matrixRow3: [AWSJSON]
   matrixRow4: [AWSJSON]
-  userID: ID! @index(name: "byUser")
-} 
+  player1LastActionNumber: Int
+  player2LastActionNumber: Int
+  users: [User] @manyToMany(relationName: "UserGame")
+}
+ 

@@ -3,7 +3,7 @@ import {leaveGame, readyUp} from '../functions/GameStartFunctions';
 import { useEffect, useState } from 'react';
 import * as subscriptions from '../../src/graphql/subscriptions';
 import { generateClient } from 'aws-amplify/api';
-import PrepScreen from './PrepPhase/PrepScreen';
+// import PrepScreen from './PrepPhase/PrepScreen';
 
 export default function InGame({user, currentGame, setCurrentGame}) {
 
@@ -66,7 +66,7 @@ export default function InGame({user, currentGame, setCurrentGame}) {
         
         {currentGame.player2Id === "empty" ? <LoadingScreen /> : null}
 
-        {!currentGame.started && currentGame.player2Id !== "empty" ? 
+        {/* {!currentGame.started && currentGame.player2Id !== "empty" ? 
           <PrepScreen 
             currentGame={currentGame}
             readyUpPress={readyUpPress}
@@ -74,7 +74,7 @@ export default function InGame({user, currentGame, setCurrentGame}) {
           /> 
             : 
           null
-        }
+        } */}
 
       </View>
     );

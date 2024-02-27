@@ -113,7 +113,12 @@ export const getGame = /* GraphQL */ `
       matrixRow2
       matrixRow3
       matrixRow4
-      userID
+      player1LastActionNumber
+      player2LastActionNumber
+      users {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -145,7 +150,8 @@ export const listGames = /* GraphQL */ `
         matrixRow2
         matrixRow3
         matrixRow4
-        userID
+        player1LastActionNumber
+        player2LastActionNumber
         createdAt
         updatedAt
         __typename
@@ -155,22 +161,26 @@ export const listGames = /* GraphQL */ `
     }
   }
 `;
-export const gamesByUserID = /* GraphQL */ `
-  query GamesByUserID(
-    $userID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelGameFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    gamesByUserID(
-      userID: $userID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
+export const getUserGame = /* GraphQL */ `
+  query GetUserGame($id: ID!) {
+    getUserGame(id: $id) {
+      id
+      userId
+      gameId
+      user {
+        id
+        email
+        score
+        userId
+        playersArray
+        name
+        xp
+        teamDepth
+        createdAt
+        updatedAt
+        __typename
+      }
+      game {
         id
         player1Id
         player2Id
@@ -188,7 +198,85 @@ export const gamesByUserID = /* GraphQL */ `
         matrixRow2
         matrixRow3
         matrixRow4
-        userID
+        player1LastActionNumber
+        player2LastActionNumber
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const listUserGames = /* GraphQL */ `
+  query ListUserGames(
+    $filter: ModelUserGameFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserGames(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userId
+        gameId
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const userGamesByUserId = /* GraphQL */ `
+  query UserGamesByUserId(
+    $userId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserGameFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userGamesByUserId(
+      userId: $userId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userId
+        gameId
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
+export const userGamesByGameId = /* GraphQL */ `
+  query UserGamesByGameId(
+    $gameId: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserGameFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userGamesByGameId(
+      gameId: $gameId
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userId
+        gameId
         createdAt
         updatedAt
         __typename

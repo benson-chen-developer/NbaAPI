@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { View, Text, SafeAreaView, Image, StyleSheet } from "react-native"
 import { abbreviateName, getTeamLogoCdn } from "../../../assets/TeamLogos/getTeamLogo";
-import { fetchBoxScore } from "../../functions/GameLiveFunctions";
+import { fetchBoxScore, updatePlayerStats } from "../../functions/GameLiveFunctions";
 import { GamePlayers } from "./GamePlayers";
 
 export const GameHome = ({route}) => {
@@ -15,9 +15,15 @@ export const GameHome = ({route}) => {
     const [awayPlayerStats, setAwayPlayerStats] = useState([]);
 
     useEffect(() => {
-        // fetchBoxScore(api).then(res => {
-        //     console.log("GameHome: BoxScore", res)
-        // })
+        fetchBoxScore("https://cdn.nba.com/static/json/liveData/playbyplay/playbyplay_0022300814.json", 627).then(res => {
+            console.log("GameHome: BoxScore")
+            console.log(JSON.stringify(res, null, 2));
+
+            const updatedPlayers = updatePlayerStats(res, []);
+            setHomePlayerStats(updatedPlayers);
+
+            // console.log("GameHome (updatedPlayers)", updatedPlayers)
+        })
     }, [])
 
     return(
@@ -35,7 +41,7 @@ export const GameHome = ({route}) => {
                     <TeamItem teamName={awayTeam} isHome={false}/>
                 </View>
 
-                <GamePlayers players={player1Team}/>
+                <GamePlayers players={homePlayerStats}/>
 
             </View>
         </SafeAreaView>

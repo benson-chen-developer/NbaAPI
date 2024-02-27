@@ -173,3 +173,30 @@ export const setAsyncTeamDepth = async (oldPlayer, newPlayer) => {
 
     return teamDepthArray;
 }
+
+export const getTodayTmrGames = async () => {
+    return fetch("https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json")
+        .then(res => res.json())
+        .then(async data => {
+            const gameDates = data.leagueSchedule.gameDates;
+            const currentDate = new Date();
+            const day = String(currentDate.getDate()).padStart(2, '0');
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+            const year = currentDate.getFullYear();
+            const formattedDate = `${month}/${day}/${year}`;
+
+            const gamesTodayFetched = gameDates.find(game => 
+                game.gameDate.split(' ')[0] === formattedDate)?.games || [];
+
+            const gamesTodayReturn = gamesTodayFetched.map(game => ({
+                awayTeam: game.awayTeam,
+                homeTeam: game.homeTeam,
+            }));
+
+            return gamesTodayReturn;
+        })
+        .catch(err => {
+            console.log("Error fetching NBA API:", err);
+            return []; // Return empty array if there's an error
+        });
+}

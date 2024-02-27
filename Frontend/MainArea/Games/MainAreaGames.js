@@ -18,13 +18,14 @@ export default function MainAreaGames({setCurrentGame}) {
     
     useEffect(() => {
       // clearGamesToday()
-      getGamesToday().then(todayGamesRes => {
-        // console.log("MainAreaGames.js",todayGamesRes)
-        setTodayGames(todayGamesRes);
-        setSelectedGame(todayGamesRes[0]);
-      })
+      // getGamesToday().then(todayGamesRes => {
+      //   // console.log("MainAreaGames.js",todayGamesRes)
+      //   setTodayGames(todayGamesRes);
+      //   setSelectedGame(todayGamesRes[0]);
+      // })
 
-      // console.log("Type of user.todayGames[index]:", typeof JSON.parse(JSON.stringify(user.todayGames[index])));
+      setSelectedGame(todayGames[0]);
+
       setUser(p => {
         return {...p, todayGames: fakeData}
       })

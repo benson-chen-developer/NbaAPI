@@ -141,7 +141,12 @@ export const onCreateGame = /* GraphQL */ `
       matrixRow2
       matrixRow3
       matrixRow4
-      userID
+      player1LastActionNumber
+      player2LastActionNumber
+      users {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -168,7 +173,12 @@ export const onUpdateGame = /* GraphQL */ `
       matrixRow2
       matrixRow3
       matrixRow4
-      userID
+      player1LastActionNumber
+      player2LastActionNumber
+      users {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -195,7 +205,159 @@ export const onDeleteGame = /* GraphQL */ `
       matrixRow2
       matrixRow3
       matrixRow4
-      userID
+      player1LastActionNumber
+      player2LastActionNumber
+      users {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onCreateUserGame = /* GraphQL */ `
+  subscription OnCreateUserGame($filter: ModelSubscriptionUserGameFilterInput) {
+    onCreateUserGame(filter: $filter) {
+      id
+      userId
+      gameId
+      user {
+        id
+        email
+        score
+        userId
+        playersArray
+        name
+        xp
+        teamDepth
+        createdAt
+        updatedAt
+        __typename
+      }
+      game {
+        id
+        player1Id
+        player2Id
+        started
+        player1Ready
+        player2Ready
+        player1Cards
+        player2Cards
+        player1Team
+        player2Team
+        apiLink
+        selectedTiles
+        teams
+        matrixRow1
+        matrixRow2
+        matrixRow3
+        matrixRow4
+        player1LastActionNumber
+        player2LastActionNumber
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onUpdateUserGame = /* GraphQL */ `
+  subscription OnUpdateUserGame($filter: ModelSubscriptionUserGameFilterInput) {
+    onUpdateUserGame(filter: $filter) {
+      id
+      userId
+      gameId
+      user {
+        id
+        email
+        score
+        userId
+        playersArray
+        name
+        xp
+        teamDepth
+        createdAt
+        updatedAt
+        __typename
+      }
+      game {
+        id
+        player1Id
+        player2Id
+        started
+        player1Ready
+        player2Ready
+        player1Cards
+        player2Cards
+        player1Team
+        player2Team
+        apiLink
+        selectedTiles
+        teams
+        matrixRow1
+        matrixRow2
+        matrixRow3
+        matrixRow4
+        player1LastActionNumber
+        player2LastActionNumber
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteUserGame = /* GraphQL */ `
+  subscription OnDeleteUserGame($filter: ModelSubscriptionUserGameFilterInput) {
+    onDeleteUserGame(filter: $filter) {
+      id
+      userId
+      gameId
+      user {
+        id
+        email
+        score
+        userId
+        playersArray
+        name
+        xp
+        teamDepth
+        createdAt
+        updatedAt
+        __typename
+      }
+      game {
+        id
+        player1Id
+        player2Id
+        started
+        player1Ready
+        player2Ready
+        player1Cards
+        player2Cards
+        player1Team
+        player2Team
+        apiLink
+        selectedTiles
+        teams
+        matrixRow1
+        matrixRow2
+        matrixRow3
+        matrixRow4
+        player1LastActionNumber
+        player2LastActionNumber
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
       __typename

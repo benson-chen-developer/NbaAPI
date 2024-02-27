@@ -162,7 +162,12 @@ export const createGame = /* GraphQL */ `
       matrixRow2
       matrixRow3
       matrixRow4
-      userID
+      player1LastActionNumber
+      player2LastActionNumber
+      users {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -192,7 +197,12 @@ export const updateGame = /* GraphQL */ `
       matrixRow2
       matrixRow3
       matrixRow4
-      userID
+      player1LastActionNumber
+      player2LastActionNumber
+      users {
+        nextToken
+        __typename
+      }
       createdAt
       updatedAt
       __typename
@@ -222,7 +232,168 @@ export const deleteGame = /* GraphQL */ `
       matrixRow2
       matrixRow3
       matrixRow4
-      userID
+      player1LastActionNumber
+      player2LastActionNumber
+      users {
+        nextToken
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const createUserGame = /* GraphQL */ `
+  mutation CreateUserGame(
+    $input: CreateUserGameInput!
+    $condition: ModelUserGameConditionInput
+  ) {
+    createUserGame(input: $input, condition: $condition) {
+      id
+      userId
+      gameId
+      user {
+        id
+        email
+        score
+        userId
+        playersArray
+        name
+        xp
+        teamDepth
+        createdAt
+        updatedAt
+        __typename
+      }
+      game {
+        id
+        player1Id
+        player2Id
+        started
+        player1Ready
+        player2Ready
+        player1Cards
+        player2Cards
+        player1Team
+        player2Team
+        apiLink
+        selectedTiles
+        teams
+        matrixRow1
+        matrixRow2
+        matrixRow3
+        matrixRow4
+        player1LastActionNumber
+        player2LastActionNumber
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const updateUserGame = /* GraphQL */ `
+  mutation UpdateUserGame(
+    $input: UpdateUserGameInput!
+    $condition: ModelUserGameConditionInput
+  ) {
+    updateUserGame(input: $input, condition: $condition) {
+      id
+      userId
+      gameId
+      user {
+        id
+        email
+        score
+        userId
+        playersArray
+        name
+        xp
+        teamDepth
+        createdAt
+        updatedAt
+        __typename
+      }
+      game {
+        id
+        player1Id
+        player2Id
+        started
+        player1Ready
+        player2Ready
+        player1Cards
+        player2Cards
+        player1Team
+        player2Team
+        apiLink
+        selectedTiles
+        teams
+        matrixRow1
+        matrixRow2
+        matrixRow3
+        matrixRow4
+        player1LastActionNumber
+        player2LastActionNumber
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const deleteUserGame = /* GraphQL */ `
+  mutation DeleteUserGame(
+    $input: DeleteUserGameInput!
+    $condition: ModelUserGameConditionInput
+  ) {
+    deleteUserGame(input: $input, condition: $condition) {
+      id
+      userId
+      gameId
+      user {
+        id
+        email
+        score
+        userId
+        playersArray
+        name
+        xp
+        teamDepth
+        createdAt
+        updatedAt
+        __typename
+      }
+      game {
+        id
+        player1Id
+        player2Id
+        started
+        player1Ready
+        player2Ready
+        player1Cards
+        player2Cards
+        player1Team
+        player2Team
+        apiLink
+        selectedTiles
+        teams
+        matrixRow1
+        matrixRow2
+        matrixRow3
+        matrixRow4
+        player1LastActionNumber
+        player2LastActionNumber
+        createdAt
+        updatedAt
+        __typename
+      }
       createdAt
       updatedAt
       __typename
