@@ -1,6 +1,6 @@
 import { generateClient } from 'aws-amplify/api';
 import { createUser, updateUser } from '../../src/graphql/mutations';
-import { gamesByUserID, getGame, getUser, listGames, listUsers } from '../../src/graphql/queries';
+import { userGamesByUserId, getUser, getGame, listUsers } from '../../src/graphql/queries';
 
 const client = generateClient();
 
@@ -56,26 +56,31 @@ export const getCurrentUserWithAuth = async (user) => {
     return result.data.getUser
 }
 
-// export const getLiveGames = async (user) => {
-//     const games = await client.graphql({
-//         query: gamesByUserID,
-//         variables: {userID: user.id}
-//     });
+export const getLiveGames = async (userId) => {
+    // console.log(userID)
 
-//     const ret = games.data.gamesByUserID.items;
-//     // console.log("getLiveGames", ret)
-
-//     return ret;
-// }
-
-export const getLiveGamesViaUserId = async (userID) => {
-    const games = await client.graphql({
-        query: gamesByUserID,
-        variables: {userID: userID}
+    const gameIdsRet = await client.graphql({
+        query: userGamesByUserId,
+        variables: {userId: userId}
     });
 
-    const ret = games.data.gamesByUserID.items;
-    // console.log("getLiveGames", ret)
+    const gameIds = gameIdsRet.data.userGamesByUserId.items;
+    const games = [];
 
-    return ret;
+    for (const g of gameIds) {
+        try {
+            const game = await client.graphql({
+                query: getGame,
+                variables: { id: g.gameId }
+            });
+            
+            games.push(game.data.getGame);
+        } catch (error) {
+            console.error("Error fetching game:", error);
+        }
+    }
+
+    // console.log("getLiveGames", games)
+
+    return games;
 }

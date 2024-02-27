@@ -112,7 +112,7 @@ export const createGameFuncion = async (joiningPlayerId, selectedTeam, homeTeam,
             }
         });
 
-        console.log("newGame", newGame.data.createGame.id)
+        // console.log("newGame", newGame.data.createGame.id)
 
         const newUserGame = await client.graphql({
             query: createUserGame,
@@ -125,7 +125,7 @@ export const createGameFuncion = async (joiningPlayerId, selectedTeam, homeTeam,
         });
         
 
-        console.log("createmax", newUserGame)
+        // console.log("createmax", newUserGame)
 
         return newGame.data.createGame;
 

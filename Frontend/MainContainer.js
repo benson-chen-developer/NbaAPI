@@ -10,7 +10,7 @@ import PopUp from './PopUp/PopUp';
 import MainArea from './MainArea/MainArea';
 import { getCurrentUser } from 'aws-amplify/auth';
 import Landing from './Unauthenticated/Landing';
-import { getLiveGames, getCurrentUserWithAuth, getLiveGamesViaUserId } from './functions/UserFunctions';
+import { getLiveGames, getCurrentUserWithAuth } from './functions/UserFunctions';
 import { useMyContext } from './Context/MyContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -40,11 +40,11 @@ export default function MainContainer() {
             // console.log("MainContainer: User", JSON.stringify(userRes, null, 2));
             setUser(userRes);
 
-            // getLiveGamesViaUserId(userRes.id).then(liveGamesRes => {
-            //   console.log("MainContainer: LiveGames", JSON.stringify(liveGamesRes, null, 2));
-            //   setLiveGames(liveGamesRes);
-            //   setUserLoading(false);
-            // })
+            getLiveGames(userRes.id).then(liveGamesRes => {
+              console.log("MainContainer: LiveGames", JSON.stringify(liveGamesRes, null, 2));
+              setLiveGames(liveGamesRes);
+              setUserLoading(false);
+            })
 
             getAsyncTeamDepth().then(teamDepthRes => {
               setTeamDepthArray(teamDepthRes)
