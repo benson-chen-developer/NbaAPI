@@ -86,9 +86,11 @@ const TeamPicAndStats = ({team, isHome, pickedTeam, setPickedTeam}) => {
         }} onPress={() => setPickedTeam(team.teamName)}>
 
              <View style={{alignItems:'center'}}>
-                <Image source={`https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${abbreviateName(team.teamName)}.png&h=200&w=200`} style={{
-                    width: pickedTeam === team.teamName ? 90 : 60, 
-                    height: pickedTeam === team.teamName ? 90 : 60, 
+                <Image 
+                    source={{uri: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${abbreviateName(team.teamName)}.png`}}
+                    style={{
+                        width: pickedTeam === team.teamName ? 90 : 60, 
+                        height: pickedTeam === team.teamName ? 90 : 60, 
                 }}/>
                 <Text style={{color:"black", fontFamily:ThemeFonts, fontSize:18}}>{team.teamName}</Text>
             </View>

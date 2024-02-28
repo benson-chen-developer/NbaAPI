@@ -83,7 +83,7 @@ export const abbreviateName = (name) => {
         return "sa"
     else if(n === "magic")
         return "orl"
-    else if(n === "magic")
+    else if(n === "nets")
         return "bkn"
     else if(n === "cavaliers")
         return "cle"
@@ -91,4 +91,28 @@ export const abbreviateName = (name) => {
         return "dal"
     else 
         return "";
+
+    
+}
+
+export const getTeamLogoCdn = (name) => {
+    const n = name.toLowerCase();
+    let abr;
+
+    if(n === "lakers")
+        abr =  "lal"
+    else if(n === "spurs")
+        abr = "sa"
+    else if(n === "magic")
+        abr = "orl"
+    else if(n === "nets")
+        abr = "bkn"
+    else if(n === "cavaliers")
+        abr = "cle"
+    else if(n === "mavericks")
+        abr = "dal"
+    else 
+        abr = "";
+
+    return `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${abr}.png&h=200&w=200`;
 }

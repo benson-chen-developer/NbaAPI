@@ -23,6 +23,7 @@ export default function MainContainer() {
   const [popUp, setPopUp] = useState(null);
 
   const [userLoading, setUserLoading] = useState(false);
+  const [liveGameLoading, setLiveGameLoading] = useState(false);
   const [todayTmrGamesLoading, setTodayTmrGamesLoading] = useState(false);
 
   const { user, setUser, loading, liveGames, setLiveGames, setTeamDepthArray, setTodayGames } = useMyContext();
@@ -31,6 +32,7 @@ export default function MainContainer() {
   useEffect(() => {
     async function fetchUser() {
       setUserLoading(true);
+      setLiveGameLoading(false);
       setTodayTmrGamesLoading(true);
   
       try {
@@ -41,9 +43,9 @@ export default function MainContainer() {
             setUser(userRes);
 
             getLiveGames(userRes.id).then(liveGamesRes => {
-              console.log("MainContainer: LiveGames", JSON.stringify(liveGamesRes, null, 2));
+              // console.log("MainContainer: LiveGames", JSON.stringify(liveGamesRes, null, 2));
               setLiveGames(liveGamesRes);
-              setUserLoading(false);
+              setLiveGameLoading(false);
             })
 
             getAsyncTeamDepth().then(teamDepthRes => {
@@ -67,7 +69,7 @@ export default function MainContainer() {
     fetchUser();
   }, [])
 
-  if(userLoading || todayTmrGamesLoading){
+  if(userLoading || todayTmrGamesLoading || liveGameLoading){
     return(
       <Text>Loading</Text>
     )

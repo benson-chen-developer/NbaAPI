@@ -3,7 +3,7 @@ import {ScrollView, StyleSheet, View, Text, Image} from 'react-native';
 export const GamePlayers = ({players}) => {
 
     const Card = ({player}) => {
-        console.log("GamePLayers", player)
+        // console.log("GamePLayers", player)
         return(
             <View style={styles.cardOuter}>
                 <View style={styles.cardInner}>
@@ -60,11 +60,11 @@ const shortenName = (name) => {
 
 const styles = StyleSheet.create({
     main:{
-        width: "100%", height: "100%", alignItems:'center'
+        height: "100%", alignItems:'center'
     },
     cardOuter: {
-        width: "60%", height: "80%", borderRadius: 5, backgroundColor:'#121320',
-        marginLeft:10
+        width: 225, height: "80%", borderRadius: 5, backgroundColor:'#121320',
+        margin:10
     },
     cardInner: {
         width: "100%", height: "97%", borderRadius: 5, backgroundColor:'#2b2d4e',

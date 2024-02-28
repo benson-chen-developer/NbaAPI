@@ -49,7 +49,17 @@ export const updatePlayerStats = (data, players) => {
                 updateThisPlayer = addThisActionToPlayer(activePlayers[index], action, activePlayers);
                 activePlayers[index] = updateThisPlayer;
             }
-            // console.log(updateThisPlayer)
+        }
+
+        if(action.assistPlayerNameInitial){
+            let index = activePlayers.findIndex(player => player.name.toLowerCase() === action.assistPlayerNameInitial.toLowerCase());
+            
+            let updateThisPlayer;
+
+            if(index !== -1){
+                updateThisPlayer = addThisActionToPlayer(activePlayers[index], {actionType: 'assist'}, activePlayers);
+                activePlayers[index] = updateThisPlayer;
+            }
         }
     })
 
@@ -59,7 +69,7 @@ export const updatePlayerStats = (data, players) => {
 /* 
     @parma player: should be L. James (First Intial then Full Last Name)
 */
-const addThisActionToPlayer = (player, action, activePlayers) => {
+const addThisActionToPlayer = (player, action) => {
     if(action.actionType === "3pt"){
         if(action.shotResult === "Made"){
             player["3PM"] += 1;
@@ -68,18 +78,10 @@ const addThisActionToPlayer = (player, action, activePlayers) => {
         } else {
             player["3PA"] += 1;
         }
-        if(action.assistPlayerNameInitial){
-            if(activePlayers.find(player => player.name.toLowerCase() === action.assistPlayerNameInitial.toLowerCase()))
-                addThisActionToPlayer(action.assistPlayerNameInitial, {actionType: "assist"}, activePlayers)
-        }
     }
     else if(action.actionType === "2pt"){
         if(action.shotResult === "Made"){
             player["PTS"] += 2;
-        }
-        if(action.assistPlayerNameInitial){
-            if(activePlayers.find(player => player.name.toLowerCase() === action.assistPlayerNameInitial.toLowerCase()))
-                addThisActionToPlayer(action.assistPlayerNameInitial, {actionType: "assist"}, activePlayers)
         }
     }
     else if(action.actionType === "rebound"){
@@ -101,4 +103,25 @@ const addThisActionToPlayer = (player, action, activePlayers) => {
     }
 
     return player;
+}
+
+import { generateClient } from 'aws-amplify/api';
+import {updateGame} from '../../src/graphql/mutations';
+
+const client = generateClient();
+
+export const updateLastActionNumber = async (playerId, game, lastActionNumber) => {
+
+    const updatedGameId = await client.graphql({
+        query: updateGame,
+        variables: {
+            input: {
+                id: game.id,
+                player1LastActionNumber: playerId === game.player1Id ? lastActionNumber : game.player1LastActionNumber,
+                player2LastActionNumber: playerId === game.player2Id ? lastActionNumber : game.player2LastActionNumber
+            },
+        }
+    });
+    
+    return updatedGameId;
 }

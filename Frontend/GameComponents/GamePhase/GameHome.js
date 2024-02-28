@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react"
 import { View, Text, SafeAreaView, Image, StyleSheet } from "react-native"
 import { abbreviateName, getTeamLogoCdn } from "../../../assets/TeamLogos/getTeamLogo";
-import { fetchBoxScore, updatePlayerStats } from "../../functions/GameLiveFunctions";
+import { fetchBoxScore, updateLastActionNumber, updatePlayerStats } from "../../functions/GameLiveFunctions";
 import { GamePlayers } from "./GamePlayers";
+import { useMyContext } from '../../Context/MyContext';
 
 export const GameHome = ({route}) => {
 
+    const {user} = useMyContext();
+
     const { 
-        homeTeam, awayTeam, api,
+        homeTeam, awayTeam, api, game,
         player1Team, player2Team
     } = route.params;
 
@@ -15,15 +18,15 @@ export const GameHome = ({route}) => {
     const [awayPlayerStats, setAwayPlayerStats] = useState([]);
 
     useEffect(() => {
-        fetchBoxScore("https://cdn.nba.com/static/json/liveData/playbyplay/playbyplay_0022300814.json", 627).then(res => {
-            console.log("GameHome: BoxScore")
-            console.log(JSON.stringify(res, null, 2));
+        fetchBoxScore(api, game.player1Id === user.id ? game.player1LastActionNumber :game.player2LastActionNumber)
+            .then(res => {
+                const updatedPlayers = updatePlayerStats(res, player1Team);
+                setHomePlayerStats(updatedPlayers);
 
-            const updatedPlayers = updatePlayerStats(res, []);
-            setHomePlayerStats(updatedPlayers);
+                updateLastActionNumber(user.id, game, res[res.length-1].actionNumber);
 
-            // console.log("GameHome (updatedPlayers)", updatedPlayers)
-        })
+                // console.log("GameHome (updatedPlayers)", updatedPlayers)
+            })
     }, [])
 
     return(
