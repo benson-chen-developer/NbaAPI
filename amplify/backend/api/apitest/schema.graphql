@@ -1,16 +1,3 @@
-type Players @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  name: String
-  shards: Int
-  team: String
-  position: String
-  ppg: Float
-  apg: Float
-  rpg: Float
-  updatedToday: Boolean!
-  picture: String
-}
-
 type User @model @auth(rules: [{allow: public}]) {
   id: ID!
   email: String!
@@ -20,28 +7,28 @@ type User @model @auth(rules: [{allow: public}]) {
   name: String
   xp: Int
   teamDepth: [AWSJSON]
-  liveGames: [Game] @manyToMany(relationName: "UserGame")
+  LiveGames: [Game] @manyToMany(relationName: "UserGame")
 }
 
 type Game @model @auth(rules: [{allow: public}]) {
   id: ID!
   player1Id: String
   player2Id: String
-  started: Boolean!
-  player1Cards: [String]
-  player2Cards: [String]
+  apiLink: String
   player1Team: String
   player2Team: String
-  apiLink: String
-  selectedTiles: AWSJSON
-  teams: [String]
+  player2LastActionNumber: Int
+  player1LastActionNumber: Int
   matrixRow1: [AWSJSON]
   matrixRow2: [AWSJSON]
   matrixRow3: [AWSJSON]
   matrixRow4: [AWSJSON]
-  player1LastActionNumber: Int
-  player2LastActionNumber: Int
+  teams: [String]
+  player2Depth: [AWSJSON]
+  player1Depth: [AWSJSON]
   timeStart: String
+  ended: Boolean!
+  started: Boolean!
   users: [User] @manyToMany(relationName: "UserGame")
 }
  

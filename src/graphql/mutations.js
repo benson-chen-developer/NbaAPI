@@ -1,72 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createPlayers = /* GraphQL */ `
-  mutation CreatePlayers(
-    $input: CreatePlayersInput!
-    $condition: ModelPlayersConditionInput
-  ) {
-    createPlayers(input: $input, condition: $condition) {
-      id
-      name
-      shards
-      team
-      position
-      ppg
-      apg
-      rpg
-      updatedToday
-      picture
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const updatePlayers = /* GraphQL */ `
-  mutation UpdatePlayers(
-    $input: UpdatePlayersInput!
-    $condition: ModelPlayersConditionInput
-  ) {
-    updatePlayers(input: $input, condition: $condition) {
-      id
-      name
-      shards
-      team
-      position
-      ppg
-      apg
-      rpg
-      updatedToday
-      picture
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const deletePlayers = /* GraphQL */ `
-  mutation DeletePlayers(
-    $input: DeletePlayersInput!
-    $condition: ModelPlayersConditionInput
-  ) {
-    deletePlayers(input: $input, condition: $condition) {
-      id
-      name
-      shards
-      team
-      position
-      ppg
-      apg
-      rpg
-      updatedToday
-      picture
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser(
     $input: CreateUserInput!
@@ -81,7 +15,7 @@ export const createUser = /* GraphQL */ `
       name
       xp
       teamDepth
-      liveGames {
+      LiveGames {
         nextToken
         __typename
       }
@@ -105,7 +39,7 @@ export const updateUser = /* GraphQL */ `
       name
       xp
       teamDepth
-      liveGames {
+      LiveGames {
         nextToken
         __typename
       }
@@ -129,7 +63,7 @@ export const deleteUser = /* GraphQL */ `
       name
       xp
       teamDepth
-      liveGames {
+      LiveGames {
         nextToken
         __typename
       }
@@ -148,21 +82,21 @@ export const createGame = /* GraphQL */ `
       id
       player1Id
       player2Id
-      started
-      player1Cards
-      player2Cards
+      apiLink
       player1Team
       player2Team
-      apiLink
-      selectedTiles
-      teams
+      player2LastActionNumber
+      player1LastActionNumber
       matrixRow1
       matrixRow2
       matrixRow3
       matrixRow4
-      player1LastActionNumber
-      player2LastActionNumber
+      teams
+      player2Depth
+      player1Depth
       timeStart
+      ended
+      started
       users {
         nextToken
         __typename
@@ -182,21 +116,21 @@ export const updateGame = /* GraphQL */ `
       id
       player1Id
       player2Id
-      started
-      player1Cards
-      player2Cards
+      apiLink
       player1Team
       player2Team
-      apiLink
-      selectedTiles
-      teams
+      player2LastActionNumber
+      player1LastActionNumber
       matrixRow1
       matrixRow2
       matrixRow3
       matrixRow4
-      player1LastActionNumber
-      player2LastActionNumber
+      teams
+      player2Depth
+      player1Depth
       timeStart
+      ended
+      started
       users {
         nextToken
         __typename
@@ -216,21 +150,21 @@ export const deleteGame = /* GraphQL */ `
       id
       player1Id
       player2Id
-      started
-      player1Cards
-      player2Cards
+      apiLink
       player1Team
       player2Team
-      apiLink
-      selectedTiles
-      teams
+      player2LastActionNumber
+      player1LastActionNumber
       matrixRow1
       matrixRow2
       matrixRow3
       matrixRow4
-      player1LastActionNumber
-      player2LastActionNumber
+      teams
+      player2Depth
+      player1Depth
       timeStart
+      ended
+      started
       users {
         nextToken
         __typename
@@ -267,21 +201,21 @@ export const createUserGame = /* GraphQL */ `
         id
         player1Id
         player2Id
-        started
-        player1Cards
-        player2Cards
+        apiLink
         player1Team
         player2Team
-        apiLink
-        selectedTiles
-        teams
+        player2LastActionNumber
+        player1LastActionNumber
         matrixRow1
         matrixRow2
         matrixRow3
         matrixRow4
-        player1LastActionNumber
-        player2LastActionNumber
+        teams
+        player2Depth
+        player1Depth
         timeStart
+        ended
+        started
         createdAt
         updatedAt
         __typename
@@ -318,21 +252,21 @@ export const updateUserGame = /* GraphQL */ `
         id
         player1Id
         player2Id
-        started
-        player1Cards
-        player2Cards
+        apiLink
         player1Team
         player2Team
-        apiLink
-        selectedTiles
-        teams
+        player2LastActionNumber
+        player1LastActionNumber
         matrixRow1
         matrixRow2
         matrixRow3
         matrixRow4
-        player1LastActionNumber
-        player2LastActionNumber
+        teams
+        player2Depth
+        player1Depth
         timeStart
+        ended
+        started
         createdAt
         updatedAt
         __typename
@@ -369,21 +303,21 @@ export const deleteUserGame = /* GraphQL */ `
         id
         player1Id
         player2Id
-        started
-        player1Cards
-        player2Cards
+        apiLink
         player1Team
         player2Team
-        apiLink
-        selectedTiles
-        teams
+        player2LastActionNumber
+        player1LastActionNumber
         matrixRow1
         matrixRow2
         matrixRow3
         matrixRow4
-        player1LastActionNumber
-        player2LastActionNumber
+        teams
+        player2Depth
+        player1Depth
         timeStart
+        ended
+        started
         createdAt
         updatedAt
         __typename

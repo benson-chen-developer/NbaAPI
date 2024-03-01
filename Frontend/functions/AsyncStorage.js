@@ -185,12 +185,16 @@ export const getTodayTmrGames = async () => {
             const year = currentDate.getFullYear();
             const formattedDate = `${month}/${day}/${year}`;
 
+            // console.log("AsyncStorage TodayTmrGames", JSON.stringify(data.leagueSchedule.gameDates, null, 2));
+
             const gamesTodayFetched = gameDates.find(game => 
                 game.gameDate.split(' ')[0] === formattedDate)?.games || [];
 
             const gamesTodayReturn = gamesTodayFetched.map(game => ({
                 awayTeam: game.awayTeam,
                 homeTeam: game.homeTeam,
+                timeStart: game.gameDateTimeEst,
+                apiLink: `https://cdn.nba.com/static/json/liveData/playbyplay/playbyplay_${game.gameId}.json`
             }));
 
             return gamesTodayReturn;

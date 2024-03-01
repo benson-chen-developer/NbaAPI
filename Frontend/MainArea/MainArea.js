@@ -6,7 +6,6 @@ import Inventory from './Inventory/Inventory';
 import Navbar from './NavBar/Navbar';
 import LiveMainArea from './Live/LiveMainArea';
 import { Matrix } from '../GameComponents/PreGamePhase/Matrix';
-import { fakeMatrix } from '../functions/FakeGameData';
 
 export default function MainArea() {
 
@@ -38,7 +37,7 @@ export default function MainArea() {
         }
 
         {screen === "Profile" ?
-          <Matrix matrix={fakeMatrix}/> 
+          <Matrix /> 
             :
           null
         }

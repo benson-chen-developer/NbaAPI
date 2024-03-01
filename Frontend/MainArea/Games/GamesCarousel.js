@@ -16,8 +16,9 @@ export const GamesCarousel = ({games, setSelectedGame, selectedGame}) => {
 import { FontAwesome5 } from '@expo/vector-icons';
 const Game = ({game, setSelectedGame, selectedGame}) => {
     const iconSize = 35;
-
-    // console.log(game)
+    const date = new Date(game.timeStart);
+    const hours = date.getHours();
+    const minutes = date.getMinutes() === 0 ? "00" : date.getMinutes()
 
     return(
         <TouchableOpacity style={{
@@ -28,8 +29,12 @@ const Game = ({game, setSelectedGame, selectedGame}) => {
 
             <Image source={getTeamLogo(game.homeTeam.teamName)} style={{width:iconSize, height:iconSize}}/>
             <View style={{alignItems:'center'}}>
-                <Text style={{fontFamily:"Roboto-Black", fontSize:17, color:'rgba(0,0,0,1)'}}>7:30</Text>
-                <Text style={{fontFamily:"Roboto-Black", fontSize:13, marginLeft:5, color:'rgba(0,0,0,.5)'}}>PM EST</Text>
+                <Text style={{fontFamily:"Roboto-Black", fontSize:17, color:'rgba(0,0,0,1)'}}>
+                    {`${hours+5-12}:${minutes}`}
+                </Text>
+                <Text style={{fontFamily:"Roboto-Black", fontSize:13, marginLeft:5, color:'rgba(0,0,0,.5)'}}>
+                    PM EST
+                </Text>
             </View>
             <Image source={getTeamLogo(game.awayTeam.teamName)} style={{width:iconSize, height:iconSize}}/>
         

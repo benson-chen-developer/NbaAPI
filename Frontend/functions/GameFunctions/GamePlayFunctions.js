@@ -1,5 +1,5 @@
 import { generateClient } from 'aws-amplify/api';
-import { updateUser } from '../../src/graphql/mutations';
+import { updateUser } from '../../../src/graphql/mutations';
 
 const client = generateClient();
 

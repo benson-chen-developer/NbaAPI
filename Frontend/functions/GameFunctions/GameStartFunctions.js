@@ -1,7 +1,7 @@
 import { generateClient } from 'aws-amplify/api';
-import {listGames, listUsers} from '../../src/graphql/queries';
-import {updateGame, createGame, updateUser, createUserGame} from '../../src/graphql/mutations';
-import { generateMatrix2 } from './MatrixFunctions';
+import {listGames, listUsers} from '../../../src/graphql/queries';
+import {updateGame, createGame, updateUser, createUserGame} from '../../../src/graphql/mutations';
+import { generateMatrix2 } from '../MatrixFunctions';
 
 const client = generateClient();
 
@@ -13,7 +13,9 @@ const client = generateClient();
     How this function works is we first look for all the games and sort it in order of 
     first created and no two filled player ids.
 */
-export const startSearchForGame = async (user, selectedTeam, homeTeam, awayTeam) => {
+export const startSearchForGame = async (user, selectedTeam, game, userDepth) => {
+    const {homeTeam, awayTeam, timeStart, apiLink} = game;
+
     const joiningPlayerId = user.id;
 
     try {
@@ -23,7 +25,7 @@ export const startSearchForGame = async (user, selectedTeam, homeTeam, awayTeam)
         if (canJoinGames.length > 0) {
             game = await joinGame(canJoinGames[0], joiningPlayerId, selectedTeam);
         } else {
-            game = await createGameFuncion(joiningPlayerId, selectedTeam, homeTeam, awayTeam);
+            game = await createGameFuncion(joiningPlayerId, selectedTeam, homeTeam, awayTeam, timeStart, userDepth, apiLink);
         }
 
         return game;
@@ -77,7 +79,7 @@ export const joinGame = async (game, joiningPlayerId) => {
     }
 }
 
-export const createGameFuncion = async (joiningPlayerId, selectedTeam, homeTeam, awayTeam) => {
+export const createGameFuncion = async (joiningPlayerId, selectedTeam, homeTeam, awayTeam, timeStart, userDepth, apiLink) => {
     try {
 
         const stringifyRow = (row) => {
@@ -87,7 +89,7 @@ export const createGameFuncion = async (joiningPlayerId, selectedTeam, homeTeam,
         }
 
         const matrix = generateMatrix2()
-        // console.log("GaneStartFunction", matrix[0])
+        // console.log("GaneStartFunction", userDepth)
 
         const newGame = await client.graphql({
             query: createGame,
@@ -96,18 +98,20 @@ export const createGameFuncion = async (joiningPlayerId, selectedTeam, homeTeam,
                     "player1Id": joiningPlayerId,
                     "player2Id": null,
                     "started": false,
+                    "ended": false,
+                    "apiLink": apiLink,
                     "player1Team": selectedTeam, 
                     "player2Team": selectedTeam === homeTeam ? awayTeam : homeTeam,
                     "teams": [homeTeam, awayTeam],
-                    "player1Cards": [],
-                    "player2Cards": [],
+                    "player1Depth": userDepth.map(value => JSON.stringify(value)),
+                    "player2Depth": [],
                     "matrixRow1": stringifyRow(matrix[0]),
                     "matrixRow2": stringifyRow(matrix[1]),
                     "matrixRow3": stringifyRow(matrix[2]),
                     "matrixRow4": stringifyRow(matrix[3]),
                     "player1LastActionNumber": 0,
                     "player2LastActionNumber": 0,
-                    "timeStart": null,
+                    "timeStart": timeStart,
                 }
             }
         });

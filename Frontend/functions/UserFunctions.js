@@ -1,6 +1,8 @@
 import { generateClient } from 'aws-amplify/api';
-import { createUser, updateUser } from '../../src/graphql/mutations';
+import { createUser, updateGame, updateUser } from '../../src/graphql/mutations';
 import { userGamesByUserId, getUser, getGame, listUsers } from '../../src/graphql/queries';
+import { fetchBoxScore, updatePlayerStats } from './GameFunctions/GameLiveFunctions';
+import { UpdateGame } from './MutationFunctions/GameMutation';
 
 const client = generateClient();
 
@@ -57,7 +59,6 @@ export const getCurrentUserWithAuth = async (user) => {
 }
 
 export const getLiveGames = async (userId) => {
-    // console.log(userID)
 
     const gameIdsRet = await client.graphql({
         query: userGamesByUserId,
@@ -65,6 +66,7 @@ export const getLiveGames = async (userId) => {
     });
 
     const gameIds = gameIdsRet.data.userGamesByUserId.items;
+
     const games = [];
 
     for (const g of gameIds) {
@@ -77,6 +79,59 @@ export const getLiveGames = async (userId) => {
             games.push(game.data.getGame);
         } catch (error) {
             console.error("Error fetching game:", error);
+        }
+    }
+
+    /* Update Games With Current Stats */
+    for (const game of games) {
+        // console.log("s", game)
+        try {
+            /* This is to set up our varaibles by checking which playerId is ours */
+            const isPlayer1 = game.player1Id === userId;
+            let playerDepth = []; let lastActionNumber;
+            if(isPlayer1){
+                playerDepth = game.player1Depth.map(value => JSON.parse(value));
+                lastActionNumber = game.player1LastActionNumber;
+            } else {
+                playerDepth = game.player1Depth.map(value => JSON.parse(value));
+                lastActionNumber = game.player2LastActionNumber;
+            }
+
+            fetchBoxScore(game.apiLink, lastActionNumber)
+                .then(async actionsListRes => {
+                    /* 
+                        This is what fields we are updating
+                        LastActionNumber is updated by defualt
+                    */
+                    let updateInput = {id: game.id};
+                    updateInput[isPlayer1 ? "player1LastActionNumber" : "player2LastActionNumber"] = lastActionNumber;
+
+                    /* We get the stats back so we update them now */
+                    const updatedPlayers = updatePlayerStats(actionsListRes, playerDepth);
+
+                    console.log("updatedPlayers", updatedPlayers)
+                    if(isPlayer1)
+                        updateInput = {...updateInput, player1Depth: updatedPlayers.map(value => JSON.stringify(value))};
+                    else 
+                        updateInput = {...updateInput, player2Depth: updatedPlayers.map(value => JSON.stringify(value))};
+
+                    /* Check if the last is game ended */
+                    let updatedGame;
+                    const lastAction = actionsListRes[actionsListRes.length-1].description;
+                    
+                    if(lastAction.description && lastAction.description === "Game End"){
+                        console.log("UserFunctions: Game Has Ended")
+
+                        updateInput = {...updateInput, ended: true};
+                        updatedGame = await UpdateGame(updateInput, "UserFunction.js");
+                    } else {
+                        updatedGame = await UpdateGame(updateInput, "UserFunction.js");
+                    }
+
+                    return updatedGame;
+                });
+        } catch (error) {
+            console.error("Check if game eneded err:", error);
         }
     }
 

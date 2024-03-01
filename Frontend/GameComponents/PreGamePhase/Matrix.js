@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Text, View, ScrollView } from 'react-native';
-import { generateMatrix } from '../../functions/GamePlayFunctions';
-import { fetchGames } from '../../functions/GameStartFunctions';
+import { generateMatrix } from '../../functions/GameFunctions/GamePlayFunctions';
 import Tile from './Tile';
 
 export const Matrix = ({ matrix }) => {
@@ -37,7 +36,7 @@ export const Matrix = ({ matrix }) => {
     // }, 10000);
 
     // return () => clearInterval(intervalId);
-    // setMakeShiftMatrx(generateMatrix());
+    setMakeShiftMatrx(generateMatrix());
   }, [])
 
   // const renderTile = ({ item, index }) => {

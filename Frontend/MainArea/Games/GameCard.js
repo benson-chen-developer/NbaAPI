@@ -4,22 +4,28 @@ import { abbreviateName, getTeamLogo } from "../../../assets/TeamLogos/getTeamLo
 import { playBtnColor } from "../../../assets/Themes/ThemeColors"
 import { ThemeFonts } from "../../../assets/Themes/ThemeFont"
 import { useMyContext } from "../../Context/MyContext"
-import { startSearchForGame } from "../../functions/GameStartFunctions"
+import { startSearchForGame } from "../../functions/GameFunctions/GameStartFunctions"
 
 export const GameCard = ({game}) => {
 
     const {user, setUser, loading, setLoading, setLiveGames} = useMyContext();
     const [pickedTeam, setPickedTeam] = useState(null);
 
-    // const isAlreadyPlaying = user.liveGames.find((liveGame) => liveGame.teams[0] === game.homeTeam.teamName || liveGame.teams[1] === game.awayTeam.teamName);
-
-    // console.log(user.liveGames)
+    const date = new Date(game.timeStart);
+    const hours = date.getHours();
+    const minutes = date.getMinutes() === 0 ? "00" : date.getMinutes()
 
     const pressPlay = async () => {
         setLoading(true);
 
-        try{
-            const newGame = await startSearchForGame(user, pickedTeam, game.homeTeam.teamName, game.awayTeam.teamName);
+        const ourDepth = [
+            {name: "L. James","PTS": 0,"REB": 0,"AST": 0,"BLK": 0,"STL": 0,"3PM": 0,"3PA": 0},
+            {name: "A. Davis","PTS": 0,"REB": 0,"AST": 0,"BLK": 0,"STL": 0,"3PM": 0,"3PA": 0},
+            {name: "D. Russell","PTS": 0,"REB": 0,"AST": 0,"BLK": 0,"STL": 0,"3PM": 0,"3PA": 0},
+        ]
+
+        try{    
+            const newGame = await startSearchForGame(user, pickedTeam, game, ourDepth);
             
             setLiveGames(p => [...p, newGame]);
             setLoading(false);
@@ -42,7 +48,9 @@ export const GameCard = ({game}) => {
                 />
 
                 <View style={{alignItems:'center', width:"30%"}}>
-                    <Text style={{fontFamily:"Roboto-Black", fontSize:25, color:'rgba(0,0,0,1)'}}>7:30</Text>
+                    <Text style={{fontFamily:"Roboto-Black", fontSize:25, color:'rgba(0,0,0,1)'}}>
+                        {`${hours+5-12}:${minutes}`}
+                    </Text>
                     <Text style={{fontFamily:"Roboto-Black", fontSize:20, marginLeft:5, color:'rgba(0,0,0,.5)'}}>PM EST</Text>
                 </View>
 

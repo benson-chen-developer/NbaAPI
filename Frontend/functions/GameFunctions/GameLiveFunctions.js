@@ -1,23 +1,28 @@
 export const fetchBoxScore = async (api, lastActionNumber) => {
-    try {
-        const response = await fetch(api);
-        const data = await response.json();
+    if(api)
+        try {
+            const response = await fetch(api);
+            const data = await response.json();
 
-        let index = 0;
-        while(data.game.actions[index].actionNumber < lastActionNumber){
-            index++;
+            // if(data.game.actions[data.game.actions.length].actionNumber < lastActionNumber){
+            //     return [];
+            // }
+
+            let index = 0;
+            while(data.game.actions[index].actionNumber < lastActionNumber){
+                index++;
+            }
+
+            const currentData = data.game.actions.slice(index);
+
+            // console.log("GameLiveFunction, data Res")
+            // console.log(JSON.stringify(currentData, null, 2));
+
+            return currentData;
+        } catch (error) {
+            console.error("(GameLiveFunction) Error fetching box score:", error);
+            throw error; 
         }
-
-        const currentData = data.game.actions.slice(index);
-
-        // console.log("GameLiveFunction, data Res")
-        // console.log(JSON.stringify(currentData, null, 2));
-
-        return currentData;
-    } catch (error) {
-        console.error("(GameLiveFunction) Error fetching box score:", error);
-        throw error; 
-    }
 }
 
 /*
@@ -36,6 +41,11 @@ export const fetchBoxScore = async (api, lastActionNumber) => {
 */
 export const updatePlayerStats = (data, players) => {
     /* First 3 index in players will be the active player and who we count stats for */
+
+    if(data.length === 0){
+        console.log("GameLiveFunctions: No new Changes");
+        return players;
+    }
 
     const activePlayers = players.splice(0,3);
 
@@ -106,7 +116,7 @@ const addThisActionToPlayer = (player, action) => {
 }
 
 import { generateClient } from 'aws-amplify/api';
-import {updateGame} from '../../src/graphql/mutations';
+import {updateGame} from '../../../src/graphql/mutations';
 
 const client = generateClient();
 

@@ -15,3 +15,6 @@ MAKE SURE TO REMOVE THE API KEY
 
 This is the gameboard (example)
     {"player1Picked":false,"player1Completed":false,"team2Progess":0,"team1":69.9,"team2":69.9,"name":"PTS+REB","player2Completed":false,"team1Progress":0,"player2Picked":false}
+
+How to use [AWSJSON] just use 
+    arr = arr.map(value => JSON.parse(value));

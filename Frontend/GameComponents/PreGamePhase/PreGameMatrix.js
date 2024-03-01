@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Text, View, ScrollView } from 'react-native';
-import { generateMatrix } from '../../functions/GamePlayFunctions';
-import { fetchGames, getGameViaId } from '../../functions/GameStartFunctions';
+import { generateMatrix } from '../../functions/GameFunctions/GamePlayFunctions';
+import { fetchGames, getGameViaId } from '../../functions/GameFunctions/GameStartFunctions';
 import { generateMatrix2 } from '../../functions/MatrixFunctions';
 import {UpperPart} from './UpperPart';
 import Tile from './Tile';

@@ -7,33 +7,11 @@ import { PreGameMatrix } from '../../GameComponents/PreGamePhase/PreGameMatrix';
 export default function LiveMainArea({setCurrentGame}) {
 
     const {user, liveGames} = useMyContext();
-    const [selectedLiveGame, setSelectedLiveGame] = useState(null);
-
-    // const findGameById = (id) => {
-    //     // console.log("LiveMainAreas.ks user", user.liveGames.find(element => JSON.parse(element).id === id))
-    //     return user.liveGames.find(element => JSON.parse(element).id === id)
-    // }
-    
 
     useEffect(() => {
-      // if(user.todayGames.length === 0){
-      //   fetchLiveGameFeed(user).then(res => {
-      //     setUser((prevUser) => {
-      //       return { ...prevUser, todayGames: res };
-      //     });
-      //   })
-      // }
     //   user.liveGames.forEach(i => console.log( JSON.parse(i).id))
-    //   console.log("MainAreaLive", user.liveGames)
+    //   console.log("MainAreaLive", liveGames)
     }, []);
-
-    if(selectedLiveGame){
-        return(
-            <View style={{flex:1, width:"100%", height:"100%", alignItems:'center',}}>
-                <PreGameMatrix game={selectedLiveGame}/>
-            </View>
-        )
-    }
 
     return(
         <View style={{
@@ -44,10 +22,14 @@ export default function LiveMainArea({setCurrentGame}) {
             {liveGames.map((game, index) => {
                 return <LiveGameSlip 
                     key={index} index={index} game={game} 
-                    setSelectedLiveGameId={setSelectedLiveGame}
                 />;
             })}
 
+            {liveGames.length === 0 ?
+                <Text style={{color:'white'}}>No Games</Text>
+                    :
+                null
+            }
         </View>
     )
 }

@@ -1,8 +1,7 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useEffect, useState } from 'react'
 import { useMyContext } from '../../Context/MyContext';
-import { fetchLiveGameFeed } from '../../functions/GamePlayFunctions';
-import { fakeData } from '../../functions/FakeGameData';
+import { fetchLiveGameFeed } from '../../functions/GameFunctions/GamePlayFunctions';
 import { clearGamesToday, getGamesToday } from '../../functions/AsyncStorage/AsyncGetTodayGames';
 import { GameCard } from './GameCard';
 import { CapacityGames } from './CapacityGames';
@@ -26,9 +25,6 @@ export default function MainAreaGames({setCurrentGame}) {
 
       setSelectedGame(todayGames[0]);
 
-      setUser(p => {
-        return {...p, todayGames: fakeData}
-      })
     }, []);
 
     if (selectedGame && todayGames.length > 0) {

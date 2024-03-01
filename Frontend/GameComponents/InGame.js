@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity, View } from 'react-native';
-import {leaveGame, readyUp} from '../functions/GameStartFunctions';
+import {leaveGame, readyUp} from '../functions/GameFunctions/GameStartFunctions';
 import { useEffect, useState } from 'react';
 import * as subscriptions from '../../src/graphql/subscriptions';
 import { generateClient } from 'aws-amplify/api';

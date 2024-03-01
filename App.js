@@ -3,7 +3,7 @@ import MainContainer from './Frontend/MainContainer'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TeamDepth } from './Frontend/TeamDepth/TeamDepth';
-import { GameHome } from './Frontend/GameComponents/GamePhase/GameHome';
+import { GameHome } from './Frontend/GameComponents/GameHome';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const Stack = createStackNavigator();

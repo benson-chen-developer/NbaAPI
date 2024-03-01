@@ -1,33 +1,59 @@
 import { useEffect, useState } from "react"
 import { View, Text, SafeAreaView, Image, StyleSheet } from "react-native"
-import { abbreviateName, getTeamLogoCdn } from "../../../assets/TeamLogos/getTeamLogo";
-import { fetchBoxScore, updateLastActionNumber, updatePlayerStats } from "../../functions/GameLiveFunctions";
+import { abbreviateName, getTeamLogoCdn } from "../../assets/TeamLogos/getTeamLogo";
+import { fetchBoxScore, updateLastActionNumber, updatePlayerStats } from "../functions/GameFunctions/GameLiveFunctions";
 import { GamePlayers } from "./GamePlayers";
-import { useMyContext } from '../../Context/MyContext';
+import { useMyContext } from '../Context/MyContext';
 
 export const GameHome = ({route}) => {
 
     const {user} = useMyContext();
 
     const { 
-        homeTeam, awayTeam, api, game,
-        player1Team, player2Team
+        homeTeam, awayTeam, game,
     } = route.params;
+
+    const apiLink = game.apiLink;
+    const player1Team = game.player1Id === user.id ? JSON.parse(game.player1Depth) : JSON.parse(game.player2Depth);
 
     const [homePlayerStats, setHomePlayerStats] = useState([]);
     const [awayPlayerStats, setAwayPlayerStats] = useState([]);
+    const [playersLoaded, setPlayersLoaded] = useState(false);
+
+    let lastActionNumber = game.player1Id === user.id ? game.player1LastActionNumber : game.player2LastActionNumber;
 
     useEffect(() => {
-        fetchBoxScore(api, game.player1Id === user.id ? game.player1LastActionNumber :game.player2LastActionNumber)
-            .then(res => {
-                const updatedPlayers = updatePlayerStats(res, player1Team);
-                setHomePlayerStats(updatedPlayers);
+        /* Intial Grab of Data */
+        // if(apiLink)
+        //     fetchBoxScore(apiLink, lastActionNumber)
+        //         .then(res => {
+        //             const updatedPlayers = updatePlayerStats(res, player1Team);
+        //             setHomePlayerStats(updatedPlayers);
 
-                updateLastActionNumber(user.id, game, res[res.length-1].actionNumber);
+        //             updateLastActionNumber(user.id, game, (res[res.length - 1].actionNumber));
+        //             lastActionNumber = (res[res.length - 1].actionNumber);
+        //             setPlayersLoaded(true);
+        //         });
 
-                // console.log("GameHome (updatedPlayers)", updatedPlayers)
-            })
-    }, [])
+        if(apiLink){
+            const intervalId = setInterval(() => {
+                console.log("GameHome: Live Pulse", apiLink)
+
+                fetchBoxScore(apiLink, lastActionNumber)
+                    .then(res => {
+                        const updatedPlayers = updatePlayerStats(res, player1Team);
+                        setHomePlayerStats(updatedPlayers);
+
+                        updateLastActionNumber(user.id, game, (res[res.length - 1].actionNumber));
+                        lastActionNumber = (res[res.length - 1].actionNumber);
+
+                        // console.log("GameHome (updatedPlayers)", updatedPlayers)
+                    });
+            }, 5000);
+
+            return () => clearInterval(intervalId);
+        }
+    }, []);
 
     return(
         <SafeAreaView style={{backgroundColor:"#162538"}}>
@@ -44,7 +70,11 @@ export const GameHome = ({route}) => {
                     <TeamItem teamName={awayTeam} isHome={false}/>
                 </View>
 
-                <GamePlayers players={homePlayerStats}/>
+                {playersLoaded ?
+                    <GamePlayers players={homePlayerStats}/>
+                        :
+                    <Text style={{color:'white'}}>Loading</Text>
+                }
 
             </View>
         </SafeAreaView>

@@ -21,54 +21,56 @@ import Hawks from './Hawks.png';
 import Raptors from './Raptors.png';
 import Wizards from './Wizards.png';
 
-export const getTeamLogo = (name) => {
-    if(name === "Pistons"){
+export const getTeamLogo = (n) => {
+    const name = n.toLowerCase();
+
+    if(name === "pistons"){
         return Pistons;
-    } else if(name === "Rockets"){
+    } else if(name === "rockets"){
         return Rockets;
-    } else if(name === "Hornets"){
+    } else if(name === "hornets"){
         return Hornets;
-    } else if(name === "Nets"){
+    } else if(name === "nets"){
         return Nets;
-    } else if(name === "Celtics"){
+    } else if(name === "celtics"){
         return Celtics;
-    } else if(name === "Hornets"){
+    } else if(name === "hornets"){
         return Hornets;
-    } else if(name === "Thunder"){
+    } else if(name === "thunder"){
         return Thunder;
-    } else if(name === "Magic"){
+    } else if(name === "magic"){
         return Magic;
-    } else if(name === "Bucks"){
+    } else if(name === "bucks"){
         return Bucks;
-    } else if(name === "Heat"){
+    } else if(name === "heat"){
         return Heat;
-    } else if(name === "Suns"){
+    } else if(name === "suns"){
         return Suns;
-    } else if(name === "Kings"){
+    } else if(name === "kings"){
         return Kings;
-    } else if(name === "Timberwolves"){
+    } else if(name === "timberwolves"){
         return Timberwolves;
-    } else if(name === "Magic"){
+    } else if(name === "magic"){
         return Magic;
-    } else if(name === "Trail Blazers"){
+    } else if(name === "trail Blazers"){
         return TrailBlazers;
-    } else if(name === "Lakers"){
+    } else if(name === "lakers"){
         return Lakers;
-    } else if(name === "Cavaliers"){
+    } else if(name === "cavaliers"){
         return Cavaliers;
-    } else if(name === "Knicks"){
+    } else if(name === "knicks"){
         return Knicks;
     } else if(name === "76ers"){
         return Sixers;
-    } else if(name === "Pacers"){
+    } else if(name === "pacers"){
         return Pacers;
-    } else if(name === "Bulls"){
+    } else if(name === "bulls"){
         return Bulls;
-    } else if(name === "Hawks"){
+    } else if(name === "hawks"){
         return Hawks;
-    } else if(name === "Raptors"){
+    } else if(name === "raptors"){
         return Raptors;
-    } else if(name === "Wizards"){
+    } else if(name === "wizards"){
         return Wizards;
     }
 }
@@ -111,6 +113,10 @@ export const getTeamLogoCdn = (name) => {
         abr = "cle"
     else if(n === "mavericks")
         abr = "dal"
+    else if(n === "pacers")
+        abr = "ind"
+    else if(n === "pelicans")
+        abr = "no"
     else 
         abr = "";
 

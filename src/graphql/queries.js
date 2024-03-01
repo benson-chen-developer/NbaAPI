@@ -1,52 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getPlayers = /* GraphQL */ `
-  query GetPlayers($id: ID!) {
-    getPlayers(id: $id) {
-      id
-      name
-      shards
-      team
-      position
-      ppg
-      apg
-      rpg
-      updatedToday
-      picture
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const listPlayers = /* GraphQL */ `
-  query ListPlayers(
-    $filter: ModelPlayersFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listPlayers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        shards
-        team
-        position
-        ppg
-        apg
-        rpg
-        updatedToday
-        picture
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
@@ -58,7 +12,7 @@ export const getUser = /* GraphQL */ `
       name
       xp
       teamDepth
-      liveGames {
+      LiveGames {
         nextToken
         __typename
       }
@@ -99,21 +53,21 @@ export const getGame = /* GraphQL */ `
       id
       player1Id
       player2Id
-      started
-      player1Cards
-      player2Cards
+      apiLink
       player1Team
       player2Team
-      apiLink
-      selectedTiles
-      teams
+      player2LastActionNumber
+      player1LastActionNumber
       matrixRow1
       matrixRow2
       matrixRow3
       matrixRow4
-      player1LastActionNumber
-      player2LastActionNumber
+      teams
+      player2Depth
+      player1Depth
       timeStart
+      ended
+      started
       users {
         nextToken
         __typename
@@ -135,21 +89,21 @@ export const listGames = /* GraphQL */ `
         id
         player1Id
         player2Id
-        started
-        player1Cards
-        player2Cards
+        apiLink
         player1Team
         player2Team
-        apiLink
-        selectedTiles
-        teams
+        player2LastActionNumber
+        player1LastActionNumber
         matrixRow1
         matrixRow2
         matrixRow3
         matrixRow4
-        player1LastActionNumber
-        player2LastActionNumber
+        teams
+        player2Depth
+        player1Depth
         timeStart
+        ended
+        started
         createdAt
         updatedAt
         __typename
@@ -182,21 +136,21 @@ export const getUserGame = /* GraphQL */ `
         id
         player1Id
         player2Id
-        started
-        player1Cards
-        player2Cards
+        apiLink
         player1Team
         player2Team
-        apiLink
-        selectedTiles
-        teams
+        player2LastActionNumber
+        player1LastActionNumber
         matrixRow1
         matrixRow2
         matrixRow3
         matrixRow4
-        player1LastActionNumber
-        player2LastActionNumber
+        teams
+        player2Depth
+        player1Depth
         timeStart
+        ended
+        started
         createdAt
         updatedAt
         __typename
