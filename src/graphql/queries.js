@@ -16,6 +16,7 @@ export const getUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      maxLiveGames
       createdAt
       updatedAt
       __typename
@@ -38,6 +39,7 @@ export const listUsers = /* GraphQL */ `
         name
         xp
         teamDepth
+        maxLiveGames
         createdAt
         updatedAt
         __typename
@@ -128,6 +130,7 @@ export const getUserGame = /* GraphQL */ `
         name
         xp
         teamDepth
+        maxLiveGames
         createdAt
         updatedAt
         __typename

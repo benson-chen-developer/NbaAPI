@@ -32,7 +32,7 @@ export default function MainContainer() {
   useEffect(() => {
     async function fetchUser() {
       setUserLoading(true);
-      setLiveGameLoading(false);
+      setLiveGameLoading(true);
       setTodayTmrGamesLoading(true);
   
       try {

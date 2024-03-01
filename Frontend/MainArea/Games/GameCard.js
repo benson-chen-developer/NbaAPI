@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { View, Text, Image, TouchableOpacity } from "react-native"
 import { abbreviateName, getTeamLogo } from "../../../assets/TeamLogos/getTeamLogo"
 import { playBtnColor } from "../../../assets/Themes/ThemeColors"
@@ -8,14 +8,28 @@ import { startSearchForGame } from "../../functions/GameFunctions/GameStartFunct
 
 export const GameCard = ({game}) => {
 
-    const {user, setUser, loading, setLoading, setLiveGames} = useMyContext();
+    const {user, setLoading, liveGames, setLiveGames} = useMyContext();
     const [pickedTeam, setPickedTeam] = useState(null);
+    const [pickedTeamNames, setPickedTeamNames] = useState([]);
 
     const date = new Date(game.timeStart);
     const hours = date.getHours();
     const minutes = date.getMinutes() === 0 ? "00" : date.getMinutes()
 
+    useEffect(() => {
+        const teamNames = [];
+
+        liveGames.forEach((game) => {
+            const playerTeamName = game.player1Id === user.id ? game.player1Team : game.player2Team;
+            teamNames.push(playerTeamName);
+        })
+
+        setPickedTeamNames(teamNames);
+    }, [])
+
     const pressPlay = async () => {
+        if(liveGames.length >= user.maxLiveGames) return;
+
         setLoading(true);
 
         const ourDepth = [
@@ -28,6 +42,7 @@ export const GameCard = ({game}) => {
             const newGame = await startSearchForGame(user, pickedTeam, game, ourDepth);
             
             setLiveGames(p => [...p, newGame]);
+            setPickedTeam(null);
             setLoading(false);
         } catch {
             setLoading(false);
@@ -43,7 +58,8 @@ export const GameCard = ({game}) => {
 
             <View style={{width:"100%", flexDirection:'row', alignItems:'center'}}>
                 <TeamPicAndStats 
-                    team={game.homeTeam} isHome={true}
+                    team={game.homeTeam} otherTeam={game.awayTeam}
+                    isHome={true} pickedTeamNames={pickedTeamNames}
                     pickedTeam={pickedTeam} setPickedTeam={setPickedTeam} 
                 />
 
@@ -55,14 +71,15 @@ export const GameCard = ({game}) => {
                 </View>
 
                 <TeamPicAndStats 
-                    team={game.awayTeam} isHome={false}
+                    team={game.awayTeam} otherTeam={game.homeTeam}
+                    isHome={false} pickedTeamNames={pickedTeamNames}
                     pickedTeam={pickedTeam} setPickedTeam={setPickedTeam}
                 />
             </View>
 
             <View style={{width:"100%", height: 20, flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
                 
-                {pickedTeam && (pickedTeam === game.homeTeam.teamName || pickedTeam === game.awayTeam.teamName)?
+                {pickedTeam && (pickedTeam === game.homeTeam.teamName || pickedTeam === game.awayTeam.teamName) && liveGames.length < user.maxLiveGames ?
                     <TouchableOpacity style={{
                         height:40, width:100, backgroundColor:playBtnColor(pickedTeam).shadow, borderRadius:10
                     }} onPress={() => pressPlay()}>
@@ -74,38 +91,100 @@ export const GameCard = ({game}) => {
                         </View>
                     </TouchableOpacity> 
                         :
-                    <Text style={{fontFamily:ThemeFonts, fontSize:20, color:'#292f29'}}>
-                        Pick A Team To Play
-                    </Text> 
+                    null
                 }
+
+                {/* <Text style={{fontFamily:ThemeFonts, fontSize:20, color:'#292f29'}}>
+                    {liveGames.length >= user.maxLiveGames ? 
+                        "Max Games Played Today"
+                            :
+                        "Pick A Team To Play"
+                    }
+                </Text>  */}
             </View>
 
         </View>
     )
 }
 
-const TeamPicAndStats = ({team, isHome, pickedTeam, setPickedTeam}) => {
-    // console.log(team.teamName)
-    return(
-        <TouchableOpacity style={{
-            alignItems:'center', paddingTop:10, width: "35%", alignItems:'center', 
-            justifyContent:'center', height: "100%", 
-            opacity: pickedTeam === team.teamName ? 1 : .25
-        }} onPress={() => setPickedTeam(team.teamName)}>
+/**
+ * @param {obj} team 
+ *  {
+ *      "losses": 49, "score": 0, "seed": 0, 
+ *      "teamCity": "Detroit", "teamId": 1610612765, 
+ *      "teamName": "Pistons", "teamSlug": "pistons", 
+ *      "teamTricode": "DET", "wins": 9
+ *  }
+ */
+const TeamPicAndStats = ({team, otherTeam, isHome, pickedTeam, setPickedTeam, pickedTeamNames}) => {
+    const {user, liveGames} = useMyContext();
 
-             <View style={{alignItems:'center'}}>
-                <Image 
-                    source={{uri: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${abbreviateName(team.teamName)}.png`}}
-                    style={{
-                        width: pickedTeam === team.teamName ? 90 : 60, 
-                        height: pickedTeam === team.teamName ? 90 : 60, 
-                }}/>
-                <Text style={{color:"black", fontFamily:ThemeFonts, fontSize:18}}>{team.teamName}</Text>
+    const otherTeamIsPickedAlready = pickedTeamNames.find(teamName => teamName === otherTeam.teamName) && team.teamName !== pickedTeamNames.find(teamName => teamName === team.teamName);
+    const maxLiveGamesReached = liveGames.length >= user.maxLiveGames;
+
+    if(pickedTeamNames.find(teamName => teamName === team.teamName))
+        return(
+            <View style={{
+                alignItems:'center', paddingTop:10, width: "35%", alignItems:'center', 
+                justifyContent:'center', height: "100%", opacity: 1
+            }}>
+
+                <View style={{alignItems:'center'}}>
+                    <Image 
+                        source={{uri: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${abbreviateName(team.teamName)}.png`}}
+                        style={{ width: 90,height: 90 }}
+                    />
+                    <Text style={{color:"black", fontFamily:ThemeFonts, fontSize:18}}>{team.teamName}</Text>
+                </View>
+
+                <Text style={{color:'grey'}}>
+                    {isHome ? "Home" : "Away"}
+                </Text>
             </View>
+        )
+    
+    else if(otherTeamIsPickedAlready || maxLiveGamesReached)
+        return(
+            <View style={{
+                alignItems:'center', paddingTop:10, width: "35%", alignItems:'center', 
+                justifyContent:'center', height: "100%", opacity: .25
+            }}>
 
-            <Text style={{color:'grey'}}>
-                {isHome ? "Home" : "Away"}
-            </Text>
-        </TouchableOpacity>
-    )
+                <View style={{alignItems:'center'}}>
+                    <Image 
+                        source={{uri: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${abbreviateName(team.teamName)}.png`}}
+                        style={{ width: 60, height: 60 }}
+                    />
+                    <Text style={{color:"black", fontFamily:ThemeFonts, fontSize:18}}>{team.teamName}</Text>
+                </View>
+
+                <Text style={{color:'grey'}}>
+                    {isHome ? "Home" : "Away"}
+                </Text>
+            </View>
+        )
+
+    else 
+        return(
+            <TouchableOpacity style={{
+                alignItems:'center', paddingTop:10, width: "35%", alignItems:'center', 
+                justifyContent:'center', height: "100%", 
+                opacity: pickedTeam === team.teamName ? 1 : .25
+            }} onPress={() => setPickedTeam(team.teamName)}>
+
+                <View style={{alignItems:'center'}}>
+                    <Image 
+                        source={{uri: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${abbreviateName(team.teamName)}.png`}}
+                        style={{
+                            width: pickedTeam === team.teamName ? 90 : 60, 
+                            height: pickedTeam === team.teamName ? 90 : 60, 
+                    }}/>
+                    <Text style={{color:"black", fontFamily:ThemeFonts, fontSize:18}}>{team.teamName}</Text>
+                </View>
+
+                <Text style={{color:'grey'}}>
+                    {isHome ? "Home" : "Away"}
+                </Text>
+            </TouchableOpacity>
+        )
 }

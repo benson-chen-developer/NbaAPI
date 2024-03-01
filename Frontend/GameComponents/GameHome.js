@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { View, Text, SafeAreaView, Image, StyleSheet } from "react-native"
 import { abbreviateName, getTeamLogoCdn } from "../../assets/TeamLogos/getTeamLogo";
-import { fetchBoxScore, updateLastActionNumber, updatePlayerStats } from "../functions/GameFunctions/GameLiveFunctions";
+import { fetchBoxScore, getLatestActionsAndUpdateGame, updateLastActionNumber, updatePlayerStats } from "../functions/GameFunctions/GameLiveFunctions";
 import { GamePlayers } from "./GamePlayers";
 import { useMyContext } from '../Context/MyContext';
 
@@ -13,46 +13,23 @@ export const GameHome = ({route}) => {
         homeTeam, awayTeam, game,
     } = route.params;
 
-    const apiLink = game.apiLink;
     const player1Team = game.player1Id === user.id ? JSON.parse(game.player1Depth) : JSON.parse(game.player2Depth);
 
-    const [homePlayerStats, setHomePlayerStats] = useState([]);
-    const [awayPlayerStats, setAwayPlayerStats] = useState([]);
+    const [homePlayerDepth, setHomePlayerDepth] = useState(game.player1Id === user.id ? game.player1Depth : game.player2Depth)
+    const [awayPlayerDepth, setAwayPlayerDepth] = useState(game.player1Id !== user.id ? game.player1Depth : game.player2Depth)
+
     const [playersLoaded, setPlayersLoaded] = useState(false);
 
-    let lastActionNumber = game.player1Id === user.id ? game.player1LastActionNumber : game.player2LastActionNumber;
-
     useEffect(() => {
-        /* Intial Grab of Data */
-        // if(apiLink)
-        //     fetchBoxScore(apiLink, lastActionNumber)
-        //         .then(res => {
-        //             const updatedPlayers = updatePlayerStats(res, player1Team);
-        //             setHomePlayerStats(updatedPlayers);
 
-        //             updateLastActionNumber(user.id, game, (res[res.length - 1].actionNumber));
-        //             lastActionNumber = (res[res.length - 1].actionNumber);
-        //             setPlayersLoaded(true);
-        //         });
+        const intervalId = setInterval(async () => {
+            let updatedHomePlayerDepth = await getLatestActionsAndUpdateGame(game, user.id)
+            
+            setHomePlayerDepth(updatedHomePlayerDepth);
+            console.log("GameHome: Live Pulse", updatedHomePlayerDepth)
+        }, 5000);
 
-        if(apiLink){
-            const intervalId = setInterval(() => {
-                console.log("GameHome: Live Pulse", apiLink)
-
-                fetchBoxScore(apiLink, lastActionNumber)
-                    .then(res => {
-                        const updatedPlayers = updatePlayerStats(res, player1Team);
-                        setHomePlayerStats(updatedPlayers);
-
-                        updateLastActionNumber(user.id, game, (res[res.length - 1].actionNumber));
-                        lastActionNumber = (res[res.length - 1].actionNumber);
-
-                        // console.log("GameHome (updatedPlayers)", updatedPlayers)
-                    });
-            }, 5000);
-
-            return () => clearInterval(intervalId);
-        }
+        return () => clearInterval(intervalId);
     }, []);
 
     return(
@@ -71,7 +48,7 @@ export const GameHome = ({route}) => {
                 </View>
 
                 {playersLoaded ?
-                    <GamePlayers players={homePlayerStats}/>
+                    <GamePlayers players={homePlayerDepth}/>
                         :
                     <Text style={{color:'white'}}>Loading</Text>
                 }

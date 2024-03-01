@@ -6,6 +6,8 @@ import { clearGamesToday, getGamesToday } from '../../functions/AsyncStorage/Asy
 import { GameCard } from './GameCard';
 import { CapacityGames } from './CapacityGames';
 import { GamesCarousel } from './GamesCarousel';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { ThemeFonts } from '../../../assets/Themes/ThemeFont';
 
 export default function MainAreaGames({setCurrentGame}) {
 
@@ -13,7 +15,7 @@ export default function MainAreaGames({setCurrentGame}) {
     const [selectedGame, setSelectedGame] = useState(null);
     const [gameScreen, setGameScreen] = useState("MainAreaGames");
 
-    const {user, setUser, todayGames, setTodayGames} = useMyContext();
+    const {user, setUser, todayGames, setTodayGames, liveGames} = useMyContext();
     
     useEffect(() => {
       // clearGamesToday()
@@ -33,7 +35,18 @@ export default function MainAreaGames({setCurrentGame}) {
 
           <View style={{marginTop: 50}}/>
 
-          <CapacityGames />
+          <View style={{width:"100%", justifyContent:'center', flexDirection:'row', alignItems:'center'}}>
+            <MaterialCommunityIcons 
+                name="basketball" size={24} right={4}
+                color={liveGames.length === 2 ? "#F18944" : 'white'}
+            />
+            <Text style={{
+                color: liveGames.length === 2 ? 'white' : '#c1c6c6', 
+                fontFamily:ThemeFonts, fontSize:25
+            }}>
+                {liveGames.length}/{user.maxLiveGames} Games
+            </Text>
+          </View>
 
           {todayGames[0].homeTeam !== "No Games" ?
             <GamesCarousel 

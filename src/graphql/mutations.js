@@ -19,6 +19,7 @@ export const createUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      maxLiveGames
       createdAt
       updatedAt
       __typename
@@ -43,6 +44,7 @@ export const updateUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      maxLiveGames
       createdAt
       updatedAt
       __typename
@@ -67,6 +69,7 @@ export const deleteUser = /* GraphQL */ `
         nextToken
         __typename
       }
+      maxLiveGames
       createdAt
       updatedAt
       __typename
@@ -193,6 +196,7 @@ export const createUserGame = /* GraphQL */ `
         name
         xp
         teamDepth
+        maxLiveGames
         createdAt
         updatedAt
         __typename
@@ -244,6 +248,7 @@ export const updateUserGame = /* GraphQL */ `
         name
         xp
         teamDepth
+        maxLiveGames
         createdAt
         updatedAt
         __typename
@@ -295,6 +300,7 @@ export const deleteUserGame = /* GraphQL */ `
         name
         xp
         teamDepth
+        maxLiveGames
         createdAt
         updatedAt
         __typename

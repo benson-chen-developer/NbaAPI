@@ -4,20 +4,20 @@ import { useMyContext } from "../../Context/MyContext"
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export const CapacityGames = () => {
-    const {liveGames} = useMyContext();
+    const {liveGames, user} = useMyContext();
 
     return(
         <View style={{width:"100%", justifyContent:'center', flexDirection:'row', alignItems:'center'}}>
             <MaterialCommunityIcons 
                 name="basketball" size={24} right={4}
-                color={liveGames.length === 2 ? "#F18944" : 'white'}
+                color={liveGames.length === user.maxLiveGames ? "#F18944" : 'white'}
             />
             
             <Text style={{
-                color: liveGames.length === 2 ? 'white' : '#c1c6c6', 
+                color: liveGames.length === user.maxLiveGames ? 'white' : '#c1c6c6', 
                 fontFamily:ThemeFonts, fontSize:25
             }}>
-                {liveGames.length}/2 Games
+                {liveGames.length}/{user.maxLiveGames}
             </Text>
 
         </View>
