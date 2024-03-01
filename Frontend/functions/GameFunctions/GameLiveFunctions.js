@@ -115,8 +115,70 @@ const addThisActionToPlayer = (player, action) => {
     return player;
 }
 
+
+/**
+ * @param {gameAWS} game Its the game aws obj
+ * @param {string} userId User's id
+ */
+ export const getLatestActionsAndUpdateGame = async (game, userId) => {
+    /* This is to set up our variables by checking which playerId is ours */
+    const isPlayer1 = game.player1Id === userId;
+    let playerDepth = [];
+    let lastActionNumber;
+    if (isPlayer1) {
+        playerDepth = game.player1Depth.map(value => JSON.parse(value));
+        lastActionNumber = game.player1LastActionNumber;
+    } else {
+        playerDepth = game.player1Depth.map(value => JSON.parse(value));
+        lastActionNumber = game.player2LastActionNumber;
+    }
+
+    try {
+        const actionsListRes = await fetchBoxScore(game.apiLink, lastActionNumber);
+
+        /*
+            First we check if the lastActionNumber matches the current one
+            This means no change needed
+        */
+        const lastAction = actionsListRes[actionsListRes.length - 1];
+        if (lastActionNumber === lastAction.actionNumber) {
+            return game;
+        }
+
+        /* 
+            This is what fields we are updating
+            LastActionNumber is updated by default
+        */
+        let updateInput = { id: game.id };
+        updateInput[isPlayer1 ? "player1LastActionNumber" : "player2LastActionNumber"] = lastAction.actionNumber;
+
+        /* We get the stats back so we update them now */
+        const updatedPlayers = updatePlayerStats(actionsListRes, playerDepth);
+
+        if (isPlayer1)
+            updateInput = { ...updateInput, player1Depth: updatedPlayers.map(value => JSON.stringify(value)) };
+        else
+            updateInput = { ...updateInput, player2Depth: updatedPlayers.map(value => JSON.stringify(value)) };
+
+        /* Check if the last action is game ended */
+        if (lastAction.description && lastAction.description === "Game End") {
+            console.log("UserFunctions: Game Has Ended");
+            updateInput = { ...updateInput, ended: true };
+        }
+
+        /* Update the game */
+        const updatedGame = await UpdateGame(updateInput, "UserFunction.js");
+        return updatedGame;
+    } catch (error) {
+        console.error("Error in getLatestActionsAndUpdateGame:", error);
+        throw error; // Re-throw the error to be caught by the calling function
+    }
+}
+
+
 import { generateClient } from 'aws-amplify/api';
 import {updateGame} from '../../../src/graphql/mutations';
+import { UpdateGame } from '../MutationFunctions/GameMutation';
 
 const client = generateClient();
 
