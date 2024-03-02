@@ -9,9 +9,9 @@ export const GameHome = ({route}) => {
 
     const {user} = useMyContext();
 
-    const { 
-        homeTeam, awayTeam, game,
-    } = route.params;
+    const { game } = route.params;
+
+    const {homeTeam, awayTeam} = game;
 
     const player1Team = game.player1Id === user.id ? JSON.parse(game.player1Depth) : JSON.parse(game.player2Depth);
 

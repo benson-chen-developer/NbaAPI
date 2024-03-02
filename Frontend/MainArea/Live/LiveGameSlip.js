@@ -8,23 +8,26 @@ export default function LiveGameSlip({game}) {
 
     const navigation = useNavigation();
 
-    const bringToLiveGame = (game) => {
+    const gameStarted = () => {
+        const estTimeStart = new Date(game.timeStart);
+        const currentTimeEST = new Date() - (5 * 60 * 60 * 1000);
 
-        navigation.navigate("GameHome", { 
-            homeTeam: game.teams[0],
-            awayTeam: game.teams[1],
-            game: game,
-            api: 'https://cdn.nba.com/static/json/liveData/playbyplay/playbyplay_0022300842.json'
-        })
-        
+        if (estTimeStart < new Date(currentTimeEST))
+            return true;
+        else
+            return false
     }
 
-    const gameIsOver = () => {
-        // if(game.timeStart)
+    const bringToLiveGame = (game) => {
+        // if(gameStarted())
+        if(false)
+            navigation.navigate("GameHome", { game: game })
+        else
+            navigation.navigate("GamePreScreen", { game: game })
     }
 
     useEffect(() => {
-        // console.log("LiveGameSlip", JSON.stringify(game, null, 2));
+        // console.log("LiveGameSlip", JSON.stringify(game.teams[0], null, 2));
     }, []);
 
     return(
@@ -34,7 +37,7 @@ export default function LiveGameSlip({game}) {
             justifyContent:'space-around', alignItems:'center'
         }} onPress={() => bringToLiveGame(game)}>
             <View>
-                <Image source={{uri: getTeamLogoCdn(game.teams[0])}} style={styles.logo}/>
+                {/* <Image source={{uri: getTeamLogoCdn(game.teams[0].teamName)}} style={styles.logo}/> */}
             </View>
 
             <Text style={{
@@ -44,7 +47,7 @@ export default function LiveGameSlip({game}) {
             </Text>
 
             <View>
-                <Image source={{uri: getTeamLogoCdn(game.teams[1])}} style={styles.logo}/>
+                {/* <Image source={{uri: getTeamLogoCdn(game.teams[1].teamName)}} style={styles.logo}/> */}
             </View>
         </TouchableOpacity>
     )

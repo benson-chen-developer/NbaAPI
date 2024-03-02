@@ -1,12 +1,10 @@
+import { UpdateGame } from '../MutationFunctions/GameMutation';
+
 export const fetchBoxScore = async (api, lastActionNumber) => {
     if(api)
         try {
             const response = await fetch(api);
             const data = await response.json();
-
-            // if(data.game.actions[data.game.actions.length].actionNumber < lastActionNumber){
-            //     return [];
-            // }
 
             let index = 0;
             while(data.game.actions[index].actionNumber < lastActionNumber){
@@ -133,9 +131,9 @@ const addThisActionToPlayer = (player, action) => {
         lastActionNumber = game.player2LastActionNumber;
     }
 
+    /* Fetching each individual action that occured in the game */
     try {
         const actionsListRes = await fetchBoxScore(game.apiLink, lastActionNumber);
-
         /*
             First we check if the lastActionNumber matches the current one
             This means no change needed
@@ -154,7 +152,6 @@ const addThisActionToPlayer = (player, action) => {
 
         /* We get the stats back so we update them now */
         const updatedPlayers = updatePlayerStats(actionsListRes, playerDepth);
-
         if (isPlayer1)
             updateInput = { ...updateInput, player1Depth: updatedPlayers.map(value => JSON.stringify(value)) };
         else
@@ -168,32 +165,11 @@ const addThisActionToPlayer = (player, action) => {
 
         /* Update the game */
         const updatedGame = await UpdateGame(updateInput, "UserFunction.js");
+        
         return updatedGame;
     } catch (error) {
-        console.error("Error in getLatestActionsAndUpdateGame:", error);
-        throw error; // Re-throw the error to be caught by the calling function
+        console.error("Error in getLatestActionsAndUpdateGame: (Game didnt start)", error);
+
+        return game;
     }
-}
-
-
-import { generateClient } from 'aws-amplify/api';
-import {updateGame} from '../../../src/graphql/mutations';
-import { UpdateGame } from '../MutationFunctions/GameMutation';
-
-const client = generateClient();
-
-export const updateLastActionNumber = async (playerId, game, lastActionNumber) => {
-
-    const updatedGameId = await client.graphql({
-        query: updateGame,
-        variables: {
-            input: {
-                id: game.id,
-                player1LastActionNumber: playerId === game.player1Id ? lastActionNumber : game.player1LastActionNumber,
-                player2LastActionNumber: playerId === game.player2Id ? lastActionNumber : game.player2LastActionNumber
-            },
-        }
-    });
-    
-    return updatedGameId;
 }

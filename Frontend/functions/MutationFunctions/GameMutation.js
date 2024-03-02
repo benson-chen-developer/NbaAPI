@@ -5,7 +5,8 @@ import { updateGame } from '../../../src/graphql/mutations';
     input = {"ended": true}
 */
 export const UpdateGame = async (input, text = "no text") => {
-    console.log("GameMutation", input)
+    // console.log("GameMutation", input)
+    
     try {
         const client = generateClient();
 
@@ -16,7 +17,7 @@ export const UpdateGame = async (input, text = "no text") => {
             }
         });
 
-        return updatedGame;
+        return updatedGame.data.updateGame;
     } catch (error) {
         console.error('Error Updating Game at', text, error);
 
