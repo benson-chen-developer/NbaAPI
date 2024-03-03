@@ -46,12 +46,12 @@ const ProgressBar = (item) => {
 const styles = StyleSheet.create({
     notSelected : {
         width: 150, height:125, backgroundColor:'#273447', 
-        marginLeft: 3,
+        marginLeft: 3,marginBottom:3,
         borderRadius: 5
     },
     selected : {
         width: 150, height:125, backgroundColor:'#273447', 
         marginLeft: 3, borderColor: '#2bd6b2', borderWidth: 4,
-        borderRadius: 5
+        borderRadius: 5, marginBottom:3,
     }
 })

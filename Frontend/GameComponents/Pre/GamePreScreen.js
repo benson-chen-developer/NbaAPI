@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, SafeAreaView } from "react-native"
+import { useMyContext } from "../../Context/MyContext";
+import { GameNavBar } from "../GameNavBar";
+import { GamePlayers } from "../GamePlayers";
 import { GameMatrix } from "../Matrix/GameMatrix";
 import { PopUpPickTile } from "../Matrix/PopUp/PopUpPickTile";
+import { PopUpPlayer } from "../Matrix/PopUp/PopUpPlayer";
 import { PopUpSwapTile } from "../Matrix/PopUp/PopUpSwapTile";
 import { Header } from "../Shared/Header";
 
@@ -10,25 +14,59 @@ export const GamePreScreen = ({route}) => {
 
     const [matrixInfo, setMatrixInfo] = useState({
         popUpMode: "none",
+        navBar: 'board',
         pickedTile: null, // {"name": "AST", "team1": 36.9, "team1Progress": 0, "team2": 36.9, "team2Progess": 0}
+        pickedPlayer: null,
         selectedTiles: []
     });
 
     return(
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#111A2B' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#111A2B', height:"100%", width:"100%"}}>
             {/* Header */}
-            <Header homeTeamName={game.teams[0]} awayTeamName={game.teams[1]} />
+            <Header homeTeamName={game.teams[0]} awayTeamName={game.teams[1]} selectedTiles={matrixInfo.selectedTiles}/>
 
-            <View style={{height:25}}/>
+            {/* Game Nav Bar */}
+            <GameNavBar matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} />
 
+            {matrixInfo.navBar === "board" ?
+                <BoardScreen game={game} matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} /> : null
+            }
+
+            {matrixInfo.navBar === "game" ?
+                <GameScreen game={game} matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} /> : null
+            }
+
+        </SafeAreaView>
+    )
+}
+
+const BoardScreen = ({game, matrixInfo, setMatrixInfo}) => {
+
+    const { user } = useMyContext();
+
+    const [homePlayerDepth, setHomePlayerDepth] = useState(game.player1Id === user.id ? game.player1Depth : game.player2Depth)
+
+    return(
+        <>
             {/* Matrix */}
             <GameMatrix game={game} matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo}/>
+
+            {/* Players */}
+            {homePlayerDepth.length > 0 ?
+                <GamePlayers 
+                    matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo}
+                    players={homePlayerDepth.map(player => JSON.parse(player))}
+                />
+                    :
+                null
+            }
 
             {/* Pop Up */}
             {matrixInfo.popUpMode !== "none" ? 
                 <View style={{
-                    width:"100%", height:"100%", position:'absolute', 
-                    alignItems:'center', justifyContent:'center', backgroundColor: 'rgba(0,0,0,.5)'
+                    top: 0, bottom: 0, left: 0, right: 0,
+                    position:'absolute', alignItems:'center', justifyContent:'center', 
+                    backgroundColor: 'rgba(0,0,0,.5)'
                 }}>
                     {matrixInfo.popUpMode === "default" ? 
                         <PopUpPickTile matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} /> : null
@@ -38,11 +76,26 @@ export const GamePreScreen = ({route}) => {
                         <PopUpSwapTile 
                             matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo}
                         /> : null
-                    }      
+                    }   
+
+                    {matrixInfo.popUpMode === "player" ? 
+                        <PopUpPlayer 
+                            matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo}
+                            playerDepth={homePlayerDepth.map(p => JSON.parse(p))}
+                        /> : null
+                    }    
                 </View>
                     :  
                 null
             }
-        </SafeAreaView>
+        </>
+    )
+}
+
+const GameScreen = ({game, matrixInfo, setMatrixInfo}) => {
+    return(
+        <>
+
+        </>
     )
 }

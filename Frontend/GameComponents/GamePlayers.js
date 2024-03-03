@@ -1,11 +1,16 @@
 import {ScrollView, StyleSheet, View, Text, Image} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export const GamePlayers = ({players}) => {
+export const GamePlayers = ({players, matrixInfo, setMatrixInfo}) => {
+
+    const onPress = (player) => {
+        setMatrixInfo(p => ({...p, popUpMode: "player", pickedPlayer: player}))
+    }
 
     const Card = ({player}) => {
         // console.log("GamePLayers", player)
         return(
-            <View style={styles.cardOuter}>
+            <TouchableOpacity style={styles.cardOuter} onPress={() => onPress(player)}>
                 <View style={styles.cardInner}>
 
                     <View style={{width:'55%', alignItems:'center', justifyContent:'space-around'}}>
@@ -22,7 +27,7 @@ export const GamePlayers = ({players}) => {
                         <Stat stat={"AST"} number={player["AST"]}/>
                     </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     } 
 

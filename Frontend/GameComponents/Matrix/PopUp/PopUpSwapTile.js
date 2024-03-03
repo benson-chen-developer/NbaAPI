@@ -22,7 +22,7 @@ export const PopUpSwapTile = ({matrixInfo, setMatrixInfo}) => {
     
 
     return(
-        <View style={{width:"90%", height:"90%", backgroundColor:"#273447", borderRadius: 8, alignItems:'center'}}>
+        <View style={{width:"90%", height:"70%", backgroundColor:"#273447", borderRadius: 8, alignItems:'center'}}>
             
             {/* X Btn */}
             <TouchableOpacity   
