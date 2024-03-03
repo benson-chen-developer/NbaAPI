@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { View } from "react-native"
+import { View, SafeAreaView } from "react-native"
 import { GameMatrix } from "../Matrix/GameMatrix";
-import { MatrixPopUp } from "../Matrix/PopUp/MatrixPopUp";
+import { PopUpPickTile } from "../Matrix/PopUp/PopUpPickTile";
+import { PopUpSwapTile } from "../Matrix/PopUp/PopUpSwapTile";
+import { Header } from "../Shared/Header";
 
 export const GamePreScreen = ({route}) => {
-
     const { game } = route.params;
 
     const [matrixInfo, setMatrixInfo] = useState({
@@ -14,18 +15,34 @@ export const GamePreScreen = ({route}) => {
     });
 
     return(
-        <View style={{
-            height:"100%",width:"100%", backgroundColor:'#111A2B'
-        }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#111A2B' }}>
+            {/* Header */}
+            <Header homeTeamName={game.teams[0]} awayTeamName={game.teams[1]} />
+
+            <View style={{height:25}}/>
+
+            {/* Matrix */}
             <GameMatrix game={game} matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo}/>
 
+            {/* Pop Up */}
             {matrixInfo.popUpMode !== "none" ? 
-                <MatrixPopUp 
-                    matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo}
-                /> 
+                <View style={{
+                    width:"100%", height:"100%", position:'absolute', 
+                    alignItems:'center', justifyContent:'center', backgroundColor: 'rgba(0,0,0,.5)'
+                }}>
+                    {matrixInfo.popUpMode === "default" ? 
+                        <PopUpPickTile matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} /> : null
+                    }
+        
+                    {matrixInfo.popUpMode === "swap" ? 
+                        <PopUpSwapTile 
+                            matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo}
+                        /> : null
+                    }      
+                </View>
                     :  
                 null
             }
-        </View>
+        </SafeAreaView>
     )
 }

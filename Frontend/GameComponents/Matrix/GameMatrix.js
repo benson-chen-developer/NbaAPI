@@ -10,7 +10,7 @@ export const GameMatrix = ({ game, matrixInfo, setMatrixInfo }) => {
   }, [])
 
   return (
-        <View style={{ flex: 1, marginTop: 100 }}>
+        <View style={{ flex: 1}}>
             <ScrollView horizontal={true}>
                 <View style={{flexDirection:'column'}}>
                     <View style={{ flexDirection: 'row', marginRight: 2 }}>

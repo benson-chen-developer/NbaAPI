@@ -2,7 +2,6 @@ import { View, TouchableOpacity, Text, StyleSheet } from "react-native"
 import { getFullNameOfStat } from "../../../../assets/NameConversions";
 import { PopUpPlayerCard } from "./PopUpPlayerCard";
 import { PopUpProgressbar } from "./PopUpProgressbar";
-import { SelectBtn } from "./SelectBtn";
 
 /**
  * 
@@ -20,11 +19,18 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
     const {pickedTile} = matrixInfo;
 
     const onPress = () => {
-        setMatrixInfo(p => ({
-            ...p, 
-            selectedTiles: [...p.selectedTiles, pickedTile], 
-            popUpMode: 'none'
-        }));
+        if(matrixInfo.selectedTiles.length < 3)
+            setMatrixInfo(p => ({
+                ...p, 
+                selectedTiles: [...p.selectedTiles, pickedTile], 
+                popUpMode: 'none'
+            }));
+        else
+            setMatrixInfo(p => ({
+                ...p, 
+                pickedTile: {...pickedTile},
+                popUpMode: "swap"
+            }))
     }
 
     return(
@@ -39,7 +45,7 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
             </TouchableOpacity>
 
             {/* Stat Name */}
-            <Text style={style.statName}>
+            <Text style={styles.statName}>
                 {getFullNameOfStat(pickedTile.name)}
             </Text>
 
@@ -49,12 +55,45 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
             {/* PlayerCards */}
             <PopUpPlayerCard />
 
-            <SelectBtn onPress={onPress}/>
+            {/* Select Btn */}
+            {matrixInfo.selectedTiles.find(tile => tile.index === pickedTile.index && tile.row === pickedTile.row) ?
+                <View style={styles.main2} onPress={() => onPress()}>
+                    <View style={styles.inner2}> 
+                        <Text style={{color:'white', fontSize: 25, fontFamily:'Roboto-Bold'}}>
+                            Picked
+                        </Text>
+                    </View>
+                </View>
+                    :
+                <TouchableOpacity style={styles.main} onPress={() => onPress()}>
+                    <View style={styles.inner}> 
+                        <Text style={{color:'white', fontSize: 25, fontFamily:'Roboto-Bold'}}>
+                            Pick
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            }
         </View>
     )
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
+    main: {
+        width:100, height:50, alignItems:'center',
+        backgroundColor: '#fa05c0', borderRadius: 10
+    },
+    inner:{
+        width:"100%", height:"95%", justifyContent:'center', alignItems:'center',
+        backgroundColor: '#db05fa', borderRadius: 10
+    },
+    main2: {
+        width:100, height:50, alignItems:'center', opacity:.5,
+        backgroundColor: '#fa05c0', borderRadius: 10
+    },
+    inner2:{
+        width:"100%", height:"95%", justifyContent:'center', alignItems:'center',
+        backgroundColor: '#db05fa', borderRadius: 10,  opacity:.5
+    },
     statName: {
         color: "white", fontFamily: "Roboto-Bold", fontSize: 30
     }

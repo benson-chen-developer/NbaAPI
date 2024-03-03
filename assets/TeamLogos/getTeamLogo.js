@@ -94,7 +94,6 @@ export const abbreviateName = (name) => {
     else 
         return "";
 
-    
 }
 
 export const getTeamLogoCdn = (name) => {
