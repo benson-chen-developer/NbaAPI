@@ -5,7 +5,6 @@ import amplifyconfig from '../src/amplifyconfiguration.json';
 Amplify.configure(amplifyconfig);
 
 import { useEffect, useState } from 'react';
-import InGame from './GameComponents/InGame';
 import PopUp from './PopUp/PopUp';
 import MainArea from './MainArea/MainArea';
 import { getCurrentUser } from 'aws-amplify/auth';
@@ -85,7 +84,7 @@ export default function MainContainer() {
         {user ?
           <View style={{flex:1, justifyContent:'center', alignItems:'center',}}>
             {currentGame ? 
-              <InGame currentGame={currentGame} setCurrentGame={setCurrentGame}/>
+              null
                 :
               <MainArea setCurrentGame={setCurrentGame}/>
             }

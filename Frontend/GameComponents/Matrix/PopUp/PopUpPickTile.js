@@ -34,8 +34,7 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
     }
 
     return(
-        <View style={{width:"90%", height:"70%", backgroundColor:"#273447", borderRadius: 8, alignItems:'center'}}>
-            
+        <>
             {/* X Btn */}
             <TouchableOpacity   
                 style={{height: 25, width:"80%", marginTop:30, marginBottom:10, alignItems:'flex-end', justifyContent:'center'}}
@@ -73,7 +72,7 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
                     </View>
                 </TouchableOpacity>
             }
-        </View>
+        </>
     )
 }
 

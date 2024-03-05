@@ -2,7 +2,6 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { useEffect, useState } from 'react'
 import LiveGameSlip from './LiveGameSlip';
 import { useMyContext } from '../../Context/MyContext';
-import { PreGameMatrix } from '../../GameComponents/PreGamePhase/PreGameMatrix';
 
 export default function LiveMainArea({setCurrentGame}) {
 

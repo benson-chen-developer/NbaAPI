@@ -3,9 +3,9 @@ import MainContainer from './Frontend/MainContainer'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TeamDepth } from './Frontend/TeamDepth/TeamDepth';
-import { GameHome } from './Frontend/GameComponents/GameHome';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GamePreScreen } from './Frontend/GameComponents/Pre/GamePreScreen';
+import { GameInScreen } from './Frontend/GameComponents/Live/GameInScreen';
 
 const Stack = createStackNavigator();
 
@@ -17,7 +17,7 @@ function App() {
           <Stack.Navigator screenOptions={{animationEnabled: false}}>
             <Stack.Screen name="Main" component={MainContainer} options={{ headerShown: false }} />
             <Stack.Screen name="TeamDepth" component={TeamDepth} options={{ headerShown: false }} />
-            <Stack.Screen name="GameHome" component={GameHome} options={{ headerShown: false }} />
+            <Stack.Screen name="GameInScreen" component={GameInScreen} options={{ headerShown: false }} />
             <Stack.Screen name="GamePreScreen" component={GamePreScreen} options={{ headerShown: false }} />
           </Stack.Navigator>
         </NavigationContainer>

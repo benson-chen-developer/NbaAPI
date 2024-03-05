@@ -2,14 +2,30 @@ import { View, Text, Image, StyleSheet } from "react-native"
 import { abbreviateName } from "../../../assets/TeamLogos/getTeamLogo";
 
 export const Header = ({homeTeamName, awayTeamName, gameStart=false, selectedTiles=[{},{},{}]}) => {
+    
     return(
         <View style={styles.header}>
-            <TeamItem teamName={homeTeamName} isHome={true}/>
+            <TeamItem teamName={awayTeamName} isHome={false}/>
 
             {gameStart ? 
-                <View style={{flexDirection:'row', width:100, justifyContent:'space-between'}}>
-                    <Text style={styles.score}>50</Text>
-                    <Text style={styles.score}>25</Text>
+                <View style={{width:95, height:"100%"}}>
+                    <View style={{flexDirection:'row', width:"100%", justifyContent:'space-between', alignItems:'center'}}>
+                        <Text style={{fontFamily: "Roboto-Black", fontSize:34, color:'white'}}>
+                            42 
+                        </Text>
+                        <Text style={{fontFamily: "Roboto-Black", fontSize:34, color:'white'}}>
+                            -
+                        </Text>
+                        <Text style={{fontFamily: "Roboto-Black", fontSize:28, color:'white'}}>
+                            37
+                        </Text>
+                    </View>
+
+                    <View style={{flexDirection:'row', width:"100%", justifyContent:'center'}}>
+                        <Text style={{fontFamily: "Roboto", fontSize:18, color:'white'}}>
+                            12:00
+                        </Text>
+                    </View>
                 </View>
                     :
                 <View style={{width:100, alignItems:'center'}}>
@@ -22,59 +38,33 @@ export const Header = ({homeTeamName, awayTeamName, gameStart=false, selectedTil
                 </View>
             }
 
-            <TeamItem teamName={awayTeamName} isHome={false}/>
+            <TeamItem teamName={homeTeamName} isHome={true}/>
         </View>
     )
 }
 
 const TeamItem = ({teamName, isHome}) => {
-    if(isHome)
-        return(
-            <View style={styles.teamItem}>
-                <Image 
-                    style={{height:50, width:50, marginRight:5}}
-                    source={{uri: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${abbreviateName(teamName)}.png`}}
-                />
-                <View>
-                    <Text style={{color:'white', fontFamily:'Roboto-MediumItalic', fontSize:20}}>
-                        {teamName}
-                    </Text>
-                    <Text style={{color:'white'}}>
-                        Home
-                    </Text>
-                </View>
-            </View>
-        )
-    else
-        return(
-            <View style={styles.teamItem}>
-                <View>
-                    <Text style={{color:'white', fontFamily:'Roboto-MediumItalic', fontSize:20}}>
-                        {teamName}
-                    </Text>
-                    <Text style={{color:'white'}}>
-                        Away
-                    </Text>
-                </View>
-                <Image 
-                    style={{height:50, width:50, marginLeft:5}}
-                    source={{uri: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${abbreviateName(teamName)}.png`}}
-                />
-            </View>
-        )
+    return(
+        <View style={{
+            justifyContent:'center', height:100, width:120, 
+            alignItems: isHome ? 'flex-end' : 'flex-start', 
+            marginLeft: isHome ? 0 : 10, marginRight: !isHome ? 0 : 10
+        }}>
+            <Image 
+                style={{height:60, width:60 }}
+                source={{uri: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${abbreviateName(teamName)}.png`}}
+            />
+            <Text style={{color:'white', fontFamily:'Roboto-Bold', fontSize:18}}>
+                {teamName}
+            </Text>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
     header:{
-        width:"100%", height:50, flexDirection:'row',
-        justifyContent:'space-evenly', alignItems:'center'
-    },
-    teamItem: {
-        justifyContent:'center', alignItems:'center', height:100, width:200,
-        flexDirection:'row'
-    },
-    score:{
-        fontFamily: "Roboto-Black", fontSize:25, color:'white'
+        width:"100%", height:50, flexDirection:'row', marginBottom:10,
+        justifyContent:'space-between', alignItems:'center'
     },
     gameTime:{
         color:'white', fontSize:20, fontFamily:'Roboto-Bold'

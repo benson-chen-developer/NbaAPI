@@ -1,50 +1,16 @@
-import { useEffect, useState } from "react";
-import { View, SafeAreaView, TouchableHighlight } from "react-native"
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { useState } from "react";
+import { View } from "react-native";
 import { useMyContext } from "../../Context/MyContext";
-import { GameNavBar } from ".././Shared/GameNavBar";
-import { GamePlayers } from "../Shared/GamePlayers";
 import { GameMatrix } from "../Matrix/GameMatrix";
 import { PopUpPickTile } from "../Matrix/PopUp/PopUpPickTile";
 import { PopUpPlayer } from "../Matrix/PopUp/PopUpPlayer";
 import { PopUpSwapTile } from "../Matrix/PopUp/PopUpSwapTile";
-import { Header } from "../Shared/Header";
+import { GamePlayers } from "../Shared/GamePlayers";
 
-export const GamePreScreen = ({route}) => {
-    const { game } = route.params;
 
-    const [matrixInfo, setMatrixInfo] = useState({
-        popUpMode: "none",
-        navBar: 'board',
-        pickedTile: null, // {"name": "AST", "team1": 36.9, "team1Progress": 0, "team2": 36.9, "team2Progess": 0}
-        pickedPlayer: null,
-        selectedTiles: []
-    });
-
-    return(
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#111A2B', height:"100%", width:"100%"}}>
-            {/* Header */}
-            <Header homeTeamName={game.teams[0]} awayTeamName={game.teams[1]} selectedTiles={matrixInfo.selectedTiles}/>
-
-            {/* Game Nav Bar */}
-            <GameNavBar matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} />
-
-            {matrixInfo.navBar === "board" ?
-                <BoardScreen game={game} matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} /> : null
-            }
-
-            {matrixInfo.navBar === "game" ?
-                <GameScreen game={game} matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} /> : null
-            }
-
-        </SafeAreaView>
-    )
-}
-
-const BoardScreen = ({game, matrixInfo, setMatrixInfo}) => {
+export const BoardScreen = ({game, matrixInfo, setMatrixInfo}) => {
 
     const { user } = useMyContext();
-
     const [homePlayerDepth, setHomePlayerDepth] = useState(game.player1Id === user.id ? game.player1Depth : game.player2Depth)
 
     return(
@@ -95,14 +61,6 @@ const BoardScreen = ({game, matrixInfo, setMatrixInfo}) => {
                     :  
                 null
             }
-        </>
-    )
-}
-
-const GameScreen = ({game, matrixInfo, setMatrixInfo}) => {
-    return(
-        <>
-
         </>
     )
 }

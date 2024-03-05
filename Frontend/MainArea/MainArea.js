@@ -5,7 +5,6 @@ import { useMyContext } from '../Context/MyContext';
 import Inventory from './Inventory/Inventory';
 import Navbar from './NavBar/Navbar';
 import LiveMainArea from './Live/LiveMainArea';
-import { Matrix } from '../GameComponents/PreGamePhase/Matrix';
 
 export default function MainArea() {
 
@@ -37,7 +36,7 @@ export default function MainArea() {
         }
 
         {screen === "Profile" ?
-          <Matrix /> 
+          null
             :
           null
         }

@@ -46,8 +46,7 @@ export const PopUpPlayer = ({matrixInfo, setMatrixInfo, playerDepth}) => {
     }, [])
 
     return(
-        <View style={{width:"90%", height:"70%", backgroundColor:"#273447", borderRadius: 8, alignItems:'center'}}>
-
+        <>
             <View style={{width:"90%", flexDirection:'row', marginBottom:20, height:175}}>
 
                 <View style={{width:"50%", height:"100%", justifyContent:'flex-end'}}>
@@ -74,7 +73,7 @@ export const PopUpPlayer = ({matrixInfo, setMatrixInfo, playerDepth}) => {
 
                 <HalfStats stats={pickedPlayer} name={"Last 5 Games"}/>
             </View>
-        </View>
+        </>
     )
 }
 
@@ -145,6 +144,6 @@ const styles = StyleSheet.create({
     },
     stats:{
         width:"90%", height:300, backgroundColor:'rgba(0,0,0,.25)',
-        justifyContent: 'center', alignItems:'center'
+        justifyContent: 'center', alignItems:'center', borderRadius:5
     }
 })
