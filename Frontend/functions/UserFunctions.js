@@ -89,12 +89,13 @@ export const getLiveGames = async (userId) => {
     for (let i = 0; i < filteredGames.length; i++) {
         const game = filteredGames[i];
         try {
-            const updatedGame = await getLatestActionsAndUpdateGame(game, userId);
+            const updatedGame = await (await getLatestActionsAndUpdateGame(game, userId)).updatedGame;
+            
             filteredGames[i] = updatedGame;
         } catch (error) {
             console.error("Check if game ended err:", error);
         }
     }
 
-    return games;
+    return filteredGames;
 }

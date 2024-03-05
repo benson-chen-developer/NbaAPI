@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { View, SafeAreaView, Text } from "react-native"
 import { useMyContext } from "../../Context/MyContext";
+import { getLatestActionsAndUpdateGame } from "../../functions/GameFunctions/GameLiveFunctions";
 import { GameNavBar } from "../Shared/GameNavBar";
 import { GamePlayers } from "../Shared/GamePlayers";
 import { Header } from "../Shared/Header";
@@ -73,14 +74,18 @@ export const GameInScreen = ({route}) => {
     ]);
 
     useEffect(() => {
-        // const intervalId = setInterval(async () => {
-        //     let updatedHomePlayerDepth = await getLatestActionsAndUpdateGame(game, user.id)
+        const intervalId = setInterval(async () => {
+            const updatedGameAndActions = await getLatestActionsAndUpdateGame(game, user.id)
             
-        //     setHomePlayerDepth(updatedHomePlayerDepth);
-        //     console.log("GameHome: Live Pulse", updatedHomePlayerDepth)
-        // }, 5000);
+            const updatedGame = updatedGameAndActions.updatedGame;
+            const actionsListLastFive = updatedGameAndActions.actionsListLastFive;
 
-        // return () => clearInterval(intervalId);
+            // setHomePlayerDepth(updatedHomePlayerDepth);
+            console.log("GameHome: Live Pulse", actionsListLastFive[0])
+            setActions(actionsListLastFive);
+        }, 5000);
+
+        return () => clearInterval(intervalId);
     }, []);
 
     return(

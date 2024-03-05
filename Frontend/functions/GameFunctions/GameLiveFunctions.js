@@ -140,7 +140,7 @@ const addThisActionToPlayer = (player, action) => {
         */
         const lastAction = actionsListRes[actionsListRes.length - 1];
         if (lastActionNumber === lastAction.actionNumber) {
-            return game;
+            return {updatedGame: game};;
         }
 
         /* 
@@ -165,11 +165,15 @@ const addThisActionToPlayer = (player, action) => {
 
         /* Update the game */
         const updatedGame = await UpdateGame(updateInput, "UserFunction.js");
+
+        /* Here we return the actions for the user to view (Only latest 5) */
+        const actionsListLastFive = actionsListRes.slice(-5);
         
-        return updatedGame;
+        // console.log("GameLiveFunctions 2", actionsListLastFive)
+        return {updatedGame: updatedGame, actionsListLastFive: actionsListLastFive};
     } catch (error) {
         console.error("Error in getLatestActionsAndUpdateGame: (Game didnt start)", error);
 
-        return game;
+        return {updatedGame: game};;
     }
 }
