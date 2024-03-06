@@ -81,8 +81,14 @@ export const GameInScreen = ({route}) => {
             const actionsListLastFive = updatedGameAndActions.actionsListLastFive;
 
             // setHomePlayerDepth(updatedHomePlayerDepth);
-            console.log("GameHome: Live Pulse", actionsListLastFive[0])
+            // console.log("GameHome: Live Pulse", actionsListLastFive)
             setActions(actionsListLastFive);
+
+            if(actionsListLastFive[actionsListLastFive.length-1].description === "Game End"){
+                console.log("GameHome: Game is Over");
+
+                clearInterval(intervalId);
+            }
         }, 5000);
 
         return () => clearInterval(intervalId);

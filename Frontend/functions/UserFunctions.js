@@ -97,5 +97,6 @@ export const getLiveGames = async (userId) => {
         }
     }
 
-    return filteredGames;
+    // return filteredGames;
+    return games;
 }

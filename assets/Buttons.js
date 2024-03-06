@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from "react-native"
+import { TouchableOpacity, View, Text } from "react-native"
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
@@ -24,5 +24,21 @@ export const CloseBtn = ({func}) => {
                 <FontAwesome name="close" size={28} color="white" />
             </View>
         </TouchableOpacity>
+    )
+}
+
+export const DefaultBtn = ({
+    text, mainColor, secondColor, size, func
+}) => {
+    return(
+        <TouchableOpacity 
+            style={{borderRadius:5, backgroundColor: secondColor, height: size/2, width:size, alignItems:'center'}}
+            onPress={() => func()}
+        >
+            <View style={{width:"100%", height:"93%", backgroundColor: mainColor, borderRadius:5, justifyContent:'center', alignItems:'center'}}>
+                <Text style={{color:'white', fontFamily:'Roboto-Bold', fontSize:size/4.5}}>{text}</Text>
+            </View>
+        </TouchableOpacity>
+
     )
 }

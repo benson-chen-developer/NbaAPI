@@ -118,7 +118,7 @@ const addThisActionToPlayer = (player, action) => {
  * @param {gameAWS} game Its the game aws obj
  * @param {string} userId User's id
  */
- export const getLatestActionsAndUpdateGame = async (game, userId) => {
+export const getLatestActionsAndUpdateGame = async (game, userId) => {
     /* This is to set up our variables by checking which playerId is ours */
     const isPlayer1 = game.player1Id === userId;
     let playerDepth = [];
@@ -176,4 +176,8 @@ const addThisActionToPlayer = (player, action) => {
 
         return {updatedGame: game};;
     }
+}
+
+export const closeGame = (game, userId) => {
+    
 }

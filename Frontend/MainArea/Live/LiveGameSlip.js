@@ -21,7 +21,8 @@ export default function LiveGameSlip({game}) {
     const bringToLiveGame = (game) => {
         // if(gameStarted())
         if(true)
-            navigation.navigate("GameInScreen", { game: game })
+            // navigation.navigate("GameInScreen", { game: game })
+            navigation.navigate("GameEnd", { game: game })
         else
             navigation.navigate("GamePreScreen", { game: game })
     }
