@@ -84,6 +84,7 @@ export const GameInScreen = ({route}) => {
             // console.log("GameHome: Live Pulse", actionsListLastFive)
             setActions(actionsListLastFive);
 
+            /* Game Is Over */
             if(actionsListLastFive[actionsListLastFive.length-1].description === "Game End"){
                 console.log("GameHome: Game is Over");
 

@@ -1,3 +1,5 @@
+import { BoardSquare } from "../../Classes/BoardSquare"
+
 export const generateMatrix2 = () => {
     let matrix = [
         [null, null, null, null],
@@ -70,13 +72,9 @@ const fillMatrixWithStats = (team1Averages, team2Averages, matrix) => {
             let costOfOptionsTeam2 = 0.0;
             options.forEach(item => costOfOptionsTeam2 += team2Averages[item])
 
-            matrix[i][j] = {
-                name: matrix[i][j],
-                team1: costOfOptionsTeam1,
-                team1Progress: 0,
-                team2: costOfOptionsTeam2,
-                team2Progess: 0
-            }
+            matrix[i][j] = new BoardSquare(
+                matrix[i][j], 0, costOfOptionsTeam1, 0, costOfOptionsTeam2
+            )
         }
     }
 

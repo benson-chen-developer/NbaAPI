@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity } from "react-native"
 import { abbreviateName, getTeamLogo } from "../../../assets/TeamLogos/getTeamLogo"
 import { playBtnColor } from "../../../assets/Themes/ThemeColors"
 import { ThemeFonts } from "../../../assets/Themes/ThemeFont"
+import { InGamePlayer } from "../../../Classes/InGamePlayer"
 import { useMyContext } from "../../Context/MyContext"
 import { startSearchForGame } from "../../functions/GameFunctions/GameStartFunctions"
 
@@ -25,6 +26,7 @@ export const GameCard = ({game}) => {
         })
 
         setPickedTeamNames(teamNames);
+
     }, [])
 
     const pressPlay = async () => {
@@ -33,10 +35,12 @@ export const GameCard = ({game}) => {
         setLoading(true);
 
         const ourDepth = [
-            {name: "L. James","PTS": 0,"REB": 0,"AST": 0,"BLK": 0,"STL": 0,"3PM": 0,"3PA": 0},
-            {name: "A. Davis","PTS": 0,"REB": 0,"AST": 0,"BLK": 0,"STL": 0,"3PM": 0,"3PA": 0},
-            {name: "D. Russell","PTS": 0,"REB": 0,"AST": 0,"BLK": 0,"STL": 0,"3PM": 0,"3PA": 0},
-        ]
+            // {name: "L. James","PTS": 0, "PTSAvailable": 0, "REB": 0, "REBAvailable" : 0, "AST": 0, "ASTAvailable": 0, "BLK": 0, "BLKAvailable": 0, "STL": 0,"STLAvailable":0, "3PM": 0, "3PMAvailable": 0, "3PA": 0},
+            // {name: "A. Davis","PTS": 0, "PTSAvailable": 0, "REB": 0, "REBAvailable" : 0, "AST": 0, "ASTAvailable": 0, "BLK": 0, "BLKAvailable": 0, "STL": 0,"STLAvailable":0, "3PM": 0, "3PMAvailable": 0, "3PA": 0},
+            // {
+            //     name: "D. Russell","PTS": 0, "REB": 0, "AST": 0, "BLK": 0, "STL": 0, "3PM": 0, "3PA": 0,
+            // },
+        ];
 
         try{    
             const newGame = await startSearchForGame(user, pickedTeam, game, ourDepth);

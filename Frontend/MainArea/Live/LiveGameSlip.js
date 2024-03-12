@@ -10,19 +10,20 @@ export default function LiveGameSlip({game}) {
 
     const gameStarted = () => {
         const estTimeStart = new Date(game.timeStart);
-        const currentTimeEST = new Date() - (5 * 60 * 60 * 1000);
+        const currentTimeEST = new Date() - (5 * 60 * 60 * 1000); // Current time in EST
+        const tenMinutesAgoEST = new Date(currentTimeEST - (10 * 60 * 1000)); //Since games start 10 min later
 
-        if (estTimeStart < new Date(currentTimeEST))
+        if (tenMinutesAgoEST < new Date(currentTimeEST))
             return true;
         else
             return false
     }
 
     const bringToLiveGame = (game) => {
-        // if(gameStarted())
-        if(true)
-            // navigation.navigate("GameInScreen", { game: game })
-            navigation.navigate("GameEnd", { game: game })
+        if(gameStarted())
+        // if(true)
+            navigation.navigate("GameInScreen", { game: game })
+            // navigation.navigate("GameEnd", { game: game })
         else
             navigation.navigate("GamePreScreen", { game: game })
     }

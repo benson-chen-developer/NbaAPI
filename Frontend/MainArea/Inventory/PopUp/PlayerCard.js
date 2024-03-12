@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, View, Image } from 'react-native';
 import { useEffect, useState } from 'react'
-import { getPlayerCardColors } from '../../../assets/TeamCosmetics/PlayerCardColors';
-import { getPlayerHeadShot } from '../../../assets/PlayerHeadshots/getPlayerHeadShot';
+import { getPlayerCardColors } from '../../../../assets/TeamCosmetics/PlayerCardColors';
+import { getPlayerHeadShot } from '../../../../assets/PlayerHeadshots/getPlayerHeadShot';
 
 const innerCardColor = "#121320";
 const cardBorderColor = "#2C2C39";
@@ -9,8 +9,7 @@ const levelBarColor = "#14cc14";
 const levelBarDarkColor = "#111111";
 const playerNameColor = "#FFFFFF";
 
-export default function PlayerCard({player, setCurrentPlayer, setPopUp}) {
-
+export default function PlayerCard({player, currentTeam, popUpInfo, setPopUpInfo}) {
     const [playerNameBackGroundColor, setPlayerNameBackGroundColor] = useState("#111111");
     const [playerBarProgress, setPlayerBarProgress] = useState("0%");
     const [playerBarUpperNumber, setPlayerBarUpperNumber] = useState("");
@@ -30,8 +29,7 @@ export default function PlayerCard({player, setCurrentPlayer, setPopUp}) {
             borderWidth: 2, borderColor: cardBorderColor, borderRadius: 10,
             justifyContent: 'space-between', marginBottom: 20
         }} onPress={() => {
-            setCurrentPlayer(player);
-            setPopUp("Player");
+            setPopUpInfo(p => ({ ...p, popUpScreen: "Player", player: player, teamDepth: currentTeam }));
         }}>
             {/* Picture */}
             <Image 

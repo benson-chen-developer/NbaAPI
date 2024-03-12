@@ -14,7 +14,7 @@ import { useMyContext } from './Context/MyContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { LoadingScreen } from './LoadingScreen';
-import { getAsyncTeamDepth, getTodayTmrGames } from './functions/AsyncStorage';
+import { getTodayTmrGames } from './functions/AsyncStorage';
 
 export default function MainContainer() {
 
@@ -47,11 +47,6 @@ export default function MainContainer() {
               setLiveGameLoading(false);
             })
 
-            getAsyncTeamDepth().then(teamDepthRes => {
-              setTeamDepthArray(teamDepthRes)
-              setUserLoading(false);
-            })
-
             getTodayTmrGames().then(todayTmrGamesRes => {
               setTodayGames(todayTmrGamesRes);
               setTodayTmrGamesLoading(false);
@@ -68,7 +63,7 @@ export default function MainContainer() {
     fetchUser();
   }, [])
 
-  if(userLoading || todayTmrGamesLoading || liveGameLoading){
+  if(todayTmrGamesLoading || liveGameLoading){
     return(
       <Text>Loading</Text>
     )
