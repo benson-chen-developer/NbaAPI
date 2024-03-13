@@ -4,7 +4,7 @@ import { getTeamLogo } from "../../../../assets/TeamLogos/getTeamLogo"
 import { ThemeFonts } from "../../../../assets/Themes/ThemeFont";
 import { FontAwesome } from '@expo/vector-icons';
 
-export const TeamPickerPopUp = ({currentTeam, setCurrentTeam, setPopUp}) => {
+export const TeamPickerPopUp = ({currentTeam, setCurrentTeam, setPopUpInfo}) => {
 
     const [coastTeams, setCoastTeams] = useState([]);
     const [displayedTeams, setDisplayedTeams] = useState([]);
@@ -69,7 +69,7 @@ export const TeamPickerPopUp = ({currentTeam, setCurrentTeam, setPopUp}) => {
                 </Text>
             </View>
             <View style={{height: "100%", alignItems:'flex-start'}}>
-                <TouchableOpacity onPress={() => setPopUp("")}>
+                <TouchableOpacity onPress={() => setPopUpInfo(p => ({ ...p, popUpScreen: "" }))}>
                     <FontAwesome name="close" size={35} color="black" />
                 </TouchableOpacity>
             </View>
@@ -96,7 +96,7 @@ export const TeamPickerPopUp = ({currentTeam, setCurrentTeam, setPopUp}) => {
             <View style={{width:"90%", flexDirection:'row', justifyContent:'space-between'}}>
                 {coastTeams.slice(0, 4).map((team, index) => 
                     <TeamSquare 
-                        key={index} team={team} setPopUp={setPopUp}
+                        key={index} team={team} setPopUpInfo={setPopUpInfo}
                         setCurrentTeam={setCurrentTeam}
                     />
                 )}
@@ -106,7 +106,7 @@ export const TeamPickerPopUp = ({currentTeam, setCurrentTeam, setPopUp}) => {
             <View style={{width:"90%", flexDirection:'row', justifyContent:'space-between'}}>
                 {coastTeams.slice(4, 8).map((team, index) => 
                     <TeamSquare 
-                        key={index} team={team} setPopUp={setPopUp}
+                        key={index} team={team} setPopUpInfo={setPopUpInfo}
                         setCurrentTeam={setCurrentTeam}
                     />
                 )}
@@ -116,7 +116,7 @@ export const TeamPickerPopUp = ({currentTeam, setCurrentTeam, setPopUp}) => {
             <View style={{width:"90%", flexDirection:'row', justifyContent:'space-between'}}>
                 {coastTeams.slice(8, 12).map((team, index) => 
                     <TeamSquare 
-                        key={index} team={team} setPopUp={setPopUp}
+                        key={index} team={team} setPopUpInfo={setPopUpInfo}
                         setCurrentTeam={setCurrentTeam}
                     />
                 )}
@@ -126,7 +126,7 @@ export const TeamPickerPopUp = ({currentTeam, setCurrentTeam, setPopUp}) => {
             <View style={{width:"90%", flexDirection:'row', justifyContent:'space-between'}}>
                 {coastTeams.slice(12, 16).map((team, index) => 
                     <TeamSquare 
-                        key={index} team={team} setPopUp={setPopUp}
+                        key={index} team={team} setPopUpInfo={setPopUpInfo}
                         setCurrentTeam={setCurrentTeam}
                     />
                 )}
@@ -137,7 +137,7 @@ export const TeamPickerPopUp = ({currentTeam, setCurrentTeam, setPopUp}) => {
     )
 }
 
-const TeamSquare = ({team, setCurrentTeam, setPopUp}) => {
+const TeamSquare = ({team, setCurrentTeam, setPopUpInfo}) => {
     if(team.name === "empty"){
         return(
             <View style={{
@@ -154,7 +154,7 @@ const TeamSquare = ({team, setCurrentTeam, setPopUp}) => {
             // backgroundColor: "#283f60", borderRadius:5
         }} onPress={() => {
             setCurrentTeam(team);
-            setPopUp("");
+            setPopUpInfo(p => ({ ...p, popUpScreen: "" }));
         }}>
             <View style={{
                 width:70, height:70, justifyContent:'center', alignItems:'center',
