@@ -15,7 +15,7 @@ export default function Inventory() {
     const {playerStats, teamDepthObjArray, setTeamDepthObjArray} = useMyContext();
 
     const [onScreenCards, setOnScreenCards] = useState([]);
-    const [currentTeam, setCurrentTeam] = useState({"name":"Celtics","abbreviated":"BOS","teamDepth":["Jayson Tatum","Derrick White","Kristaps Porzingis","Jrue Holiday","Jaylen Brown"]});
+    const [currentTeam, setCurrentTeam] = useState(teamDepthObjArray.find(teamDepthObj => teamDepthObj.name === "Celtics"));
     const [homeScreen, setHomeScreen] = useState("All");
 
     const [popUpInfo, setPopUpInfo] = useState({
@@ -23,7 +23,7 @@ export default function Inventory() {
         player: null,
         teamDepth: null
     });
-    
+
     useEffect(() => {
         let setArr = [];
 

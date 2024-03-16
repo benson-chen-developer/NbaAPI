@@ -15,7 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { LoadingScreen } from './LoadingScreen';
 import { AsyncDailyCheck, getTodayTmrGames } from './functions/AsyncStorage';
-import { autoCreateTeamDepth, getAsyncTeamDepth } from './functions/AsyncStorage/TeamDepth';
+import { autoCreateTeamDepth, getAsyncTeamDepth, setAsyncTeamDepthObjArray } from './functions/AsyncStorage/TeamDepth';
 import { getPlayerStatsToday, getTeamDataAWS } from './functions/AsyncStorage/PlayerStats';
 
 export default function MainContainer() {
@@ -56,10 +56,15 @@ export default function MainContainer() {
               getPlayerStatsToday(teamDataRes).then(playerStatsRes => {
                 setPlayerStats(playerStatsRes);
 
-                autoCreateTeamDepth(playerStatsRes).then(teamDepthRes => {
-                  setTeamDepthObjArray(teamDepthRes);
-                })
+                // autoCreateTeamDepth(playerStatsRes).then(teamDepthRes => {
+                //   setTeamDepthObjArray(teamDepthRes);
+                //   setAsyncTeamDepthObjArray(teamDepthRes);
+                // })
               })
+            })
+
+            getAsyncTeamDepth().then(teamDepthObjArrayRes => {
+              setTeamDepthObjArray(teamDepthObjArrayRes);
             })
 
             getTodayTmrGames().then(todayTmrGamesRes => {
