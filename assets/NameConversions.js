@@ -41,8 +41,7 @@ export const ShortenPlayerName = (name) => {
 /*
     If toShort is true then turn the name to short otherwise return long one
 */
-export const teamNameConversion = ({name, toShort}) => {
-    if(toShort){
-        // if()
-    }
+export const teamNameConversion = (name) => {
+    if(name === "BOS") return "Celtics";
+    else if(name === "LAL") return "Lakers";
 }

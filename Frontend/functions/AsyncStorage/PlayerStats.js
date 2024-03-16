@@ -23,7 +23,7 @@ export const getTeamDataAWS = async () => {
     try{
         const playersToday = await AsyncStorage.getItem('playersToday');
 
-        if(playersToday !== null){
+        if(playersToday === null){
             console.log("AsynceStorage: We didnt cached it (players)");
 
             try{
