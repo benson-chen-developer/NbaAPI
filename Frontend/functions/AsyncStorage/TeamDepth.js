@@ -52,28 +52,6 @@ export const setAsyncTeamDepth = async (oldPlayer, newPlayer) => {
     return teamDepthArray;
 }
 
-export const switchPlayerIntoTeamDepthIndex = async (teamName, playerName, newIndex) => {
-    const teamDepthObjArray = JSON.parse(await AsyncStorage.getItem('teamDepthObjArray'));
-
-    const teamDepthObj = teamDepthObjArray.find(teamDepthObj => teamDepthObj.name === teamName);
-
-    let indexOfPlayer = teamDepthObj.teamDepth.indexOf(name => name === playerName);
-    if(indexOfPlayer === -1){
-        teamDepthObj.teamDepth[newIndex] = playerName;
-    } else {
-        teamDepthObj.teamDepth[indexOfPlayer] = teamDepthObj.teamDepth[newIndex];
-        teamDepthObj.teamDepth[newIndex] = playerName;
-    }
-
-    teamDepthObjArray.forEach(obj => {
-        if(obj.name === teamDepthObj.name){
-            obj = teamDepthObj;
-        }
-    })
-
-    console.log("switchPlayerIntoTeamDepthIndex", teamDepthObjArray);
-}
-
 export const newTeamDepthObjArray = async (newArr) => {
     const teamDepthObjArray = JSON.stringify(newArr);
     await AsyncStorage.setItem('teamDepthObjArray', teamDepthObjArray);

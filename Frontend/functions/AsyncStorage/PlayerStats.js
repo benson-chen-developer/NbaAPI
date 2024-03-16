@@ -1,4 +1,17 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { generateClient } from "aws-amplify/api";
+import { listTeamData } from '../../../src/graphql/queries';
+
+const client = generateClient();
+
+export const getTeamDataAWS = async () => {
+    const teamData = await client.graphql({
+        query: listTeamData,
+    });
+
+    const ret = teamData.data.listTeamData.items;
+    return ret;
+}
 
 /**
  * @param {[{name: "Celtics", abbreviated:'BOS', players: [string]}]} teams 
@@ -6,7 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
  * 
  * @return
  */
-export const getPlayerStatsToday = async (teams=[{teams:"Celtics", abbreviated:'BOS', players:["Jaylen Brown"]}]) => {
+ export const getPlayerStatsToday = async (teams) => {
     try{
         const playersToday = await AsyncStorage.getItem('playersToday');
 
@@ -75,67 +88,5 @@ export const getPlayerStatsToday = async (teams=[{teams:"Celtics", abbreviated:'
         }
     } catch(err) {
         console.log("AsyncStorage Error, players", err)
-    }
-}
-
-export const getTodayTmrGames = async () => {
-    return fetch("https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json")
-        .then(res => res.json())
-        .then(async data => {
-            const gameDates = data.leagueSchedule.gameDates;
-            const currentDate = new Date();
-            const day = String(currentDate.getDate()).padStart(2, '0');
-            const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-            const year = currentDate.getFullYear();
-            const formattedDate = `${month}/${day}/${year}`;
-
-            // console.log("AsyncStorage TodayTmrGames", JSON.stringify(data.leagueSchedule.gameDates, null, 2));
-
-            const gamesTodayFetched = gameDates.find(game => 
-                game.gameDate.split(' ')[0] === formattedDate)?.games || [];
-
-            const gamesTodayReturn = gamesTodayFetched.map(game => ({
-                awayTeam: game.awayTeam,
-                homeTeam: game.homeTeam,
-                timeStart: game.gameDateTimeEst,
-                apiLink: `https://cdn.nba.com/static/json/liveData/playbyplay/playbyplay_${game.gameId}.json`
-            }));
-
-            return gamesTodayReturn;
-        })
-        .catch(err => {
-            console.log("Error fetching NBA API:", err);
-            return []; // Return empty array if there's an error
-        });
-}
-
-/**
- * @returns {bool} If it is true then regrab games and player stats
- */
-export const AsyncDailyCheck = async () => {
-    /*
-        We reset the daily check at 1:15 AM EST each day
-        
-        How we do this is we get the current time and see if it is
-        after the nextDailyResetTime. If it is we return true and 
-        then set nextDailyResetTime to tmr's 1:15 AM EST date.
-    */
-
-    const nextDailyResetTime = JSON.parse(await AsyncStorage.getItem('nextDailyResetTime'));
-    const timeNow = Date.now();
-
-    // console.log("AsyncDailyCheck TimeNow", timeNow)
-    // console.log("AsyncDailyCheck", nextDailyResetTime)
-
-    if(timeNow > nextDailyResetTime){
-        let nextDailyResetTime = new Date(); /* Should be 1:15AM EST in UTC time which is 6:15 */
-        nextDailyResetTime.setUTCHours(6, 15, 0, 0);
-        console.log("We have to change nextDailyResetTime", nextDailyResetTime);
-
-        await AsyncStorage.setItem('nextDailyResetTime', JSON.stringify(nextDailyResetTime));
-
-        return true;
-    } else {
-        return false;
     }
 }

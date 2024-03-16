@@ -15,6 +15,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { LoadingScreen } from './LoadingScreen';
 import { AsyncDailyCheck, getTodayTmrGames } from './functions/AsyncStorage';
+import { getAsyncTeamDepth } from './functions/AsyncStorage/TeamDepth';
+import { getPlayerStatsToday, getTeamDataAWS } from './functions/AsyncStorage/PlayerStats';
 
 export default function MainContainer() {
 
@@ -25,7 +27,7 @@ export default function MainContainer() {
   const [liveGameLoading, setLiveGameLoading] = useState(false);
   const [todayTmrGamesLoading, setTodayTmrGamesLoading] = useState(false);
 
-  const { user, setUser, loading, liveGames, setLiveGames, setTeamDepthArray, setTodayGames } = useMyContext();
+  const { user, setUser, setPlayerStats, loading, liveGames, setLiveGames, setTeamDepthArray, setTodayGames } = useMyContext();
 
   
   useEffect(() => {
@@ -42,13 +44,18 @@ export default function MainContainer() {
         })
 
         getCurrentUserWithAuth(user).then(userRes => {
-            // console.log("MainContainer: User", JSON.stringify(userRes, null, 2));
             setUser(userRes);
 
             getLiveGames(userRes.id).then(liveGamesRes => {
               // console.log("MainContainer: Livegames", JSON.stringify(liveGamesRes, null, 2));
               setLiveGames(liveGamesRes);
               setLiveGameLoading(false);
+            })
+
+            getTeamDataAWS().then(teamDataRes => {
+              getPlayerStatsToday(teamDataRes).then(playerStatsRes => {
+                setPlayerStats(playerStatsRes);
+              })
             })
 
             getTodayTmrGames().then(todayTmrGamesRes => {
