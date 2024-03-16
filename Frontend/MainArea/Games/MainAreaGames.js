@@ -2,7 +2,6 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { useEffect, useState } from 'react'
 import { useMyContext } from '../../Context/MyContext';
 import { fetchLiveGameFeed } from '../../functions/GameFunctions/GamePlayFunctions';
-import { clearGamesToday, getGamesToday } from '../../functions/AsyncStorage/AsyncGetTodayGames';
 import { GameCard } from './GameCard';
 import { CapacityGames } from './CapacityGames';
 import { GamesCarousel } from './GamesCarousel';
@@ -19,11 +18,6 @@ export default function MainAreaGames({setCurrentGame}) {
     
     useEffect(() => {
       // clearGamesToday()
-      // getGamesToday().then(todayGamesRes => {
-      //   // console.log("MainAreaGames.js",todayGamesRes)
-      //   setTodayGames(todayGamesRes);
-      //   setSelectedGame(todayGamesRes[0]);
-      // })
 
       setSelectedGame(todayGames[0]);
 

@@ -4,9 +4,13 @@ import { useMyContext } from "../../../Context/MyContext";
 import { TeamDepthPlayerCard } from "./TeamDepthPlayerCard";
 import { TeamDepthCarousel } from "./TeamDepthCarousel";
 import { useState } from "react";
+import { MaterialIcons } from '@expo/vector-icons';
 
-export const TeamDepthPopUp = ({popUpInfo, setPopUpInfo}) => {
-    const {teamDepth} = popUpInfo;
+export const TeamDepthPopUp = ({popUpInfo, setPopUpInfo, allPlayers}) => {
+
+    const {teamDepthObjArray} = useMyContext();
+
+    const teamDepth = teamDepthObjArray.find(teamObj => teamObj.name === popUpInfo.teamDepth.name);
 
     return(
         <>
@@ -15,7 +19,7 @@ export const TeamDepthPopUp = ({popUpInfo, setPopUpInfo}) => {
             <View style={{width:"90%", marginTop:30, flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
                 <View style={{height: "100%", alignItems:'flex-start'}}>
                     <TouchableOpacity onPress={() => setPopUpInfo(p => ({ ...p, popUpScreen: "Player" }))}>
-                        <FontAwesome name="close" size={35} color="black" />
+                        <MaterialIcons name="backspace" size={32} color="black" />
                     </TouchableOpacity>
                 </View>
 
@@ -26,28 +30,13 @@ export const TeamDepthPopUp = ({popUpInfo, setPopUpInfo}) => {
                 </View>
             </View>
 
-            {popUpInfo.player.depthPosition != -1 ?
-                <AddPlayer teamDepth={teamDepth} setPopUpInfo={setPopUpInfo}/>
-                    :
-                <SwapPlayer teamDepth={teamDepth}/>
-            }
+            <AddPlayer teamDepth={teamDepth} pickedName={popUpInfo.player.name} setPopUpInfo={setPopUpInfo}/>
 
         </>
     )
 }
 
-const SwapPlayer = () => {
-    return(
-        <View>
-            <Text>hs</Text>
-        </View>
-    )
-}
-
-const AddPlayer = ({teamDepth, setPopUpInfo}) => {
-    console.log("addplayer", teamDepth)
-
-    const {setTeamDepthObjArray} = useMyContext();
+const AddPlayer = ({teamDepth, pickedName, setPopUpInfo}) => {
     const [stats, setStats] = useState([
         {name: "PTS", selected: false}, 
         {name: "REB", selected: false}, 
@@ -56,40 +45,24 @@ const AddPlayer = ({teamDepth, setPopUpInfo}) => {
         {name: "STL", selected: false}, 
     ]);
 
-    const onPress = (chosenIndex, newName) => {
-        setTeamDepthObjArray(prevArray => 
-            prevArray.map(p => {
-                if (p.name === "Celtics") {
-                    const updatedTeamDepth = p.teamDepth.map((name, index) =>
-                        index === chosenIndex ? "New Name" : newName
-                    );
-                    return { ...p, teamDepth: updatedTeamDepth };
-                }
-                return p;
-            })
-        );
-
-        setPopUpInfo(p => ({ ...p, popUpScreen: "" }));
-    };
-
     return(
         <View style={{width:"100%", height:"100%", alignItems:'center'}}>
 
             <TeamDepthCarousel stats={stats} setStats={setStats}/>
 
             <View style={{width:"90%", marginBottom:20, marginTop:10}}>
-                <TeamDepthPlayerCard func={null} />
+                <TeamDepthPlayerCard teamName={teamDepth.name} playerName={pickedName} pickedName={pickedName} setPopUpInfo={setPopUpInfo}/>
             </View>
 
             <View style={{width:"100%", justifyContent:'space-evenly', flexDirection:'row'}}>
-                {teamDepth.teamDepth.slice(0, 3).map((item, index) => (
-                    <TeamDepthPlayerCard key={index} item={item} func={onPress} />
+                {teamDepth.teamDepth.slice(0, 3).map((player, index) => (
+                    <TeamDepthPlayerCard key={index} teamName={teamDepth.name} playerName={player} pickedName={pickedName} setPopUpInfo={setPopUpInfo}/>
                 ))}
             </View>
 
             <View style={{width:"100%", justifyContent:'space-evenly', flexDirection:'row', marginTop:20}}>
-                {teamDepth.teamDepth.slice(3, 5).map((item, index) => (
-                    <TeamDepthPlayerCard key={index} item={item} func={onPress} />
+                {teamDepth.teamDepth.slice(3, 5).map((player, index) => (
+                    <TeamDepthPlayerCard key={index} teamName={teamDepth.name} playerName={player} pickedName={pickedName} setPopUpInfo={setPopUpInfo}/>
                 ))}
             </View>
 

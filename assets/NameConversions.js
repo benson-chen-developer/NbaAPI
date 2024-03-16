@@ -18,6 +18,26 @@ export const getFullNameOfStat = (sortName) => {
     else "Err"
 }
 
+/**
+ * Turns Lebron James to L. James
+ * @param {string} name 
+ * @returns {string}
+ */
+export const ShortenPlayerName = (name) => {
+    const arr = name.split(" ");
+
+    const firstName = arr[0];
+    if (arr.length === 1) {
+        return `${firstName.charAt(0)}.`;
+    }
+
+    const lastName = arr[arr.length - 1];
+    const shortenedLastName = lastName.length > 9 ? `${lastName.slice(0, 9)}.` : lastName;
+
+    return `${firstName.charAt(0)}. ${shortenedLastName}`;
+}
+
+
 /*
     If toShort is true then turn the name to short otherwise return long one
 */

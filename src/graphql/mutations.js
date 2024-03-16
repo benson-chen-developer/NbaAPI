@@ -1,6 +1,54 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createTeamData = /* GraphQL */ `
+  mutation CreateTeamData(
+    $input: CreateTeamDataInput!
+    $condition: ModelTeamDataConditionInput
+  ) {
+    createTeamData(input: $input, condition: $condition) {
+      id
+      name
+      players
+      abbreviated
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const updateTeamData = /* GraphQL */ `
+  mutation UpdateTeamData(
+    $input: UpdateTeamDataInput!
+    $condition: ModelTeamDataConditionInput
+  ) {
+    updateTeamData(input: $input, condition: $condition) {
+      id
+      name
+      players
+      abbreviated
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+export const deleteTeamData = /* GraphQL */ `
+  mutation DeleteTeamData(
+    $input: DeleteTeamDataInput!
+    $condition: ModelTeamDataConditionInput
+  ) {
+    deleteTeamData(input: $input, condition: $condition) {
+      id
+      name
+      players
+      abbreviated
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser(
     $input: CreateUserInput!

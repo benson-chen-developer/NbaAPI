@@ -82,3 +82,12 @@ export const newTeamDepthObjArray = async (newArr) => {
 
     return storedValue;
 }
+
+export const setAsyncTeamDepthObjArray = async (newArr) => {
+    const teamDepthObjArray = JSON.stringify(newArr);
+    await AsyncStorage.setItem('teamDepthObjArray', teamDepthObjArray);
+
+    const storedValue = await AsyncStorage.getItem('teamDepthObjArray');
+
+    return JSON.parse(storedValue);
+}

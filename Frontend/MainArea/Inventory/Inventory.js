@@ -100,6 +100,7 @@ export default function Inventory() {
                 <PopUp 
                     currentTeam={currentTeam} setCurrentTeam={setCurrentTeam}
                     popUpInfo={popUpInfo} setPopUpInfo={setPopUpInfo}
+                    allPlayers={onScreenCards}
                 /> : null
             }
         </SafeAreaView>

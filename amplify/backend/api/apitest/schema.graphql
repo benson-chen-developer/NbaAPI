@@ -1,3 +1,10 @@
+type TeamData @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  players: [String]
+  abbreviated: String
+}
+
 type User @model @auth(rules: [{allow: public}]) {
   id: ID!
   email: String!

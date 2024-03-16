@@ -1,59 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const getGamesToday = async () => {
-    try{
-        const gamesToday = await AsyncStorage.getItem('gamesToday');
-
-        if(gamesToday === null){
-            console.log("AsynceStorage: We didnt cached it");
-
-            fetch("https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json")
-                .then(res => res.json())
-                .then(async data => {
-
-                    const gameDates = data.leagueSchedule.gameDates;
-                    // console.log("AsynceStorage: Called Nba API", JSON.stringify(gameDates, null, 2));
-
-                    const currentDate = new Date();
-                    const day = String(currentDate.getDate()).padStart(2, '0');
-                    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-                    const year = currentDate.getFullYear();
-                    const formattedDate = `${month}/${day}/${year}`;
-
-                    
-                    const gamesTodayFetched = gameDates.find(game => 
-                        game.gameDate.split(' ')[0] === formattedDate).games;
-                    
-                    const gamesTodayReturn = [];
-
-                    gamesTodayFetched.forEach(game => {
-                        gamesTodayReturn.push({
-                            awayTeam: game.awayTeam,
-                            homeTeam: game.homeTeam,
-                            // timeStart: game.
-                        })
-                        // console.log("AsynceStorage: Called Nba API", game.homeTeam, null, 2);
-                    })
-                    // console.log("AsynceStorage: Called Nba API", JSON.stringify(gamesTodayReturn), null, 2);
-
-                    // await AsyncStorage.setItem('gamesToday', JSON.stringify(gamesTodayReturn));
-
-                    return gamesTodayReturn;
-                })
-                .catch(err => {
-                    console.log("AsynceStorage Error NBA API:", err)
-                });
-
-        } else {
-            // console.log("AsynceStorage: We cached this:", JSON.parse(gamesToday), null, 2);
-
-            return JSON.parse(gamesToday);
-        }
-    } catch(err){
-        console.log("AsynceStorage Error:", err);
-    }
-}
-
 export const getPlayerStatsToday = async () => {
     try{
         const playersToday = await AsyncStorage.getItem('playersToday');
@@ -156,4 +102,35 @@ export const getTodayTmrGames = async () => {
             console.log("Error fetching NBA API:", err);
             return []; // Return empty array if there's an error
         });
+}
+
+/**
+ * @returns {bool} If it is true then regrab games and player stats
+ */
+export const AsyncDailyCheck = async () => {
+    /*
+        We reset the daily check at 1:15 AM EST each day
+        
+        How we do this is we get the current time and see if it is
+        after the nextDailyResetTime. If it is we return true and 
+        then set nextDailyResetTime to tmr's 1:15 AM EST date.
+    */
+
+    const nextDailyResetTime = JSON.parse(await AsyncStorage.getItem('nextDailyResetTime'));
+    const timeNow = Date.now();
+
+    // console.log("AsyncDailyCheck TimeNow", timeNow)
+    // console.log("AsyncDailyCheck", nextDailyResetTime)
+
+    if(timeNow > nextDailyResetTime){
+        let nextDailyResetTime = new Date(); /* Should be 1:15AM EST in UTC time which is 6:15 */
+        nextDailyResetTime.setUTCHours(6, 15, 0, 0);
+        console.log("We have to change nextDailyResetTime", nextDailyResetTime);
+
+        await AsyncStorage.setItem('nextDailyResetTime', JSON.stringify(nextDailyResetTime));
+
+        return true;
+    } else {
+        return false;
+    }
 }

@@ -14,7 +14,7 @@ import { useMyContext } from './Context/MyContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { LoadingScreen } from './LoadingScreen';
-import { getTodayTmrGames } from './functions/AsyncStorage';
+import { AsyncDailyCheck, getTodayTmrGames } from './functions/AsyncStorage';
 
 export default function MainContainer() {
 
@@ -37,6 +37,10 @@ export default function MainContainer() {
       try {
         // const { username, userId, signInDetails } = await getCurrentUser();
   
+        AsyncDailyCheck().then(regrabInfo => {
+          
+        })
+
         getCurrentUserWithAuth(user).then(userRes => {
             // console.log("MainContainer: User", JSON.stringify(userRes, null, 2));
             setUser(userRes);
