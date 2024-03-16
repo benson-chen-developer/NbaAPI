@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { useMyContext } from '../../Context/MyContext';
 import { getPlayerStatsToday } from '../../functions/AsyncStorage';
 import { IsAnActualPlayers } from '../../../assets/AcutalPlayers';
-import { getAsyncTeamDepth, newTeamDepthObjArray } from '../../functions/AsyncStorage/TeamDepth';
 import { PopUp } from './PopUp/PopUp';
 import { InventorySecondBar } from './InventorySecondBar';
 import { InventoryFirstBar } from './InventoryFirstBar';

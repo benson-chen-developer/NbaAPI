@@ -8,7 +8,7 @@ import { TeamDepthBench } from "./TeamDepthBench";
 import { TeamDepthStarters } from "./TeamDepthStarters";
 import { TeamDepthPickedPlayer } from "./TeamDepthPickedPlayer";
 import { setPlayerTeamDepth } from "../functions/UserFunctions";
-import { setAsyncTeamDepth } from "../functions/AsyncStorage";
+// import { setAsyncTeamDepth } from "../functions/AsyncStorage";
 
 export const TeamDepth = ({ route }) => {
 
