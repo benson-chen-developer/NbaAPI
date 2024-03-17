@@ -56,6 +56,7 @@ export const onCreateUser = /* GraphQL */ `
         __typename
       }
       maxLiveGames
+      mainTeam
       createdAt
       updatedAt
       __typename
@@ -78,6 +79,7 @@ export const onUpdateUser = /* GraphQL */ `
         __typename
       }
       maxLiveGames
+      mainTeam
       createdAt
       updatedAt
       __typename
@@ -100,6 +102,7 @@ export const onDeleteUser = /* GraphQL */ `
         __typename
       }
       maxLiveGames
+      mainTeam
       createdAt
       updatedAt
       __typename
@@ -131,6 +134,8 @@ export const onCreateGame = /* GraphQL */ `
         nextToken
         __typename
       }
+      player1CheckedIn
+      player2CheckedIn
       createdAt
       updatedAt
       __typename
@@ -162,6 +167,8 @@ export const onUpdateGame = /* GraphQL */ `
         nextToken
         __typename
       }
+      player1CheckedIn
+      player2CheckedIn
       createdAt
       updatedAt
       __typename
@@ -193,6 +200,8 @@ export const onDeleteGame = /* GraphQL */ `
         nextToken
         __typename
       }
+      player1CheckedIn
+      player2CheckedIn
       createdAt
       updatedAt
       __typename
@@ -215,6 +224,7 @@ export const onCreateUserGame = /* GraphQL */ `
         xp
         teamDepth
         maxLiveGames
+        mainTeam
         createdAt
         updatedAt
         __typename
@@ -238,6 +248,8 @@ export const onCreateUserGame = /* GraphQL */ `
         timeStart
         ended
         started
+        player1CheckedIn
+        player2CheckedIn
         createdAt
         updatedAt
         __typename
@@ -264,6 +276,7 @@ export const onUpdateUserGame = /* GraphQL */ `
         xp
         teamDepth
         maxLiveGames
+        mainTeam
         createdAt
         updatedAt
         __typename
@@ -287,6 +300,8 @@ export const onUpdateUserGame = /* GraphQL */ `
         timeStart
         ended
         started
+        player1CheckedIn
+        player2CheckedIn
         createdAt
         updatedAt
         __typename
@@ -313,6 +328,7 @@ export const onDeleteUserGame = /* GraphQL */ `
         xp
         teamDepth
         maxLiveGames
+        mainTeam
         createdAt
         updatedAt
         __typename
@@ -336,6 +352,8 @@ export const onDeleteUserGame = /* GraphQL */ `
         timeStart
         ended
         started
+        player1CheckedIn
+        player2CheckedIn
         createdAt
         updatedAt
         __typename

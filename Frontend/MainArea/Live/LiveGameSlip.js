@@ -10,10 +10,9 @@ export default function LiveGameSlip({game}) {
 
     const gameStarted = () => {
         const estTimeStart = new Date(game.timeStart);
-        const currentTimeEST = new Date() - (5 * 60 * 60 * 1000); // Current time in EST
-        const tenMinutesAgoEST = new Date(currentTimeEST - (10 * 60 * 1000)); //Since games start 10 min later
+        const currentTimeEST = new Date() - (4 * 60 * 60 * 1000); // Current time in EST (UTC is 4hrs ahead)
 
-        if (tenMinutesAgoEST < new Date(currentTimeEST))
+        if (estTimeStart < new Date(currentTimeEST))
             return true;
         else
             return false

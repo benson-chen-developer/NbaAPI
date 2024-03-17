@@ -24,7 +24,7 @@ export const GamePreScreen = ({route}) => {
     return(
         <SafeAreaView style={{ flex: 1, backgroundColor: '#111A2B', height:"100%", width:"100%"}}>
             {/* Header */}
-            <Header homeTeamName={game.teams[0]} awayTeamName={game.teams[1]} selectedTiles={matrixInfo.selectedTiles}/>
+            <Header game={game} selectedTiles={matrixInfo.selectedTiles}/>
 
             {/* Game Nav Bar */}
             <GameNavBar matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} />

@@ -30,7 +30,7 @@ const Game = ({game, setSelectedGame, selectedGame}) => {
             <Image source={getTeamLogo(game.homeTeam.teamName)} style={{width:iconSize, height:iconSize}}/>
             <View style={{alignItems:'center'}}>
                 <Text style={{fontFamily:"Roboto-Black", fontSize:17, color:'rgba(0,0,0,1)'}}>
-                    {`${hours+5-12}:${minutes}`}
+                    {`${hours+4-12}:${minutes}`}
                 </Text>
                 <Text style={{fontFamily:"Roboto-Black", fontSize:13, marginLeft:5, color:'rgba(0,0,0,.5)'}}>
                     PM EST

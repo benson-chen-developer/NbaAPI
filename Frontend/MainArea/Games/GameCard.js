@@ -69,7 +69,7 @@ export const GameCard = ({game}) => {
 
                 <View style={{alignItems:'center', width:"30%"}}>
                     <Text style={{fontFamily:"Roboto-Black", fontSize:25, color:'rgba(0,0,0,1)'}}>
-                        {`${hours+5-12}:${minutes}`}
+                        {`${hours+4-12}:${minutes}`}
                     </Text>
                     <Text style={{fontFamily:"Roboto-Black", fontSize:20, marginLeft:5, color:'rgba(0,0,0,.5)'}}>PM EST</Text>
                 </View>

@@ -14,9 +14,10 @@ import { useMyContext } from './Context/MyContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { LoadingScreen } from './LoadingScreen';
-import { AsyncDailyCheck, getTodayTmrGames } from './functions/AsyncStorage';
+import { AsyncDailyCheck } from './functions/AsyncStorage';
 import { autoCreateTeamDepth, getAsyncTeamDepth, setAsyncTeamDepthObjArray } from './functions/AsyncStorage/TeamDepth';
 import { getPlayerStatsToday, getTeamDataAWS } from './functions/AsyncStorage/PlayerStats';
+import {getTodayTmrGames} from './functions/AsyncStorage/TodayTmrGames';
 
 export default function MainContainer() {
 
@@ -26,6 +27,7 @@ export default function MainContainer() {
   const [userLoading, setUserLoading] = useState(false);
   const [liveGameLoading, setLiveGameLoading] = useState(false);
   const [todayTmrGamesLoading, setTodayTmrGamesLoading] = useState(false);
+  const [playerStatsLoading, setPlayerStatsLoading] = useState(false);
 
   const { user, setUser, setPlayerStats, loading, setLiveGames, setTeamDepthObjArray, setTodayGames } = useMyContext();
 
@@ -35,12 +37,29 @@ export default function MainContainer() {
       setUserLoading(true);
       setLiveGameLoading(true);
       setTodayTmrGamesLoading(true);
+      setPlayerStatsLoading(true);
   
       try {
         // const { username, userId, signInDetails } = await getCurrentUser();
   
         AsyncDailyCheck().then(regrabInfo => {
-          
+          console.log("Main RegrabInfo?" ,regrabInfo)
+
+          getTeamDataAWS().then(teamDataRes => {
+            getPlayerStatsToday(regrabInfo, teamDataRes).then(playerStatsRes => {
+              setPlayerStats(playerStatsRes);
+              setPlayerStatsLoading(false);
+              // autoCreateTeamDepth(playerStatsRes).then(teamDepthRes => {
+              //   setTeamDepthObjArray(teamDepthRes);
+              //   setAsyncTeamDepthObjArray(teamDepthRes);
+              // })
+            })
+          })
+
+          getTodayTmrGames(regrabInfo).then(todayTmrGamesRes => {
+            setTodayGames(todayTmrGamesRes);
+            setTodayTmrGamesLoading(false);
+          })
         })
 
         getCurrentUserWithAuth(user).then(userRes => {
@@ -52,25 +71,10 @@ export default function MainContainer() {
               setLiveGameLoading(false);
             })
 
-            getTeamDataAWS().then(teamDataRes => {
-              getPlayerStatsToday(teamDataRes).then(playerStatsRes => {
-                setPlayerStats(playerStatsRes);
-
-                // autoCreateTeamDepth(playerStatsRes).then(teamDepthRes => {
-                //   setTeamDepthObjArray(teamDepthRes);
-                //   setAsyncTeamDepthObjArray(teamDepthRes);
-                // })
-              })
-            })
-
             getAsyncTeamDepth().then(teamDepthObjArrayRes => {
               setTeamDepthObjArray(teamDepthObjArrayRes);
             })
 
-            getTodayTmrGames().then(todayTmrGamesRes => {
-              setTodayGames(todayTmrGamesRes);
-              setTodayTmrGamesLoading(false);
-            })
         });
       } catch (err) {
   
@@ -83,7 +87,7 @@ export default function MainContainer() {
     fetchUser();
   }, [])
 
-  if(todayTmrGamesLoading || liveGameLoading){
+  if(todayTmrGamesLoading || liveGameLoading || playerStatsLoading){
     return(
       <Text>Loading</Text>
     )

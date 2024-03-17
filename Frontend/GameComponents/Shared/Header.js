@@ -1,8 +1,14 @@
 import { View, Text, Image, StyleSheet } from "react-native"
 import { abbreviateName } from "../../../assets/TeamLogos/getTeamLogo";
 
-export const Header = ({homeTeamName, awayTeamName, gameStart=false, selectedTiles=[{},{},{}]}) => {
-    
+export const Header = ({game, gameStart=false, selectedTiles=[{},{},{}]}) => {
+    const homeTeamName = game.teams[0];
+    const awayTeamName = game.teams[1];
+
+    const hours = new Date(game.timeStart).getUTCHours() - 12;
+    const minutes = new Date(game.timeStart).getMinutes();
+    const timeString = `${hours}:${minutes}`;
+
     return(
         <View style={styles.header}>
             <TeamItem teamName={awayTeamName} isHome={false}/>
@@ -30,7 +36,7 @@ export const Header = ({homeTeamName, awayTeamName, gameStart=false, selectedTil
                     :
                 <View style={{width:100, alignItems:'center'}}>
                     <Text style={styles.gameTime}>
-                        7:30
+                        {timeString}
                     </Text>
                     <Text style={styles.gameTimeSmall}>
                         PM EST

@@ -16,6 +16,7 @@ type User @model @auth(rules: [{allow: public}]) {
   teamDepth: [AWSJSON]
   LiveGames: [Game] @manyToMany(relationName: "UserGame")
   maxLiveGames: Int
+  mainTeam: String
 }
 
 type Game @model @auth(rules: [{allow: public}]) {
@@ -38,5 +39,7 @@ type Game @model @auth(rules: [{allow: public}]) {
   ended: Boolean!
   started: Boolean!
   users: [User] @manyToMany(relationName: "UserGame")
+  player1CheckedIn: Boolean
+  player2CheckedIn: Boolean
 }
  

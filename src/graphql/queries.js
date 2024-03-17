@@ -51,6 +51,7 @@ export const getUser = /* GraphQL */ `
         __typename
       }
       maxLiveGames
+      mainTeam
       createdAt
       updatedAt
       __typename
@@ -74,6 +75,7 @@ export const listUsers = /* GraphQL */ `
         xp
         teamDepth
         maxLiveGames
+        mainTeam
         createdAt
         updatedAt
         __typename
@@ -108,6 +110,8 @@ export const getGame = /* GraphQL */ `
         nextToken
         __typename
       }
+      player1CheckedIn
+      player2CheckedIn
       createdAt
       updatedAt
       __typename
@@ -140,6 +144,8 @@ export const listGames = /* GraphQL */ `
         timeStart
         ended
         started
+        player1CheckedIn
+        player2CheckedIn
         createdAt
         updatedAt
         __typename
@@ -165,6 +171,7 @@ export const getUserGame = /* GraphQL */ `
         xp
         teamDepth
         maxLiveGames
+        mainTeam
         createdAt
         updatedAt
         __typename
@@ -188,6 +195,8 @@ export const getUserGame = /* GraphQL */ `
         timeStart
         ended
         started
+        player1CheckedIn
+        player2CheckedIn
         createdAt
         updatedAt
         __typename

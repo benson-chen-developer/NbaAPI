@@ -12,10 +12,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Inventory() {
     
-    const {playerStats, teamDepthObjArray, setTeamDepthObjArray} = useMyContext();
+    const {playerStats, teamDepthObjArray, user} = useMyContext();
 
     const [onScreenCards, setOnScreenCards] = useState([]);
-    const [currentTeam, setCurrentTeam] = useState(teamDepthObjArray.find(teamDepthObj => teamDepthObj.name === "Celtics"));
+    const [currentTeam, setCurrentTeam] = useState(teamDepthObjArray.find(teamDepthObj => teamDepthObj.name === user.mainTeam));
     const [homeScreen, setHomeScreen] = useState("All");
 
     const [popUpInfo, setPopUpInfo] = useState({

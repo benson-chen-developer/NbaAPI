@@ -19,11 +19,11 @@ export const getTeamDataAWS = async () => {
  * 
  * @return
  */
- export const getPlayerStatsToday = async (teams) => {
+ export const getPlayerStatsToday = async (regrabInfo, teams) => {
     try{
         const playersToday = await AsyncStorage.getItem('playersToday');
 
-        if(playersToday === null){
+        if(regrabInfo){
             console.log("AsynceStorage: We didnt cached it (players)");
 
             try{
@@ -72,8 +72,6 @@ export const getTeamDataAWS = async () => {
                         }
                     }
 
-                    // console.log(JSON.stringify(playersArrayRet, null, 2));
-
                     await AsyncStorage.setItem('playersToday', JSON.stringify(playersArrayRet));
 
                     return playersArrayRet;
@@ -82,8 +80,7 @@ export const getTeamDataAWS = async () => {
                 return [];
             }
         } else {
-            // console.log("AsynceStorage: We did cache (players):");
-
+            console.log("AsynceStorage: We did cache (players):");
             return JSON.parse(playersToday);
         }
     } catch(err) {

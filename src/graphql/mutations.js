@@ -68,6 +68,7 @@ export const createUser = /* GraphQL */ `
         __typename
       }
       maxLiveGames
+      mainTeam
       createdAt
       updatedAt
       __typename
@@ -93,6 +94,7 @@ export const updateUser = /* GraphQL */ `
         __typename
       }
       maxLiveGames
+      mainTeam
       createdAt
       updatedAt
       __typename
@@ -118,6 +120,7 @@ export const deleteUser = /* GraphQL */ `
         __typename
       }
       maxLiveGames
+      mainTeam
       createdAt
       updatedAt
       __typename
@@ -152,6 +155,8 @@ export const createGame = /* GraphQL */ `
         nextToken
         __typename
       }
+      player1CheckedIn
+      player2CheckedIn
       createdAt
       updatedAt
       __typename
@@ -186,6 +191,8 @@ export const updateGame = /* GraphQL */ `
         nextToken
         __typename
       }
+      player1CheckedIn
+      player2CheckedIn
       createdAt
       updatedAt
       __typename
@@ -220,6 +227,8 @@ export const deleteGame = /* GraphQL */ `
         nextToken
         __typename
       }
+      player1CheckedIn
+      player2CheckedIn
       createdAt
       updatedAt
       __typename
@@ -245,6 +254,7 @@ export const createUserGame = /* GraphQL */ `
         xp
         teamDepth
         maxLiveGames
+        mainTeam
         createdAt
         updatedAt
         __typename
@@ -268,6 +278,8 @@ export const createUserGame = /* GraphQL */ `
         timeStart
         ended
         started
+        player1CheckedIn
+        player2CheckedIn
         createdAt
         updatedAt
         __typename
@@ -297,6 +309,7 @@ export const updateUserGame = /* GraphQL */ `
         xp
         teamDepth
         maxLiveGames
+        mainTeam
         createdAt
         updatedAt
         __typename
@@ -320,6 +333,8 @@ export const updateUserGame = /* GraphQL */ `
         timeStart
         ended
         started
+        player1CheckedIn
+        player2CheckedIn
         createdAt
         updatedAt
         __typename
@@ -349,6 +364,7 @@ export const deleteUserGame = /* GraphQL */ `
         xp
         teamDepth
         maxLiveGames
+        mainTeam
         createdAt
         updatedAt
         __typename
@@ -372,6 +388,8 @@ export const deleteUserGame = /* GraphQL */ `
         timeStart
         ended
         started
+        player1CheckedIn
+        player2CheckedIn
         createdAt
         updatedAt
         __typename
