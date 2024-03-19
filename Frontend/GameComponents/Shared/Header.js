@@ -1,7 +1,7 @@
 import { View, Text, Image, StyleSheet } from "react-native"
 import { abbreviateName } from "../../../assets/TeamLogos/getTeamLogo";
 
-export const Header = ({game, gameStart=false, selectedTiles=[{},{},{}]}) => {
+export const Header = ({game, scores=[-1, -1], selectedTiles=[{},{},{}]}) => {
     const homeTeamName = game.teams[0];
     const awayTeamName = game.teams[1];
 
@@ -13,17 +13,17 @@ export const Header = ({game, gameStart=false, selectedTiles=[{},{},{}]}) => {
         <View style={styles.header}>
             <TeamItem teamName={awayTeamName} isHome={false}/>
 
-            {gameStart ? 
+            {scores[0] !== -1 ? 
                 <View style={{width:95, height:"100%"}}>
                     <View style={{flexDirection:'row', width:"100%", justifyContent:'space-between', alignItems:'center'}}>
                         <Text style={{fontFamily: "Roboto-Black", fontSize:34, color:'white'}}>
-                            42 
+                            {scores[0]} 
                         </Text>
                         <Text style={{fontFamily: "Roboto-Black", fontSize:34, color:'white'}}>
                             -
                         </Text>
                         <Text style={{fontFamily: "Roboto-Black", fontSize:28, color:'white'}}>
-                            37
+                            {scores[1]} 
                         </Text>
                     </View>
 

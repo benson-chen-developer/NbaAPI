@@ -9,14 +9,11 @@ import { BoardScreen } from "./BoardScreen";
 import { GameScreen } from "./GameScreen";
 
 export const GameInScreen = ({route}) => {
-
+    
     const {user} = useMyContext();
     const { game } = route.params;
 
     // const player1Team = game.player1Id === user.id ? JSON.parse(game.player1Depth) : JSON.parse(game.player2Depth);
-
-    const [homePlayerDepth, setHomePlayerDepth] = useState(game.player1Id === user.id ? game.player1Depth : game.player2Depth)
-    const [awayPlayerDepth, setAwayPlayerDepth] = useState(game.player1Id !== user.id ? game.player1Depth : game.player2Depth)
 
     const [matrixInfo, setMatrixInfo] = useState({
         popUpMode: "none",
@@ -25,8 +22,7 @@ export const GameInScreen = ({route}) => {
         pickedPlayer: null,
         selectedTiles: []
     });
-
-    const [playersLoaded, setPlayersLoaded] = useState(false);
+    const [scores, setScores] = useState([0, 0]);
     const [actions, setActions] = useState([
         {
             "actionNumber": 8,
@@ -79,10 +75,14 @@ export const GameInScreen = ({route}) => {
             
             const updatedGame = updatedGameAndActions.updatedGame;
             const actionsListLastFive = updatedGameAndActions.actionsListLastFive;
+            const newScores = updatedGameAndActions.scores;
 
             // setHomePlayerDepth(updatedHomePlayerDepth);
             // console.log("GameHome: Live Pulse", actionsListLastFive)
             setActions(actionsListLastFive);
+            setScores(newScores);
+
+            console.log("GameInScreen", updatedGameAndActions.scores)
 
             /* Game Is Over */
             if(actionsListLastFive[actionsListLastFive.length-1].description === "Game End"){
@@ -100,7 +100,7 @@ export const GameInScreen = ({route}) => {
             <View style={{width:"100%", height:"100%", backgroundColor:"#111A2B"}}>
                 
                 {/* Header */}
-                <Header homeTeamName={game.teams[0]} awayTeamName={game.teams[1]} gameStart={true}/>
+                <Header game={game} scores={scores}/>
 
                 {/* Game Nav Bar */}
                 <GameNavBar matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} />

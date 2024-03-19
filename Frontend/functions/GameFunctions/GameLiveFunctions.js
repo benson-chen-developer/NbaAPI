@@ -30,6 +30,7 @@ export const getLatestActionsAndUpdateGame = async (game, userId) => {
 
         /* 1) Fetch Box Scores */
         const actionsListRes = await fetchBoxScore(game.apiLink, lastActionNumber);
+        console.log("actionsListRes", actionsListRes)
 
             /*
                 First we check if the lastActionNumber matches the current one
@@ -37,7 +38,11 @@ export const getLatestActionsAndUpdateGame = async (game, userId) => {
             */
             const lastAction = actionsListRes[actionsListRes.length - 1];
             if (lastActionNumber === lastAction.actionNumber) {
-                return {updatedGame: game};;
+                return {
+                    updatedGame: game, 
+                    actionsListLastFive: [lastAction], 
+                    scores: [lastAction.scoreHome, lastAction.scoreAway]
+                };
             }
 
         /*  2)
@@ -73,7 +78,11 @@ export const getLatestActionsAndUpdateGame = async (game, userId) => {
         const actionsListLastFive = actionsListRes.slice(-5);
         
         // console.log("GameLiveFunctions 2", actionsListLastFive)
-        return {updatedGame: updatedGame, actionsListLastFive: actionsListLastFive};
+        return {
+            updatedGame: updatedGame, 
+            actionsListLastFive: actionsListLastFive, 
+            scores: [lastAction.scoreHome, lastAction.scoreAway]
+        };
     } catch (error) {
         console.error("Error in getLatestActionsAndUpdateGame: (Game didnt start)", error);
 

@@ -18,6 +18,7 @@ import { AsyncDailyCheck } from './functions/AsyncStorage';
 import { autoCreateTeamDepth, getAsyncTeamDepth, setAsyncTeamDepthObjArray } from './functions/AsyncStorage/TeamDepth';
 import { getPlayerStatsToday, getTeamDataAWS } from './functions/AsyncStorage/PlayerStats';
 import {getTodayTmrGames} from './functions/AsyncStorage/TodayTmrGames';
+import { getAsyncPlayerMoves, setAsyncPlayerMove, setAsyncPlayerMoves } from './functions/AsyncStorage/PlayerMoves';
 
 export default function MainContainer() {
 
@@ -43,7 +44,7 @@ export default function MainContainer() {
         // const { username, userId, signInDetails } = await getCurrentUser();
   
         AsyncDailyCheck().then(regrabInfo => {
-          console.log("Main RegrabInfo?" ,regrabInfo)
+          // console.log("Main RegrabInfo?" ,regrabInfo)
 
           getTeamDataAWS().then(teamDataRes => {
             getPlayerStatsToday(regrabInfo, teamDataRes).then(playerStatsRes => {
@@ -67,6 +68,14 @@ export default function MainContainer() {
 
             getLiveGames(userRes.id).then(liveGamesRes => {
               // console.log("MainContainer: Livegames", JSON.stringify(liveGamesRes, null, 2));
+              
+              getAsyncPlayerMoves().then(res => {
+                const noOldGames = res.filter(item =>
+                  liveGamesRes.some(game => game.id === item.gameId)
+                );
+                setAsyncPlayerMoves(noOldGames);
+              })
+              
               setLiveGames(liveGamesRes);
               setLiveGameLoading(false);
             })
