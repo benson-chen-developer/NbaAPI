@@ -1,5 +1,6 @@
+import { teamNameConversion } from '../../../assets/NameConversions';
 import { UpdateGame } from '../MutationFunctions/GameMutation';
-import { ActionToSquareNumber, AddActionToPlayer } from './StatHelperFunctions';
+import { ActionToSquareNumber, AddActionToPlayer, AddActionToTeamGainedStats } from './StatHelperFunctions';
 
 /**
  * @param {gameAWS} game Its the game aws obj
@@ -13,6 +14,37 @@ import { ActionToSquareNumber, AddActionToPlayer } from './StatHelperFunctions';
         use the aviable stats and add it to the current squares on board
  */
 export const getLatestActionsAndUpdateGame = async (game, userId) => {
+    let teamsGainedStats = [
+        {
+            "teamName": teamNameConversion(game.teams[0]),
+            "PTS": 0,
+            "REB": 0,
+            "AST": 0,
+            "3PA": 0,
+            "3PM": 0,
+            "FGA": 0,
+            "FGM": 0,
+            "FTA": 0,
+            "FTM": 0,
+            "STL": 0,
+            "BLK": 0,
+        },
+        {
+            "teamName": teamNameConversion(game.teams[1]),
+            "PTS": 0,
+            "REB": 0,
+            "AST": 0,
+            "3PA": 0,
+            "3PM": 0,
+            "FGA": 0,
+            "FGM": 0,
+            "FTA": 0,
+            "FTM": 0,
+            "STL": 0,
+            "BLK": 0,
+        }
+    ]
+
     /* This is to set up our variables by checking which playerId is ours */
     const isPlayer1 = game.player1Id === userId;
     let playerDepth = [];
@@ -24,13 +56,11 @@ export const getLatestActionsAndUpdateGame = async (game, userId) => {
         playerDepth = game.player1Depth.map(value => JSON.parse(value));
         lastActionNumber = game.player2LastActionNumber;
     }
-
     /* Fetching each individual action that occured in the game */
     try {
 
         /* 1) Fetch Box Scores */
         const actionsListRes = await fetchBoxScore(game.apiLink, lastActionNumber);
-        console.log("actionsListRes", actionsListRes)
 
             /*
                 First we check if the lastActionNumber matches the current one
@@ -39,7 +69,7 @@ export const getLatestActionsAndUpdateGame = async (game, userId) => {
             const lastAction = actionsListRes[actionsListRes.length - 1];
             if (lastActionNumber === lastAction.actionNumber) {
                 return {
-                    updatedGame: game, 
+                    teamsGainedStats: teamsGainedStats, 
                     actionsListLastFive: [lastAction], 
                     scores: [lastAction.scoreHome, lastAction.scoreAway]
                 };
@@ -54,7 +84,8 @@ export const getLatestActionsAndUpdateGame = async (game, userId) => {
             const updatedPlayers = updatePlayerStats(actionsListRes, playerDepth);
             // console.log("GameLiveFunctions: Updated Players (Ava)", updatedPlayers);
 
-            const updatedSelectedTile = updateSelectedTiles(isPlayer1, actionsListRes);
+            // const updatedSelectedTile = updateSelectedTiles(isPlayer1, actionsListRes);
+            teamsGainedStats = setTeamsGainedStats(actionsListRes, [{name: "P. Siakam"}], [], teamsGainedStats)
         
         /*  3)
             The players got their stats updated so we can now  
@@ -72,21 +103,21 @@ export const getLatestActionsAndUpdateGame = async (game, userId) => {
             }
 
         /* Update the game */
-        const updatedGame = await UpdateGame(updateInput, "UserFunction.js");
+        // const updatedGame = await UpdateGame(updateInput, "UserFunction.js");
 
         /* Here we return the actions for the user to view (Only latest 5) */
         const actionsListLastFive = actionsListRes.slice(-5);
         
         // console.log("GameLiveFunctions 2", actionsListLastFive)
         return {
-            updatedGame: updatedGame, 
+            teamsGainedStats: teamsGainedStats, 
             actionsListLastFive: actionsListLastFive, 
             scores: [lastAction.scoreHome, lastAction.scoreAway]
         };
     } catch (error) {
         console.error("Error in getLatestActionsAndUpdateGame: (Game didnt start)", error);
 
-        return {updatedGame: game};;
+        return {updatedGame: game};
     }
 }
 
@@ -160,6 +191,31 @@ const updatePlayerStats = (data, players) => {
     return activePlayers;
 }
 
+const setTeamsGainedStats = (actionsList, homePlayers, awayPlayers, teamsGainedStats) => {
+    const allPlayers = [...homePlayers.slice(0, 3), ...awayPlayers.slice(0, 3)];
+
+    actionsList.forEach(action => {
+
+        /* P.Siakum not Siakum */
+        if(action.playerNameI){
+            let index = allPlayers.findIndex(player => player.name.toLowerCase() === action.playerNameI.toLowerCase());
+            
+            if(index !== -1){
+                teamsGainedStats = AddActionToTeamGainedStats(teamsGainedStats, action);
+            }
+        }
+
+        if(action.assistPlayerNameInitial){
+            let index = allPlayers.findIndex(player => player.name.toLowerCase() === action.assistPlayerNameInitial.toLowerCase());
+            
+            if(index !== -1){
+                teamsGainedStats = AddActionToTeamGainedStats(teamsGainedStats, {actionType: 'assist'});
+            }
+        }
+    })
+
+    return teamsGainedStats;
+}
 
 const updateSelectedTiles = (isPlayer1, actions) => {
 

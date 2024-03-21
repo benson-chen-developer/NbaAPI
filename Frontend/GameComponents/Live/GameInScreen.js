@@ -70,19 +70,21 @@ export const GameInScreen = ({route}) => {
     ]);
 
     useEffect(() => {
-        const intervalId = setInterval(async () => {
+        // const intervalId = setInterval(async () => {
+        const setInterval = async () => {
             const updatedGameAndActions = await getLatestActionsAndUpdateGame(game, user.id)
             
-            const updatedGame = updatedGameAndActions.updatedGame;
+            const teamsGainedStats = updatedGameAndActions.teamsGainedStats;
             const actionsListLastFive = updatedGameAndActions.actionsListLastFive;
             const newScores = updatedGameAndActions.scores;
 
             // setHomePlayerDepth(updatedHomePlayerDepth);
             // console.log("GameHome: Live Pulse", actionsListLastFive)
+            console.log("teamsGainestats", teamsGainedStats)
             setActions(actionsListLastFive);
             setScores(newScores);
 
-            console.log("GameInScreen", updatedGameAndActions.scores)
+            // console.log("GameInScreen: updatedGame", updatedGameAndActions.updatedGame.matrixRow1)
 
             /* Game Is Over */
             if(actionsListLastFive[actionsListLastFive.length-1].description === "Game End"){
@@ -90,9 +92,10 @@ export const GameInScreen = ({route}) => {
 
                 clearInterval(intervalId);
             }
-        }, 5000);
-
-        return () => clearInterval(intervalId);
+        // }, 5000);
+        }
+        setInterval();
+        // return () => clearInterval(intervalId);
     }, []);
 
     return(
@@ -116,8 +119,8 @@ export const GameInScreen = ({route}) => {
                         matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} 
                         actions={actions}
                     /> 
-                            : 
-                        null
+                        : 
+                    null
                 }
 
             </View>

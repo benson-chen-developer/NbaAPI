@@ -9,6 +9,9 @@ export const Header = ({game, scores=[-1, -1], selectedTiles=[{},{},{}]}) => {
     const minutes = new Date(game.timeStart).getMinutes();
     const timeString = `${hours}:${minutes}`;
 
+    const homeFontSize = scores[0] > scores[1] ? 34 : 28;
+    const awayFontSize = scores[1] > scores[0] ? 34 : 28;
+
     return(
         <View style={styles.header}>
             <TeamItem teamName={awayTeamName} isHome={false}/>
@@ -16,13 +19,13 @@ export const Header = ({game, scores=[-1, -1], selectedTiles=[{},{},{}]}) => {
             {scores[0] !== -1 ? 
                 <View style={{width:95, height:"100%"}}>
                     <View style={{flexDirection:'row', width:"100%", justifyContent:'space-between', alignItems:'center'}}>
-                        <Text style={{fontFamily: "Roboto-Black", fontSize:34, color:'white'}}>
+                        <Text style={{fontFamily: "Roboto-Black", fontSize: homeFontSize, color:'white'}}>
                             {scores[0]} 
                         </Text>
                         <Text style={{fontFamily: "Roboto-Black", fontSize:34, color:'white'}}>
                             -
                         </Text>
-                        <Text style={{fontFamily: "Roboto-Black", fontSize:28, color:'white'}}>
+                        <Text style={{fontFamily: "Roboto-Black", fontSize: awayFontSize, color:'white'}}>
                             {scores[1]} 
                         </Text>
                     </View>

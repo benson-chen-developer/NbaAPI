@@ -44,4 +44,11 @@ export const ShortenPlayerName = (name) => {
 export const teamNameConversion = (name) => {
     if(name === "BOS") return "Celtics";
     else if(name === "LAL") return "Lakers";
+    else if(name === "IND") return "Pacers";
+    else if(name === "CLE") return "Cavaliers";
+
+    if(name === "Pacers") return "IND";
+    else if(name === "Cavaliers") return "CLE";
+
+    return "none";
 }
