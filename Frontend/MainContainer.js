@@ -30,7 +30,15 @@ export default function MainContainer() {
   const [todayTmrGamesLoading, setTodayTmrGamesLoading] = useState(false);
   const [playerStatsLoading, setPlayerStatsLoading] = useState(false);
 
-  const { user, setUser, setPlayerStats, loading, setLiveGames, setTeamDepthObjArray, setTodayGames } = useMyContext();
+  const { 
+    user, setUser, 
+    setPlayerStats, 
+    setPlayerMovesAsync,
+    loading, 
+    setLiveGames, 
+    setTeamDepthObjArray, 
+    setTodayGames 
+  } = useMyContext();
 
   
   useEffect(() => {
@@ -74,6 +82,12 @@ export default function MainContainer() {
                   liveGamesRes.some(game => game.id === item.gameId)
                 );
                 setAsyncPlayerMoves(noOldGames);
+                // setAsyncPlayerMoves([{"gameId": "186f567d-ff09-4de1-8f40-a05a5991fe68", "selectedTiles": [
+                //   {"team2Goal":46.9,"team2Selected":false,"team2Complete":false,"team1Selected":false,"team1Complete":false,"name":"FGM","team1Progress":0,"team2Progress":0,"team1Goal":46.9, index:0, row:1},
+                //   {"team2Goal":106.80000000000001,"team2Selected":false,"team2Complete":false,"team1Selected":false,"team1Complete":false,"name":"PTS+REB+AST","team1Progress":0,"team2Progress":0,"team1Goal":106.80000000000001, row:1, index:1},
+                //   {"team2Goal":23,"team2Selected":false,"team2Complete":false,"team1Selected":false,"team1Complete":false,"name":"PTS","team1Progress":0,"team2Progress":0,"team1Goal":23, row:1, index: 2}
+                // ], "teamDepth": []}])
+                setPlayerMovesAsync(noOldGames);
               })
               
               setLiveGames(liveGamesRes);

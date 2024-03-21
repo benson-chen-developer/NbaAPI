@@ -3,7 +3,6 @@ import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default function MatrixTile({row, index, item, matrixInfo, setMatrixInfo}) {
     const tileStats = JSON.parse(item);
-    // console.log(tileStats)
 
     const onPress = () => {
         setMatrixInfo(p => ({

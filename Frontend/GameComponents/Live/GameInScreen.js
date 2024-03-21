@@ -10,7 +10,7 @@ import { GameScreen } from "./GameScreen";
 
 export const GameInScreen = ({route}) => {
     
-    const {user} = useMyContext();
+    const { user, playerMovesAsync } = useMyContext();
     const { game } = route.params;
 
     // const player1Team = game.player1Id === user.id ? JSON.parse(game.player1Depth) : JSON.parse(game.player2Depth);
@@ -18,9 +18,10 @@ export const GameInScreen = ({route}) => {
     const [matrixInfo, setMatrixInfo] = useState({
         popUpMode: "none",
         navBar: 'board',
+        gameId: game.id,
         pickedTile: null, // {"name": "AST", "team1": 36.9, "team1Progress": 0, "team2": 36.9, "team2Progess": 0}
         pickedPlayer: null,
-        selectedTiles: []
+        selectedTiles: [...playerMovesAsync.find(playerGame => playerGame.gameId === game.id).selectedTiles]
     });
     const [scores, setScores] = useState([0, 0]);
     const [actions, setActions] = useState([
@@ -68,6 +69,9 @@ export const GameInScreen = ({route}) => {
             "assistTotal": 1
         },
     ]);
+    const [selectedTiles, setSelectedTiles] = useState([
+        ...playerMovesAsync.find(playerGame => playerGame.gameId === game.id).selectedTiles
+    ])
 
     useEffect(() => {
         // const intervalId = setInterval(async () => {
@@ -79,12 +83,10 @@ export const GameInScreen = ({route}) => {
             const newScores = updatedGameAndActions.scores;
 
             // setHomePlayerDepth(updatedHomePlayerDepth);
-            // console.log("GameHome: Live Pulse", actionsListLastFive)
             console.log("teamsGainestats", teamsGainedStats)
+
             setActions(actionsListLastFive);
             setScores(newScores);
-
-            // console.log("GameInScreen: updatedGame", updatedGameAndActions.updatedGame.matrixRow1)
 
             /* Game Is Over */
             if(actionsListLastFive[actionsListLastFive.length-1].description === "Game End"){

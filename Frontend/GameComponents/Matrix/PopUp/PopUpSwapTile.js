@@ -1,21 +1,34 @@
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native"
 import { getFullNameOfStat } from "../../../../assets/NameConversions";
+import { useMyContext } from "../../../Context/MyContext";
+import { setAsyncPlayerMoves } from "../../../functions/AsyncStorage/PlayerMoves";
 
 export const PopUpSwapTile = ({matrixInfo, setMatrixInfo}) => {
-
+    const { playerMovesAsync, setPlayerMovesAsync } = useMyContext();
     const {pickedTile, selectedTiles} = matrixInfo;
+    console.log("selectedTiles PopUpsawp", selectedTiles)
 
-    const swapThis = ( oldTile ) => {
+    const swapThis = async ( oldTile ) => {
+        const newSelectedTiles = matrixInfo.selectedTiles.map(tile => {
+            if (tile.index === oldTile.index && tile.row === oldTile.row) {
+                return pickedTile;
+            }
+            return tile;
+        })
+        const newPlayerMovesAsync = playerMovesAsync;
+        newPlayerMovesAsync.forEach(game => {
+            if(game.gameId === matrixInfo.gameId) game.selectedTiles = [...newSelectedTiles];
+        })
+
+        // console.log("newSelectedTiles", newSelectedTiles)
+        // console.log("newSelectedTiles 2", newPlayerMovesAsync)
+        setPlayerMovesAsync(newPlayerMovesAsync);
+        await setAsyncPlayerMoves(newPlayerMovesAsync);
         setMatrixInfo(p => {
             return {
                 ...p,
                 popUpMode: "none",
-                selectedTiles: p.selectedTiles.map(tile => {
-                    if (tile.index === oldTile.index && tile.row === oldTile.row) {
-                        return pickedTile;
-                    }
-                    return tile;
-                })
+                selectedTiles: [...newSelectedTiles]
             };
         });
     };
