@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { View, SafeAreaView, Text } from "react-native"
 import { useMyContext } from "../../Context/MyContext";
-import { getLatestActionsAndUpdateGame } from "../../functions/GameFunctions/GameLiveFunctions";
+import { getLatestActionsAndStats } from "../../functions/GameFunctions/GameLiveFunctions";
+import { updateTiles } from "../../functions/GameFunctions/MatrixUpdateFunctions";
 import { GameNavBar } from "../Shared/GameNavBar";
 import { GamePlayers } from "../Shared/GamePlayers";
 import { Header } from "../Shared/Header";
@@ -72,28 +73,29 @@ export const GameInScreen = ({route}) => {
     const [selectedTiles, setSelectedTiles] = useState([
         ...playerMovesAsync.find(playerGame => playerGame.gameId === game.id).selectedTiles
     ])
+    const [allTiles, setAllTiles] = useState([
+        ...game.matrixRow1.map(JSON.parse), 
+        ...game.matrixRow2.map(JSON.parse), 
+        ...game.matrixRow3.map(JSON.parse), 
+        ...game.matrixRow4.map(JSON.parse)
+    ]);
 
     useEffect(() => {
         // const intervalId = setInterval(async () => {
         const setInterval = async () => {
-            const updatedGameAndActions = await getLatestActionsAndUpdateGame(game, user.id)
-            
-            const teamsGainedStats = updatedGameAndActions.teamsGainedStats;
-            const actionsListLastFive = updatedGameAndActions.actionsListLastFive;
-            const newScores = updatedGameAndActions.scores;
+            const updatedGameAndActions = await getLatestActionsAndStats(game, user.id)
+            const {teamsGainedStats, actionsListLastFive, newScores} = updatedGameAndActions;
 
-            // setHomePlayerDepth(updatedHomePlayerDepth);
-            console.log("teamsGainestats", teamsGainedStats)
-
+            setAllTiles(updateTiles(allTiles, teamsGainedStats));
             setActions(actionsListLastFive);
             setScores(newScores);
 
             /* Game Is Over */
-            if(actionsListLastFive[actionsListLastFive.length-1].description === "Game End"){
-                console.log("GameHome: Game is Over");
+            // if(actionsListLastFive[actionsListLastFive.length-1].description === "Game End"){
+            //     console.log("GameHome: Game is Over");
 
-                clearInterval(intervalId);
-            }
+            //     clearInterval(intervalId);
+            // }
         // }, 5000);
         }
         setInterval();
@@ -112,7 +114,7 @@ export const GameInScreen = ({route}) => {
 
                 {/* Current Board (From Nav Bar) */}
                 {matrixInfo.navBar === "board" ?
-                    <BoardScreen game={game} matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} /> : null
+                    <BoardScreen game={game} allTiles={allTiles} matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} /> : null
                 }
 
                 {matrixInfo.navBar === "game" ?

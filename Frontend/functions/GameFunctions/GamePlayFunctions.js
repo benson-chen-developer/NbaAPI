@@ -3,23 +3,6 @@ import { updateUser } from '../../../src/graphql/mutations';
 
 const client = generateClient();
 
-// fetchLiveGameFeed('https://cdn.nba.com/static/json/liveData/playbyplay/playbyplay_0022300632.json');
-// export const fetchLiveGameFeed = async (gameApiCall) => {
-//     try {
-//         const response = await fetch(gameApiCall);
-//         if (!response.ok) {
-//             throw new Error('Network response was not ok');
-//         }
-//         const data = await response.json();
-
-//         console.log(data.game.actions)
-//         // return data; // Return the fetched data
-//     } catch (error) {
-//         console.error('Error fetching data:', error);
-//         throw error; // Rethrow the error to handle it in the calling code
-//     }
-// }
-
 export const generateMatrix = (team1, team2) => {
     let noStatMatrix = generateTiles();
 

@@ -49,7 +49,8 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
             </Text>
 
             {/* Progress Bar */}
-            <PopUpProgressbar pickedTile={pickedTile}/>
+            {/* <PopUpProgressbar pickedTile={pickedTile}/> */}
+            <Text>Total {pickedTile.team1Progress}</Text>
 
             {/* PlayerCards */}
             <PopUpPlayerCard />

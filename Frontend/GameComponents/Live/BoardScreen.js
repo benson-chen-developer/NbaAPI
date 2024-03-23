@@ -8,7 +8,7 @@ import { PopUpSwapTile } from "../Matrix/PopUp/PopUpSwapTile";
 import { GamePlayers } from "../Shared/GamePlayers";
 
 
-export const BoardScreen = ({game, matrixInfo, setMatrixInfo}) => {
+export const BoardScreen = ({game, allTiles, matrixInfo, setMatrixInfo}) => {
 
     const { user } = useMyContext();
     const [homePlayerDepth, setHomePlayerDepth] = useState(game.player1Id === user.id ? game.player1Depth : game.player2Depth)
@@ -16,7 +16,7 @@ export const BoardScreen = ({game, matrixInfo, setMatrixInfo}) => {
     return(
         <>
             {/* Matrix */}
-            <GameMatrix game={game} matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo}/>
+            <GameMatrix allTiles={allTiles} matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo}/>
 
             {/* Players */}
             {homePlayerDepth.length > 0 ?
