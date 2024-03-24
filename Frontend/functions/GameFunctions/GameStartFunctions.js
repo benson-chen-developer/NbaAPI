@@ -3,21 +3,24 @@ import {listGames, listUsers} from '../../../src/graphql/queries';
 import {updateGame, createGame, updateUser, createUserGame} from '../../../src/graphql/mutations';
 import { generateMatrix2 } from '../MatrixFunctions';
 import { setAsyncPlayerMove } from '../AsyncStorage/PlayerMoves';
+import { getAverages } from '../StatFunctions';
 
 const client = generateClient();
 
-/* Return an updated game
-
-    game: game to be updated
-    joiningPlayerId: the id for the player to join
-
-    How this function works is we first look for all the games and sort it in order of 
-    first created and no two filled player ids.
-*/
+/**
+ * 
+ * @param {*} user 
+ * @param {string} selectedTeam // Pacers
+ * @param {*} game 
+ * @param {*} userDepth 
+ */
 export const startSearchForGame = async (user, selectedTeam, game, userDepth) => {
     const {homeTeam, awayTeam, timeStart, apiLink} = game;
 
     const joiningPlayerId = user.id;
+
+    const teamAverages = await getAverages(homeTeam.teamName, awayTeam.teamName);
+    console.log("teamAverages", teamAverages);
 
     try {
         const canJoinGames = await fetchGames(selectedTeam === homeTeam ? awayTeam : homeTeam);
@@ -26,7 +29,13 @@ export const startSearchForGame = async (user, selectedTeam, game, userDepth) =>
         if (canJoinGames.length > 0) {
             game = await joinGame(canJoinGames[0], joiningPlayerId, selectedTeam);
         } else {
-            game = await createGameFuncion(joiningPlayerId, selectedTeam, homeTeam, awayTeam, timeStart, userDepth, apiLink);
+            game = await createGameFuncion(
+                joiningPlayerId, 
+                selectedTeam, homeTeam, awayTeam, teamAverages,
+                timeStart, 
+                userDepth, 
+                apiLink,
+            );
         }
 
         return game;
@@ -80,7 +89,13 @@ export const joinGame = async (game, joiningPlayerId) => {
     }
 }
 
-export const createGameFuncion = async (joiningPlayerId, selectedTeam, homeTeam, awayTeam, timeStart, userDepth, apiLink) => {
+export const createGameFuncion = async (
+    joiningPlayerId, 
+    selectedTeam, homeTeam, awayTeam, teamAverages,
+    timeStart, 
+    userDepth, 
+    apiLink
+) => {
     try {
 
         const stringifyRow = (row) => {
@@ -89,8 +104,8 @@ export const createGameFuncion = async (joiningPlayerId, selectedTeam, homeTeam,
             return retRow;
         }
 
-        const matrix = generateMatrix2()
-        // console.log("GaneStartFunction", userDepth)
+        const matrix = generateMatrix2(teamAverages)
+        // console.log("GaneStartFunction", JSON.stringify(matrix, null, 2));
 
         const newGame = await client.graphql({
             query: createGame,
@@ -136,7 +151,6 @@ export const createGameFuncion = async (joiningPlayerId, selectedTeam, homeTeam,
         });
 
         return newGame.data.createGame;
-
     } catch (error) {
         console.error("CreateGameFunction err", error);
     }

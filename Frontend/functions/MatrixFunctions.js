@@ -1,6 +1,6 @@
 import { BoardSquare } from "../../Classes/BoardSquare"
 
-export const generateMatrix2 = () => {
+export const generateMatrix2 = (teamAverages) => {
     let matrix = [
         [null, null, null, null],
         [null, null, null, null],
@@ -25,33 +25,13 @@ export const generateMatrix2 = () => {
     )
     matrix = fillUpMatrix(matrix, defenseOptions);
 
-    const otherOptions = pickRandomOptions(5,
-        [
-            "FGM", "3PA",
-            "FGM", "FGA", "3PM",
-            "AST", "AST", "FGA"
-        ]
-    )
+    const otherOptions = pickRandomOptions(5,[
+        "FGM", "3PA", "FGM", "FGA", "3PM", "AST", "AST", "FGA"
+    ])
     matrix = fillUpMatrix(matrix, otherOptions);
 
-    const fakeTeam1 = {}
-    fakeTeam1['PTS'] = 23;
-    fakeTeam1['FGM'] = 46.9;
-    fakeTeam1['FGA'] = 93;
-    fakeTeam1['3PA'] = 36.3;
-    fakeTeam1['3PM'] = 13.9;
-    fakeTeam1['FTM'] = 16.9;
-    fakeTeam1['FTA'] = 20.9;
-    fakeTeam1['REB'] = 46.9;
-    fakeTeam1['AST'] = 36.9;
-    fakeTeam1['STL'] = 7.7;
-    fakeTeam1['BLK'] = 6;
-    fakeTeam1['TO'] = 12.9;
-    fakeTeam1['PF'] = 22.9;
-
-    matrix = fillMatrixWithStats(fakeTeam1, fakeTeam1, matrix);
-    
-    // console.log("MatrixFunctions ", matrix)
+    matrix = fillMatrixWithStats(teamAverages[0], teamAverages[1], matrix);
+    // console.log("GaneStartFunction", JSON.stringify(matrix, null, 2));
 
     return matrix;
 }
@@ -63,17 +43,20 @@ export const generateMatrix2 = () => {
     returns the matrix
 */
 const fillMatrixWithStats = (team1Averages, team2Averages, matrix) => {
+    const tileMultipler = .45;
     for (let i = 0; i < matrix.length; i++) {
         for (let j = 0; j < matrix[i].length; j++) {
 
             const options = matrix[i][j].split('+');
             let costOfOptionsTeam1 = 0.0;
-            options.forEach(item => costOfOptionsTeam1 += team1Averages[item])
+            options.forEach(item => costOfOptionsTeam1 += parseFloat(team1Averages[item]))
             let costOfOptionsTeam2 = 0.0;
-            options.forEach(item => costOfOptionsTeam2 += team2Averages[item])
+            options.forEach(item => costOfOptionsTeam2 += parseFloat(team2Averages[item]))
 
             matrix[i][j] = new BoardSquare(
-                matrix[i][j], 0, costOfOptionsTeam1, 0, costOfOptionsTeam2
+                matrix[i][j], 
+                0, Math.round(costOfOptionsTeam1*tileMultipler), 
+                0, Math.round(costOfOptionsTeam2*tileMultipler)
             )
         }
     }
