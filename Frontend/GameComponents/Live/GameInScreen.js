@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { View, SafeAreaView, Text } from "react-native"
 import { useMyContext } from "../../Context/MyContext";
+import { getAsyncPlayerMoves, setAsyncPlayerMove } from "../../functions/AsyncStorage/PlayerMoves";
 import { getLatestActionsAndStats } from "../../functions/GameFunctions/GameLiveFunctions";
 import { updateTiles } from "../../functions/GameFunctions/MatrixUpdateFunctions";
 import { GameNavBar } from "../Shared/GameNavBar";
@@ -11,7 +12,7 @@ import { GameScreen } from "./GameScreen";
 
 export const GameInScreen = ({route}) => {
     
-    const { user, playerMovesAsync } = useMyContext();
+    const { user } = useMyContext();
     const { game } = route.params;
 
     // const player1Team = game.player1Id === user.id ? JSON.parse(game.player1Depth) : JSON.parse(game.player2Depth);
@@ -22,57 +23,12 @@ export const GameInScreen = ({route}) => {
         gameId: game.id,
         pickedTile: null, // {"name": "AST", "team1": 36.9, "team1Progress": 0, "team2": 36.9, "team2Progess": 0}
         pickedPlayer: null,
-        selectedTiles: [...playerMovesAsync.find(playerGame => playerGame.gameId === game.id).selectedTiles]
+        selectedTiles: [],
+        teamDepth: []
     });
+    const isPlayer1 = game.player1Id === user.id;
     const [scores, setScores] = useState([0, 0]);
-    const [actions, setActions] = useState([
-        {
-            "actionNumber": 8,
-            "clock": "PT11M40.00S",
-            "timeActual": "2024-03-02T03:41:06.8Z",
-            "period": 1,
-            "periodType": "REGULAR",
-            "teamId": 1610612746,
-            "teamTricode": "LAC",
-            "actionType": "2pt",
-            "subType": "Layup",
-            "descriptor": "driving",
-            "qualifiers": [
-                "pointsinthepaint"
-            ],
-            "personId": 202331,
-            "x": 91.77069645203679,
-            "y": 51.470588235294116,
-            "area": "Restricted Area",
-            "areaDetail": "0-8 Center",
-            "side": "right",
-            "shotDistance": 2.6,
-            "possession": 1610612746,
-            "scoreHome": "2",
-            "scoreAway": "0",
-            "edited": "2024-03-02T03:41:11Z",
-            "orderNumber": 80000,
-            "isTargetScoreLastPeriod": false,
-            "xLegacy": 7,
-            "yLegacy": 25,
-            "isFieldGoal": 1,
-            "shotResult": "Made",
-            "pointsTotal": 2,
-            "description": "P. George driving Layup (2 PTS) (J. Harden 1 AST)",
-            "playerName": "George",
-            "playerNameI": "P. George",
-            "personIdsFilter": [
-                202331,
-                201935
-            ],
-            "assistPlayerNameInitial": "J. Harden",
-            "assistPersonId": 201935,
-            "assistTotal": 1
-        },
-    ]);
-    const [selectedTiles, setSelectedTiles] = useState([
-        ...playerMovesAsync.find(playerGame => playerGame.gameId === game.id).selectedTiles
-    ])
+    const [actions, setActions] = useState([]);
     const [allTiles, setAllTiles] = useState([
         ...game.matrixRow1.map(JSON.parse), 
         ...game.matrixRow2.map(JSON.parse), 
@@ -83,13 +39,42 @@ export const GameInScreen = ({route}) => {
     useEffect(() => {
         // const intervalId = setInterval(async () => {
         const setInterval = async () => {
+            let selectedTiles; let currentPlayerMoves;
+            
+            await getAsyncPlayerMoves().then(playerMoves => {
+                currentPlayerMoves = playerMoves.find(playerMove => playerMove.gameId === game.id);
+                selectedTiles = currentPlayerMoves.selectedTiles;
+            })
+
             const updatedGameAndActions = await getLatestActionsAndStats(game, user.id)
             const {teamsGainedStats, actionsListLastFive, newScores} = updatedGameAndActions;
 
-            setAllTiles(updateTiles(allTiles, teamsGainedStats));
             setActions(actionsListLastFive);
             setScores(newScores);
+            
+            const updatedAllTiles = updateTiles(allTiles, teamsGainedStats, isPlayer1);
+            setAllTiles(updatedAllTiles);
 
+            // console.log("updatedAllTiles", updatedAllTiles)
+            updatedAllTiles.forEach(updatedTile => {
+                selectedTiles.forEach((selectedTile, index) => {
+                    const isSameIndexAndRow = updatedTile.index === selectedTile.index && updatedTile.row === selectedTile.row;
+
+                    if(isSameIndexAndRow && updatedTile.team1Complete && isPlayer1){
+                        selectedTiles.splice(index, 1);
+                    }
+                    else if(isSameIndexAndRow && updatedTile.team2Complete && !isPlayer1){
+                        selectedTiles.splice(index, 1);
+                    }
+                })
+            })
+
+            setMatrixInfo(p => ({
+                ...p, 
+                selectedTiles: selectedTiles,
+                teamDepth: currentPlayerMoves.teamDepth
+            }));
+            // setAsyncPlayerMove()
             /* Game Is Over */
             // if(actionsListLastFive[actionsListLastFive.length-1].description === "Game End"){
             //     console.log("GameHome: Game is Over");
@@ -98,23 +83,36 @@ export const GameInScreen = ({route}) => {
             // }
         // }, 5000);
         }
+
         setInterval();
         // return () => clearInterval(intervalId);
     }, []);
+
+    useEffect(() => {
+        console.log("Change in SelectedTiles", matrixInfo.selectedTiles)
+    }, [matrixInfo.selectedTiles])
 
     return(
         <SafeAreaView style={{ flex: 1, backgroundColor: '#111A2B', height:"100%", width:"100%"}}>
             <View style={{width:"100%", height:"100%", backgroundColor:"#111A2B"}}>
                 
                 {/* Header */}
-                <Header game={game} scores={scores}/>
+                <Header 
+                    allTiles={allTiles} isPlayer1={isPlayer1}
+                    matrixInfo={matrixInfo}
+                    game={game} scores={scores}
+                />
 
                 {/* Game Nav Bar */}
                 <GameNavBar matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} />
 
                 {/* Current Board (From Nav Bar) */}
                 {matrixInfo.navBar === "board" ?
-                    <BoardScreen game={game} allTiles={allTiles} matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} /> : null
+                    <BoardScreen 
+                        game={game} isPlayer1={isPlayer1}
+                        allTiles={allTiles} 
+                        matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} 
+                    /> : null
                 }
 
                 {matrixInfo.navBar === "game" ?

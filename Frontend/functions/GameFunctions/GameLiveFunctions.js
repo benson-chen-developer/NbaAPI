@@ -152,6 +152,8 @@ export const getLatestActionsAndStats = async (game, userId) => {
             "BLK": 0,
         }
     ]
+    const player1Depth = game.player1Depth.map(player => JSON.parse(player));
+    const player2Depth = game.player2Depth.map(player => JSON.parse(player));
 
     /* This is to set up our variables by checking which playerId is ours */
     const isPlayer1 = game.player1Id === userId;
@@ -181,9 +183,10 @@ export const getLatestActionsAndStats = async (game, userId) => {
             };
         }
 
-        const updatedPlayers = updatePlayerStats(actionsListRes, playerDepth);
-        // console.log("GameLiveFunctions: Updated Players (Ava)", updatedPlayers);
-        teamsGainedStats = setTeamsGainedStats(actionsListRes, [{name: "P. Siakam"}], [], teamsGainedStats)
+        const homeDepth = player1Depth.find(player => player.teamName === game.teams[0]) ? player1Depth : player2Depth;
+        const awayDepth = player1Depth.find(player => player.teamName === game.teams[1]) ? player1Depth : player2Depth;
+
+        teamsGainedStats = setTeamsGainedStats(actionsListRes, homeDepth, awayDepth, teamsGainedStats)
         
         /* Here we return the actions for the user to view (Only latest 5) */
         const actionsListLastFive = actionsListRes.slice(-5);

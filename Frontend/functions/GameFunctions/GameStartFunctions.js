@@ -20,7 +20,6 @@ export const startSearchForGame = async (user, selectedTeam, game, userDepth) =>
     const joiningPlayerId = user.id;
 
     const teamAverages = await getAverages(homeTeam.teamName, awayTeam.teamName);
-    console.log("teamAverages", teamAverages);
 
     try {
         const canJoinGames = await fetchGames(selectedTeam === homeTeam ? awayTeam : homeTeam);
@@ -117,7 +116,7 @@ export const createGameFuncion = async (
                     "ended": false,
                     "apiLink": apiLink,
                     "player1Team": selectedTeam, 
-                    "player2Team": selectedTeam === homeTeam ? awayTeam : homeTeam,
+                    "player2Team": selectedTeam === homeTeam.teamName ? awayTeam.teamName : homeTeam.teamName,
                     "teams": [homeTeam.teamName, awayTeam.teamName],
                     "player1Depth": userDepth.map(value => JSON.stringify(value)),
                     "player2Depth": [],

@@ -1,9 +1,11 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 
-export default function MatrixTile({row, index, item, matrixInfo, setMatrixInfo}) {
+export default function MatrixTile({row, index, item, matrixInfo, setMatrixInfo, isPlayer1}) {
     const tileStats = item;
-    // console.log("tileStats", tileStats)
+    const [isSelected, setIsSelected] = useState(false); 
+    
+    // console.log("tileStats. I am complete", tileStats)
 
     const onPress = () => {
         setMatrixInfo(p => ({
@@ -12,17 +14,26 @@ export default function MatrixTile({row, index, item, matrixInfo, setMatrixInfo}
             popUpMode: "default"
         }))
     }
+
+    useEffect(() => {
+        let isSelected = matrixInfo.selectedTiles.find(selectedTile => 
+            (selectedTile.index == tileStats.index && selectedTile.row == tileStats.row)
+        )
+
+        if(isSelected) setIsSelected(true);
+    }, [matrixInfo.selectedTiles])
     
     return (
         <TouchableOpacity 
             style={
-                matrixInfo.selectedTiles.find(a => a.index === index && a.row === row)
-                ? styles.selected : styles.notSelected
+                isSelected ? styles.selected : styles.notSelected
             }
             onPress={() => onPress()}
         >
             <Text style={{color:"white"}}>{tileStats.name}</Text>
 
+            <Text>{tileStats.team1Complete ? "team1 won" : null}</Text>
+            <Text>{tileStats.team2Complete ? "team2 won" : null}</Text>
             {/* <ProgressBar item={tileStats} /> */}
         </TouchableOpacity>
     )

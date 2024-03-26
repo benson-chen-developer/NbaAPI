@@ -1,7 +1,13 @@
+import { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet } from "react-native"
 import { abbreviateName } from "../../../assets/TeamLogos/getTeamLogo";
 
-export const Header = ({game, scores=[-1, -1], selectedTiles=[{},{},{}]}) => {
+export const Header = ({game, scores=[-1, -1], allTiles, isPlayer1, matrixInfo}) => {
+    const completedSelectedTiles = matrixInfo.selectedTiles.map(selectedTile => ({
+        ...selectedTile,
+        complete: true
+    })).length;
+    console.log(completedSelectedTiles)
     const homeTeamName = game.teams[0];
     const awayTeamName = game.teams[1];
 
@@ -11,6 +17,12 @@ export const Header = ({game, scores=[-1, -1], selectedTiles=[{},{},{}]}) => {
 
     const homeFontSize = scores[0] > scores[1] ? 34 : 28;
     const awayFontSize = scores[1] > scores[0] ? 34 : 28;
+
+    if(completedSelectedTiles !== 3) return(
+        <View style={styles.header}>
+            <Text>Please Pick {3-completedSelectedTiles} More Tile{3-completedSelectedTiles === 1 ? "" : "s"}</Text>
+        </View>
+    )
 
     return(
         <View style={styles.header}>

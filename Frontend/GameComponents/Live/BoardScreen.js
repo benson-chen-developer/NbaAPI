@@ -8,7 +8,7 @@ import { PopUpSwapTile } from "../Matrix/PopUp/PopUpSwapTile";
 import { GamePlayers } from "../Shared/GamePlayers";
 
 
-export const BoardScreen = ({game, allTiles, matrixInfo, setMatrixInfo}) => {
+export const BoardScreen = ({game, isPlayer1, allTiles, matrixInfo, setMatrixInfo}) => {
 
     const { user } = useMyContext();
     const [homePlayerDepth, setHomePlayerDepth] = useState(game.player1Id === user.id ? game.player1Depth : game.player2Depth)
@@ -16,7 +16,10 @@ export const BoardScreen = ({game, allTiles, matrixInfo, setMatrixInfo}) => {
     return(
         <>
             {/* Matrix */}
-            <GameMatrix allTiles={allTiles} matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo}/>
+            <GameMatrix 
+                allTiles={allTiles} isPlayer1={isPlayer1}
+                matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo}
+            />
 
             {/* Players */}
             {homePlayerDepth.length > 0 ?
@@ -38,7 +41,10 @@ export const BoardScreen = ({game, allTiles, matrixInfo, setMatrixInfo}) => {
 
                     <View style={{width:"90%", height:"70%", backgroundColor:"#273447", borderRadius: 8, alignItems:'center'}}>
                         {matrixInfo.popUpMode === "default" ? 
-                            <PopUpPickTile matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} /> : null
+                            <PopUpPickTile
+                                isPlayer1={isPlayer1}
+                                matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} 
+                            /> : null
                         }
             
                         {matrixInfo.popUpMode === "swap" ? 

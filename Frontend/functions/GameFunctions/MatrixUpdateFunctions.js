@@ -1,4 +1,4 @@
-export const updateTiles = (allTiles, teamsGainedStats) => {
+export const updateTiles = (allTiles, teamsGainedStats, isPlayer1) => {
     allTiles.forEach((tile, index) => {
         if(tile.team1Selected){
             allTiles[index] = updateTile(tile, teamsGainedStats, 0);
@@ -19,14 +19,28 @@ const updateTile = (tile, teamsGainedStats, teamIndex) => {
     let newTile = tile;
 
     stats.forEach(stat => {
-        if(currentTeamGainedStats[stat] > 0 && tileNameArr.find(tileStat => tileStat === stat)){
-            // console.log("Tile", tile, "has gained ", currentTeamGainedStats[stat], stat);
+        if(newTile.team1Complete || newTile.team2Complete){
 
-            if(teamIndex === 0){
-                newTile = {...newTile, team1Progress: newTile.team1Progress + currentTeamGainedStats[stat] };
-            } else {
-                newTile = {...newTile, team2Progress: newTile.team2Progress + currentTeamGainedStats[stat] };
-            }         
+        } else {
+            if(currentTeamGainedStats[stat] > 0 && tileNameArr.find(tileStat => tileStat === stat)){
+                // console.log("Tile", tile, "has gained ", currentTeamGainedStats[stat], stat);
+                const newTeam1Complete = newTile.team1Progress + currentTeamGainedStats[stat] >= tile.team1Goal;
+                const newTeam2Complete = newTile.team2Progress + currentTeamGainedStats[stat] >= tile.team2Goal;
+    
+                if(teamIndex === 0){
+                    newTile = {
+                        ...newTile, 
+                        team1Progress: newTile.team1Progress + currentTeamGainedStats[stat],
+                        team1Complete: newTeam1Complete
+                    };
+                } else {
+                    newTile = {
+                        ...newTile, 
+                        team2Progress: newTile.team2Progress + currentTeamGainedStats[stat],
+                        team2Complete: newTeam2Complete 
+                    };
+                }
+            }
         }
     })
 

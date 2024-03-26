@@ -12,7 +12,7 @@ import { PopUpProgressbar } from "./PopUpProgressbar";
  *  "popUpMode": "default", 
  * "selectedTiles": []}
  */
-export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
+export const PopUpPickTile = ({isPlayer1, matrixInfo, setMatrixInfo}) => {
 
     const colors = ["#f01133"]
 
@@ -22,7 +22,7 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
         if(matrixInfo.selectedTiles.length < 3)
             setMatrixInfo(p => ({
                 ...p, 
-                selectedTiles: [...p.selectedTiles, pickedTile], 
+                selectedTiles: [...p.selectedTiles, {index: pickedTile.index, row: pickedTile.row, swapTile: null}], 
                 popUpMode: 'none'
             }));
         else
