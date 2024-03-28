@@ -136,6 +136,7 @@ export const onCreateGame = /* GraphQL */ `
       }
       player1CheckedIn
       player2CheckedIn
+      timeoutArray
       createdAt
       updatedAt
       __typename
@@ -169,6 +170,7 @@ export const onUpdateGame = /* GraphQL */ `
       }
       player1CheckedIn
       player2CheckedIn
+      timeoutArray
       createdAt
       updatedAt
       __typename
@@ -202,6 +204,7 @@ export const onDeleteGame = /* GraphQL */ `
       }
       player1CheckedIn
       player2CheckedIn
+      timeoutArray
       createdAt
       updatedAt
       __typename
@@ -250,6 +253,7 @@ export const onCreateUserGame = /* GraphQL */ `
         started
         player1CheckedIn
         player2CheckedIn
+        timeoutArray
         createdAt
         updatedAt
         __typename
@@ -302,6 +306,7 @@ export const onUpdateUserGame = /* GraphQL */ `
         started
         player1CheckedIn
         player2CheckedIn
+        timeoutArray
         createdAt
         updatedAt
         __typename
@@ -354,6 +359,7 @@ export const onDeleteUserGame = /* GraphQL */ `
         started
         player1CheckedIn
         player2CheckedIn
+        timeoutArray
         createdAt
         updatedAt
         __typename

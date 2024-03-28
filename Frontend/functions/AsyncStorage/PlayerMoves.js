@@ -14,21 +14,21 @@ export const getAsyncPlayerMoves = async () => {
     return JSON.parse(ret);
 }
 
-export const setAsyncPlayerMove = async (newPlayerMove) => {
-    let currentPlayerMoves = JSON.parse(await AsyncStorage.getItem("playerMoves"));
+// export const setAsyncPlayerMove = async (newPlayerMove) => {
+//     let currentPlayerMoves = JSON.parse(await AsyncStorage.getItem("playerMoves"));
     
-    const currentPlayerMoveIndex = currentPlayerMoves.indexOf(playerMove => playerMove.gameId === newPlayerMove.gameId);
+//     const currentPlayerMoveIndex = currentPlayerMoves.indexOf(playerMove => playerMove.gameId === newPlayerMove.gameId);
     
-    if(currentPlayerMoveIndex !== -1){
-        currentPlayerMoves[currentPlayerMoveIndex] = newPlayerMove;
-    } else {
-        currentPlayerMoves.push(newPlayerMove);
-    }
+//     if(currentPlayerMoveIndex !== -1){
+//         currentPlayerMoves[currentPlayerMoveIndex] = newPlayerMove;
+//     } else {
+//         currentPlayerMoves.push(newPlayerMove);
+//     }
     
-    await AsyncStorage.setItem("playerMoves", JSON.stringify(currentPlayerMoves));
+//     await AsyncStorage.setItem("playerMoves", JSON.stringify(currentPlayerMoves));
     
-    return currentPlayerMoves;
-}
+//     return currentPlayerMoves;
+// }
 
 export const setAsyncPlayerMoves = async (newThing) => {
     const ret = await AsyncStorage.setItem("playerMoves", JSON.stringify(newThing));

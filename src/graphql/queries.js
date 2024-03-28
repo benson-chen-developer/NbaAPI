@@ -112,6 +112,7 @@ export const getGame = /* GraphQL */ `
       }
       player1CheckedIn
       player2CheckedIn
+      timeoutArray
       createdAt
       updatedAt
       __typename
@@ -146,6 +147,7 @@ export const listGames = /* GraphQL */ `
         started
         player1CheckedIn
         player2CheckedIn
+        timeoutArray
         createdAt
         updatedAt
         __typename
@@ -197,6 +199,7 @@ export const getUserGame = /* GraphQL */ `
         started
         player1CheckedIn
         player2CheckedIn
+        timeoutArray
         createdAt
         updatedAt
         __typename

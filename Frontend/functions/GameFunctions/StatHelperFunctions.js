@@ -86,6 +86,45 @@ export const AddActionToTeamGainedStats = (teamGainedStats, action) => {
     return teamGainedStats;
 }
 
+export const convertActionToStatObj = (action) => {
+    // console.log("convertActionToStatObj action", action)
+    const retArr = [];
+
+    if(action.actionType === "3pt"){
+        if(action.shotResult === "Made"){
+            retArr.push({"name": "3PM", "amount": 1});
+            retArr.push({"name": "PTS", "amount": 3});
+            retArr.push({"name": "3PA", "amount": 1});
+        } else {
+            retArr.push({"name": "3PA", "amount": 1});
+        }
+    }
+    else if(action.actionType === "2pt"){
+        if(action.shotResult === "Made"){
+            retArr.push({"name": "PTS", "amount": 2});
+        }
+    }
+    else if(action.actionType === "rebound"){
+        retArr.push({"name": "REB", "amount": 1});
+    }
+    else if(action.actionType === "block"){
+        retArr.push({"name": "BLK", "amount": 1});
+    }
+    else if(action.actionType === "steal"){
+        retArr.push({"name": "STL", "amount": 1});
+    }
+    else if(action.actionType === "assist"){
+        retArr.push({"name": "AST", "amount": 1});
+    }
+    else if(action.actionType === "freethrow"){
+        if(action.shotResult === "Made"){
+            retArr.push({"name": "PTS", "amount": 1});
+        }
+    }
+
+    return retArr;
+}
+
 export const ActionToSquareNumber = (action) => {
     if(action.actionType === "3pt"){
         if(action.shotResult === "Made"){

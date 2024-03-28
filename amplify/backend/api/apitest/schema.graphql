@@ -41,5 +41,6 @@ type Game @model @auth(rules: [{allow: public}]) {
   users: [User] @manyToMany(relationName: "UserGame")
   player1CheckedIn: Boolean
   player2CheckedIn: Boolean
+  timeoutArray: [AWSJSON]
 }
  

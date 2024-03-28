@@ -4,6 +4,7 @@ import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 export default function MatrixTile({row, index, item, matrixInfo, setMatrixInfo, isPlayer1}) {
     const tileStats = item;
     const [isSelected, setIsSelected] = useState(false); 
+    const [isSwaped, setIsSwapped] = useState(false);
     
     // console.log("tileStats. I am complete", tileStats)
 
@@ -19,14 +20,20 @@ export default function MatrixTile({row, index, item, matrixInfo, setMatrixInfo,
         let isSelected = matrixInfo.selectedTiles.find(selectedTile => 
             (selectedTile.index == tileStats.index && selectedTile.row == tileStats.row)
         )
+        let isSwaped = matrixInfo.selectedTiles.find(selectedTile => 
+            (selectedTile.swapTile?.index == tileStats.index && selectedTile.swapTile?.row == tileStats.row)
+        )
 
         if(isSelected) setIsSelected(true);
+        if(isSwaped) setIsSwapped(true);
     }, [matrixInfo.selectedTiles])
     
     return (
         <TouchableOpacity 
             style={
-                isSelected ? styles.selected : styles.notSelected
+                isSwaped && styles.swapped ||
+                isSelected && styles.selected || 
+                styles.notSelected
             }
             onPress={() => onPress()}
         >
@@ -64,5 +71,15 @@ const styles = StyleSheet.create({
         width: 150, height:125, backgroundColor:'#273447', 
         marginLeft: 3, borderColor: '#2bd6b2', borderWidth: 4,
         borderRadius: 5, marginBottom:3,
-    }
+    },
+    swapped : {
+        width: 150, height:125, backgroundColor:'#273447', 
+        marginLeft: 3, borderColor: '#f1c513', borderWidth: 4,
+        borderRadius: 5, marginBottom:3,
+    },
+    oppSelected : {
+        width: 150, height:125, backgroundColor:'#273447', 
+        marginLeft: 3, borderColor: '#f2133b', borderWidth: 4,
+        borderRadius: 5, marginBottom:3,
+    },
 })

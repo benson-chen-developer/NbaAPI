@@ -7,7 +7,6 @@ export const Header = ({game, scores=[-1, -1], allTiles, isPlayer1, matrixInfo})
         ...selectedTile,
         complete: true
     })).length;
-    console.log(completedSelectedTiles)
     const homeTeamName = game.teams[0];
     const awayTeamName = game.teams[1];
 
