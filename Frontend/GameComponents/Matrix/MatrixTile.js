@@ -5,6 +5,7 @@ export default function MatrixTile({row, index, item, matrixInfo, setMatrixInfo,
     const tileStats = item;
     const [isSelected, setIsSelected] = useState(false); 
     const [isSwaped, setIsSwapped] = useState(false);
+    const [isOpp, setIsOpp] = useState(false);
     
     // console.log("tileStats. I am complete", tileStats)
 
@@ -23,9 +24,13 @@ export default function MatrixTile({row, index, item, matrixInfo, setMatrixInfo,
         let isSwaped = matrixInfo.selectedTiles.find(selectedTile => 
             (selectedTile.swapTile?.index == tileStats.index && selectedTile.swapTile?.row == tileStats.row)
         )
+        let isOpp = matrixInfo.oppSelectedTiles.find(oppSelectedTile => 
+            (oppSelectedTile.index == tileStats.index && oppSelectedTile.row == tileStats.row)
+        )
 
         if(isSelected) setIsSelected(true);
         if(isSwaped) setIsSwapped(true);
+        if(isOpp) setIsOpp(true);
     }, [matrixInfo.selectedTiles])
     
     return (
@@ -33,6 +38,7 @@ export default function MatrixTile({row, index, item, matrixInfo, setMatrixInfo,
             style={
                 isSwaped && styles.swapped ||
                 isSelected && styles.selected || 
+                isOpp && styles.oppSelected || 
                 styles.notSelected
             }
             onPress={() => onPress()}
