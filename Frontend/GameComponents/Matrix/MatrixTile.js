@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { getTeamLogo } from "../../../assets/TeamLogos/getTeamLogo";
 
-export default function MatrixTile({row, index, item, matrixInfo, setMatrixInfo, isPlayer1}) {
+export default function MatrixTile({row, index, item, matrixInfo, setMatrixInfo}) {
     const tileStats = item;
     const [isSelected, setIsSelected] = useState(false); 
     const [isSwaped, setIsSwapped] = useState(false);
     const [isOpp, setIsOpp] = useState(false);
+    const [progress, setProgress] = useState(`0%`);
     
-    // console.log("tileStats. I am complete", tileStats)
-
     const onPress = () => {
         setMatrixInfo(p => ({
             ...p, 
@@ -28,9 +28,28 @@ export default function MatrixTile({row, index, item, matrixInfo, setMatrixInfo,
             (oppSelectedTile.index == tileStats.index && oppSelectedTile.row == tileStats.row)
         )
 
-        if(isSelected) setIsSelected(true);
-        if(isSwaped) setIsSwapped(true);
-        if(isOpp) setIsOpp(true);
+        let team1Bar = (tileStats.team1Progress/tileStats.team1Goal * 100) > 100 ? 100 : (tileStats.team1Progress/tileStats.team1Goal * 100);
+        let team2Bar = (tileStats.team2Progress/tileStats.team2Goal * 100) > 100 ? 100 : (tileStats.team1Progress/tileStats.team1Goal * 100);
+        
+        if(isSelected){
+            if(matrixInfo.isPlayer1){
+                setProgress(`${team1Bar}%`);
+            }
+            else setProgress(`${team2Bar}%`);
+            setIsSelected(true);
+        }
+        else if(isSwaped) setIsSwapped(true);
+        else if(isOpp) {
+            // console.log("Opp", team2Bar, team1Bar)
+            if(matrixInfo.isPlayer1) {
+                setProgress(`${team2Bar}%`);
+            }
+            else{
+                setProgress(`${team1Bar}%`);
+            }
+            setIsOpp(true);
+        }
+        
     }, [matrixInfo.selectedTiles])
     
     return (
@@ -43,27 +62,34 @@ export default function MatrixTile({row, index, item, matrixInfo, setMatrixInfo,
             }
             onPress={() => onPress()}
         >
-            <Text style={{color:"white"}}>{tileStats.name}</Text>
+            <View style={{margin:5}}>
+                <Text style={styles.title}>{tileStats.name}</Text>
 
-            <Text>{tileStats.team1Complete ? "team1 won" : null}</Text>
-            <Text>{tileStats.team2Complete ? "team2 won" : null}</Text>
-            {/* <ProgressBar item={tileStats} /> */}
-        </TouchableOpacity>
-    )
-}
+                <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:5}}>
+                    <View style={{flexDirection:'row', backgroundColor:'#576e8e', borderRadius:5, width:50, height:25}}>
+                        <Image style={{width:20, height:20, marginRight:3}} source={getTeamLogo(matrixInfo.teams[0])}/>
+                        <Text style={styles.statText}>{tileStats.team1Goal }</Text>
+                    </View>
+                    <View style={{flexDirection:'row'}}>
+                        <Image style={{width:20, height:20, marginRight:3}} source={getTeamLogo(matrixInfo.teams[1])}/>
+                        <Text style={styles.statText}>{tileStats.team2Goal }</Text>
+                    </View>
+                </View>
+                
+                <Text>{tileStats.team1Complete ? "team1 won" : null}</Text>
+                <Text>{tileStats.team2Complete ? "team2 won" : null}</Text>
 
-const ProgressBar = (item) => {
-    return(
-        <View style={{width:"95%", height: 5}}>
-            {item?.p1Progress ? 
-                <View style={{
-                    width:`${item.p1Progress[0]/item.p1Progress[1]}%`,
-                    height: "100%", backgroundColor: 
-                    item.p1Id === "ben" ? 'green' : 'red'
-                }}/> : null
+            </View>
+
+            {progress !== '0%' || isOpp || isSelected ?
+                <View style={styles.progressBar}>
+                    <View style={{
+                        width:progress, height:"100%", 
+                        backgroundColor: isOpp ? '#f2133b' : '#2bd6b2',
+                    }}/>
+                </View> : null
             }
-            <Text>{item.p1Id}</Text>
-        </View>
+        </TouchableOpacity>
     )
 }
 
@@ -71,21 +97,31 @@ const styles = StyleSheet.create({
     notSelected : {
         width: 150, height:125, backgroundColor:'#273447', 
         marginLeft: 3,marginBottom:3,
-        borderRadius: 5
+        borderRadius: 5, justifyContent:'space-between'
     },
     selected : {
         width: 150, height:125, backgroundColor:'#273447', 
         marginLeft: 3, borderColor: '#2bd6b2', borderWidth: 4,
-        borderRadius: 5, marginBottom:3,
+        borderRadius: 5, marginBottom:3, justifyContent:'space-between'
     },
     swapped : {
         width: 150, height:125, backgroundColor:'#273447', 
         marginLeft: 3, borderColor: '#f1c513', borderWidth: 4,
-        borderRadius: 5, marginBottom:3,
+        borderRadius: 5, marginBottom:3, justifyContent:'space-between'
     },
     oppSelected : {
         width: 150, height:125, backgroundColor:'#273447', 
         marginLeft: 3, borderColor: '#f2133b', borderWidth: 4,
-        borderRadius: 5, marginBottom:3,
+        borderRadius: 5, marginBottom:3, justifyContent:'space-between'
     },
+    progressBar: {
+        width:"100%", backgroundColor: '#121724', height: 5,
+        borderBottomLeftRadius: 5, borderBottomRightRadius: 5
+    },
+    title: {
+        color:"white", fontFamily:'Roboto-Bold', fontSize:20
+    },
+    statText: {
+        color:"white", fontFamily:'Roboto-Bold', fontSize: 18
+    }
 })

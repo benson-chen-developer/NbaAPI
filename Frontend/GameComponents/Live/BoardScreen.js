@@ -17,7 +17,7 @@ export const BoardScreen = ({game, isPlayer1, allTiles, matrixInfo, setMatrixInf
         <>
             {/* Matrix */}
             <GameMatrix 
-                allTiles={allTiles} isPlayer1={isPlayer1}
+                allTiles={allTiles}
                 matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo}
             />
 

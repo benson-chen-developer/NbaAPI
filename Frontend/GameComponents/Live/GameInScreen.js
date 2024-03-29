@@ -22,12 +22,14 @@ export const GameInScreen = ({route}) => {
     const [matrixInfo, setMatrixInfo] = useState({
         popUpMode: "none",
         navBar: 'board',
+        isPlayer1: game.player1Id === user.id,
         gameId: game.id,
         pickedTile: null, // {"name": "AST", "team1": 36.9, "team1Progress": 0, "team2": 36.9, "team2Progess": 0}
         pickedPlayer: null,
         selectedTiles: [],
         oppSelectedTiles: [],
-        teamDepth: []
+        teamDepth: [],
+        teams: [game.teams[0], game.teams[1]]
     });
     const playerMoves = playerMovesContext.find(playerMove => playerMove.gameId === game.id); 
     const isPlayer1 = game.player1Id === user.id;
