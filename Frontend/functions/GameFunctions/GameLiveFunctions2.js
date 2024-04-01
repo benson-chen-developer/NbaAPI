@@ -43,9 +43,9 @@ export const goThroughEachGameAction = async (
 
         /* PTS, REB, BLK, STL */
         else if(action.playerNameI){
-            let index = allPlayers.findIndex(player => player.name.toLowerCase() === action.playerNameI.toLowerCase());
-            
-            if(index !== -1){
+            let playerIndex = allPlayers.findIndex(player => player.name.toLowerCase() === action.playerNameI.toLowerCase());
+
+            if(playerIndex !== -1){
                 const statObjArray = convertActionToStatObj(action);
     
                 allSelectedTiles.forEach((selectedTile, index) => {
@@ -57,6 +57,16 @@ export const goThroughEachGameAction = async (
                                 selectedTile.progress = statObj.amount + selectedTile.progress;
                                 selectedTile.complete = selectedTile.progress >= selectedTile.goal;
                                 allSelectedTiles[index] = selectedTile;
+
+                                /* Adding to Player */
+                                if(allPlayers[playerIndex].team === selectedTile.team){
+                                    let tileIndex = allPlayers[playerIndex].tiles.findIndex((tile) => tile.index === selectedTile.index && tile.row === selectedTile.row);
+                                    if(tileIndex !== -1){
+                                        allPlayers[playerIndex].tiles[tileIndex] = selectedTile;
+                                    } else {
+                                        allPlayers[playerIndex].tiles.push(selectedTile);
+                                    }
+                                }
                             }
                         })
                     }
@@ -66,12 +76,12 @@ export const goThroughEachGameAction = async (
     
         /* AST */
         else if(action.assistPlayerNameInitial){
-            let index = allPlayers.findIndex(player => player.name.toLowerCase() === action.assistPlayerNameInitial.toLowerCase());
+            let playerIndex = allPlayers.findIndex(player => player.name.toLowerCase() === action.assistPlayerNameInitial.toLowerCase());
             
-            if(index !== -1){
+            if(playerIndex !== -1){
                 const statObjArray = convertActionToStatObj({actionType: 'assist'});
     
-                allSelectedTiles.forEach(selectedTile => {
+                allSelectedTiles.forEach((selectedTile, index) => {
                     if(selectedTile.team === teamNameConversion(action.teamTricode)){
                         statObjArray.forEach(statObj => {
                             const names = selectedTile.name.split("+");
@@ -80,6 +90,16 @@ export const goThroughEachGameAction = async (
                                 selectedTile.progress = statObj.amount + selectedTile.progress;
                                 selectedTile.complete = selectedTile.progress >= selectedTile.goal;
                                 allSelectedTiles[index] = selectedTile;
+
+                                /* Adding to Player */
+                                if(allPlayers[playerIndex].team === selectedTile.team){
+                                    let tileIndex = allPlayers[playerIndex].tiles.findIndex((tile) => tile.index === selectedTile.index && tile.row === selectedTile.row);
+                                    if(tileIndex !== -1){
+                                        allPlayers[playerIndex].tiles[tileIndex] = selectedTile;
+                                    } else {
+                                        allPlayers[playerIndex].tiles.push(selectedTile);
+                                    }
+                                }
                             }
                         })
                     }
@@ -100,13 +120,13 @@ export const goThroughEachGameAction = async (
             }
         })
 
-        // console.log("allTiles", JSON.stringify(allTiles, null, 2));
-        // console.log("")
+        // console.log("playerMoves", JSON.stringify(allPlayers, null, 2));
     });
 
     return {
         allTiles: allTiles, 
         player1SelectedTiles: player1SelectedTiles, 
-        player2SelectedTiles: player2SelectedTiles
+        player2SelectedTiles: player2SelectedTiles,
+        allPlayers: allPlayers
     };
 }

@@ -89,6 +89,8 @@ export const abbreviateName = (name) => {
         return "bkn"
     else if(n === "cavaliers")
         return "cle"
+    else if(n === "pacers")
+        return "ind"
     else if(n === "mavericks")
         return "dal"
     else 

@@ -66,13 +66,24 @@ export default function MatrixTile({row, index, item, matrixInfo, setMatrixInfo}
                 <Text style={styles.title}>{tileStats.name}</Text>
 
                 <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:5}}>
-                    <View style={{flexDirection:'row', backgroundColor:'#576e8e', borderRadius:5, width:50, height:25}}>
-                        <Image style={{width:20, height:20, marginRight:3}} source={getTeamLogo(matrixInfo.teams[0])}/>
-                        <Text style={styles.statText}>{tileStats.team1Goal }</Text>
+                    <View style={{flexDirection:'row'}}>
+                        {/* <Image style={{width:20, height:20, marginRight:3}} source={getTeamLogo(matrixInfo.teams[0])}/> */}
+                        <Text style={{color:"white", fontFamily:'Roboto-Bold', fontSize: 16}}>
+                            IND
+                        </Text>
+                        <Text style={{color:"white", fontFamily:'Roboto-Bold', fontSize: 16}}>
+                            {tileStats.team1Goal }
+                        </Text>
                     </View>
                     <View style={{flexDirection:'row'}}>
-                        <Image style={{width:20, height:20, marginRight:3}} source={getTeamLogo(matrixInfo.teams[1])}/>
-                        <Text style={styles.statText}>{tileStats.team2Goal }</Text>
+                        {/* <Image style={{width:20, height:20, marginRight:3}} source={getTeamLogo(matrixInfo.teams[1])}/>
+                        <Text style={styles.statText}>{tileStats.team2Goal }</Text> */}
+                        <Text style={{color:"white", fontFamily:'Roboto-Bold', fontSize: 16}}>
+                            CLE
+                        </Text>
+                        <Text style={{color:"white", fontFamily:'Roboto-Bold', fontSize: 16}}>
+                            {tileStats.team2Goal }
+                        </Text>
                     </View>
                 </View>
                 

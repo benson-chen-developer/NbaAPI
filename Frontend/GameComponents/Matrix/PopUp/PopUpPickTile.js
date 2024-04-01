@@ -1,7 +1,8 @@
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native"
+import { useState, useEffect } from "react";
+import { View, TouchableOpacity, Text, StyleSheet, Image } from "react-native"
 import { getFullNameOfStat } from "../../../../assets/NameConversions";
-import { PopUpPlayerCard } from "./PopUpPlayerCard";
-import { PopUpProgressbar } from "./PopUpProgressbar";
+import { abbreviateName } from "../../../../assets/TeamLogos/getTeamLogo";
+import { ProgressWheel } from "./ProgressWheel";
 
 /**
  * 
@@ -12,11 +13,12 @@ import { PopUpProgressbar } from "./PopUpProgressbar";
  *  "popUpMode": "default", 
  * "selectedTiles": []}
  */
-export const PopUpPickTile = ({isPlayer1, matrixInfo, setMatrixInfo}) => {
+export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
 
-    const colors = ["#f01133"]
+    const {pickedTile, teams, isPlayer1, allPlayers} = matrixInfo;
 
-    const {pickedTile} = matrixInfo;
+    const [players, setPlayers] = useState(null);
+    const teamView = isPlayer1 ? teams[0] : teams[1];
 
     const onPress = () => {
         if(matrixInfo.selectedTiles.length < 3)
@@ -33,8 +35,34 @@ export const PopUpPickTile = ({isPlayer1, matrixInfo, setMatrixInfo}) => {
             }))
     }
 
+    useEffect(() => {
+        allPlayers.forEach((player) => {
+            const playersArr = [];
+            const tileIndex = player.tiles.findIndex((tile) => tile.row === pickedTile.row && tile.index === pickedTile.index);
+
+            if(tileIndex !== -1){
+                playersArr.push({
+                    name: player.name,
+                    number: player.tiles[tileIndex].progress,
+                    color: player.color
+                })
+            }
+            setPlayers(playersArr);
+        })
+    }, [])
+
+    if(players)
     return(
         <>
+            <View style={{width:"100%", height:"100%", position:'absolute'}}>
+                <View style={{width:"100%", height:"100%", position:'absolute', opacity:.5}}> 
+                    <Image 
+                        style={{width:100, height: 100, margin:20}}
+                        source={{uri: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${abbreviateName(teamView)}.png`}}
+                    />
+                </View>
+            </View>
+
             {/* X Btn */}
             <TouchableOpacity   
                 style={{height: 25, width:"80%", marginTop:30, marginBottom:10, alignItems:'flex-end', justifyContent:'center'}}
@@ -48,12 +76,20 @@ export const PopUpPickTile = ({isPlayer1, matrixInfo, setMatrixInfo}) => {
                 {getFullNameOfStat(pickedTile.name)}
             </Text>
 
-            {/* Progress Bar */}
-            {/* <PopUpProgressbar pickedTile={pickedTile}/> */}
-            <Text>Total {pickedTile.team1Progress}</Text>
+            <ProgressWheel 
+                players={players}
+            />
 
-            {/* PlayerCards */}
-            <PopUpPlayerCard />
+            <View style={{width:"100%", margin:20, flexDirection:'row', justifyContent:'space-evenly'}}>
+                {players.slice(0,3).map((player, index) => {
+                    return <PlayerBox 
+                        key={index}
+                        name={player.name} 
+                        number={player.number}
+                        color={player.color}
+                    />
+                })}
+            </View>
 
             {/* Select Btn */}
             {matrixInfo.selectedTiles.find(tile => tile.index === pickedTile.index && tile.row === pickedTile.row) ?
@@ -73,7 +109,35 @@ export const PopUpPickTile = ({isPlayer1, matrixInfo, setMatrixInfo}) => {
                     </View>
                 </TouchableOpacity>
             }
+
         </>
+    )
+}
+
+const PlayerBox = ({name, number, color}) => {
+    const width = 90; 
+
+    return(
+        <View style={{width:width, height:120}}>
+
+            <View style={{width:width, height:90}}>
+
+                <View style={{width:width, height:90, backgroundColor:color, position:'absolute',  borderRadius:15}}/>
+                
+                <View style={{width:width, height:85, justifyContent:'center', alignItems:'center', backgroundColor:'white', borderRadius:15}}>
+                    <Image 
+                        style={{height:60, width:width}}
+                        source={{uri:"https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/1966.png"}}
+                    />
+                    <View style={{top:8 , left:7, width:18, height:18, borderRadius:20, backgroundColor:color, position:'absolute'}}/>
+                </View>
+
+            </View>
+
+            <View style={{width:width, height: 30, alignItems:'flex-end', justifyContent:'center'}}>
+                <Text style={{color:'white', fontSize:15}}>{name} ({number})</Text>
+            </View>
+        </View>
     )
 }
 

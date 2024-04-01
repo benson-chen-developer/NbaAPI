@@ -4,9 +4,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
     [{
         gameId: string,
         selectedTiles: [matrixSquareObj],
-        teamDepth: [playerName]
+        teamDepth: [playerObj]
     }]
  */
+/*PlayerObj
+    {
+        name: string,
+        team: string,
+        color: string
+        tiles: [
+            {number: 0, index:0, row: 0}
+        ],
+    }
+*/
 
 export const getAsyncPlayerMoves = async () => {
     const ret = await AsyncStorage.getItem("playerMoves");

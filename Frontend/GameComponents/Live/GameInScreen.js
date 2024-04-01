@@ -29,7 +29,8 @@ export const GameInScreen = ({route}) => {
         selectedTiles: [],
         oppSelectedTiles: [],
         teamDepth: [],
-        teams: [game.teams[0], game.teams[1]]
+        teams: [game.teams[0], game.teams[1]],
+        allPlayers: []
     });
     const playerMoves = playerMovesContext.find(playerMove => playerMove.gameId === game.id); 
     const isPlayer1 = game.player1Id === user.id;
@@ -52,18 +53,20 @@ export const GameInScreen = ({route}) => {
             game, allTiles,
             // actionsListRes, 
             TestGameActions,
-            [{name: "P. Siakam"}]
+            playerMoves.teamDepth
         )
 
         const resAllTiles = res.allTiles;
         const resPlayer1SelectedTiles = res.player1SelectedTiles;
         const resPlayer2SelectedTiles = res.player2SelectedTiles;
+        const allPlayers = res.allPlayers;
 
         setAllTiles(resAllTiles);
         setMatrixInfo(p => ({
             ...p, 
             selectedTiles: isPlayer1 ? resPlayer1SelectedTiles : resPlayer2SelectedTiles,
-            oppSelectedTiles: !isPlayer1 ? resPlayer1SelectedTiles : resPlayer2SelectedTiles
+            oppSelectedTiles: !isPlayer1 ? resPlayer1SelectedTiles : resPlayer2SelectedTiles,
+            allPlayers: allPlayers
         }));
         // console.log("newAllTiles", JSON.stringify(allTiles, null, 2));
         // console.log("player1SelectedTiles", JSON.stringify(player1SelectedTiles, null, 2));
@@ -169,7 +172,7 @@ export const GameInScreen = ({route}) => {
                 {/* Current Board (From Nav Bar) */}
                 {matrixInfo.navBar === "board" ?
                     <BoardScreen 
-                        game={game} isPlayer1={isPlayer1}
+                        game={game}
                         allTiles={allTiles} 
                         matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} 
                     /> : null

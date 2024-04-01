@@ -81,15 +81,25 @@ export default function MainContainer() {
                 const noOldGames = res.filter(item =>
                   liveGamesRes.some(game => game.id === item.gameId)
                 );
+                // console.log("playerMovesAsync", noOldGames);
                 setAsyncPlayerMoves(noOldGames);
                 setPlayerMovesContext(noOldGames);
-                // setAsyncPlayerMoves([{"gameId": "34849dc2-78d6-48af-a9ac-35d183d9fa76", "teamDepth": [], "selectedTiles": [
-                //   {index:0, row:1, complete: false, team: "Pacers", goal:14, progress: 0, name:"AST", swapTile: {
-                //     index:0, row:2, complete: false, team: "Pacers", goal:14, progress: 0, name:"PTS+REB",
-                //   }},
-                //   {index:1, row:1, complete: false, swapTile: null, team: "Pacers", goal:14, progress: 0, name:"BLK+STL"},
-                //   {index:2, row:1, complete: false, swapTile: null, team: "Pacers", goal:1, progress: 0,  name:"REB"}
-                // ]}])
+
+                // setAsyncPlayerMoves([{"gameId": "34849dc2-78d6-48af-a9ac-35d183d9fa76", "teamDepth": [], 
+                //   "selectedTiles": [
+                //     {index:0, row:1, complete: false, team: "Pacers", goal:14, progress: 0, name:"AST", swapTile: {
+                //       index:0, row:2, complete: false, team: "Pacers", goal:14, progress: 0, name:"PTS+REB",
+                //     }},
+                //     {index:1, row:1, complete: false, swapTile: null, team: "Pacers", goal:14, progress: 0, name:"BLK+STL"},
+                //     {index:2, row:1, complete: false, swapTile: null, team: "Pacers", goal:1, progress: 0,  name:"REB"}
+                //   ],
+                //   "teamDepth": [
+                //     {name: 'P. Siakam', team: 'Pacers', color: '#C70039', tiles: [
+
+                //     ]}
+                //   ]
+                // }])
+
               })
               
               setLiveGames(liveGamesRes);
