@@ -2,13 +2,13 @@ import { useState } from "react";
 import { View } from "react-native";
 import { useMyContext } from "../../Context/MyContext";
 import { GameMatrix } from "../Matrix/GameMatrix";
-import { PopUpPickTile } from "../Matrix/PopUp/PopUpPickTile";
+import { PopUpPickTile } from "../Matrix/PopUp/PopUpPickTile/PopUpPickTile";
 import { PopUpPlayer } from "../Matrix/PopUp/PopUpPlayer";
 import { PopUpSwapTile } from "../Matrix/PopUp/PopUpSwapTile";
 import { GamePlayers } from "../Shared/GamePlayers";
 
 
-export const BoardScreen = ({game, allTiles, matrixInfo, setMatrixInfo}) => {
+export const BoardScreen = ({game, matrixInfo, setMatrixInfo}) => {
 
     const { user } = useMyContext();
     const [homePlayerDepth, setHomePlayerDepth] = useState(game.player1Id === user.id ? game.player1Depth : game.player2Depth)
@@ -17,19 +17,18 @@ export const BoardScreen = ({game, allTiles, matrixInfo, setMatrixInfo}) => {
         <>
             {/* Matrix */}
             <GameMatrix 
-                allTiles={allTiles}
                 matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo}
             />
 
             {/* Players */}
-            {homePlayerDepth.length > 0 ?
+            {/* {homePlayerDepth.length > 0 ?
                 <GamePlayers 
                     matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo}
                     players={homePlayerDepth.map(player => JSON.parse(player))}
                 />
                     :
                 null
-            }
+            } */}
 
             {/* Pop Up */}
             {matrixInfo.popUpMode !== "none" ? 

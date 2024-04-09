@@ -9,6 +9,7 @@ import { GameEnd } from './Frontend/GameComponents/GameEnd/GameEnd';
 
 const Stack = createStackNavigator();
 
+
 function App() {
   return (
     <SafeAreaProvider>

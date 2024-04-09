@@ -1,6 +1,59 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getBotGame = /* GraphQL */ `
+  query GetBotGame($id: ID!) {
+    getBotGame(id: $id) {
+      id
+      playerId
+      teams
+      playerTeam
+      timeoutArray
+      User {
+        id
+        email
+        score
+        userId
+        playersArray
+        name
+        xp
+        teamDepth
+        maxLiveGames
+        mainTeam
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      botGameUserId
+      __typename
+    }
+  }
+`;
+export const listBotGames = /* GraphQL */ `
+  query ListBotGames(
+    $filter: ModelBotGameFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listBotGames(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        playerId
+        teams
+        playerTeam
+        timeoutArray
+        createdAt
+        updatedAt
+        botGameUserId
+        __typename
+      }
+      nextToken
+      __typename
+    }
+  }
+`;
 export const getTeamData = /* GraphQL */ `
   query GetTeamData($id: ID!) {
     getTeamData(id: $id) {
@@ -113,6 +166,8 @@ export const getGame = /* GraphQL */ `
       player1CheckedIn
       player2CheckedIn
       timeoutArray
+      player1SelectedTiles
+      player2SelectedTiles
       createdAt
       updatedAt
       __typename
@@ -148,6 +203,8 @@ export const listGames = /* GraphQL */ `
         player1CheckedIn
         player2CheckedIn
         timeoutArray
+        player1SelectedTiles
+        player2SelectedTiles
         createdAt
         updatedAt
         __typename
@@ -200,6 +257,8 @@ export const getUserGame = /* GraphQL */ `
         player1CheckedIn
         player2CheckedIn
         timeoutArray
+        player1SelectedTiles
+        player2SelectedTiles
         createdAt
         updatedAt
         __typename

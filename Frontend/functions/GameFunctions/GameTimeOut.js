@@ -87,16 +87,3 @@ export const updateAWSTimeOut = (
 
         // return updatedGame.data.updateGame;
 }
-
-export const swapTiles = (selectedTiles) => {
-    selectedTiles.forEach((selectedTile, index) => {
-        if(selectedTile.swapTile){
-            selectedTiles[index] = {
-                ...selectedTile.swapTile,
-                swap: null
-            }
-        }
-    }) 
-
-    return selectedTiles;
-}

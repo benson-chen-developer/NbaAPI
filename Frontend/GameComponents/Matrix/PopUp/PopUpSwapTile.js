@@ -1,26 +1,50 @@
+import { useState } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native"
 import { getFullNameOfStat } from "../../../../assets/NameConversions";
+import { UpdateGame } from "../../../functions/MutationFunctions/GameMutation";
 
 export const PopUpSwapTile = ({matrixInfo, setMatrixInfo}) => {
-    const {pickedTile, selectedTiles} = matrixInfo;
-    console.log("selectedTiles PopUpsawp", selectedTiles)
+    const {pickedTile, selectedTiles, isPlayer1, gameId, lastActionNumber} = matrixInfo;
+
+    const [loading, setLoading] = useState(false);
+    // console.log("selectedTiles PopUpsawp", selectedTiles)
 
     const swapThis = async ( oldTile ) => {
+        setLoading(true);
+
         const newSelectedTiles = matrixInfo.selectedTiles.map(tile => {
             if (tile.index === oldTile.index && tile.row === oldTile.row) {
                 return {...tile, swapTile: {index: pickedTile.index, row: pickedTile.row}};
             }
             return tile;
         })
-        setMatrixInfo(p => {
-            return {
-                ...p,
-                popUpMode: "none",
-                selectedTiles: [...newSelectedTiles]
-            };
-        });
+        const updateGameInput = isPlayer1 ? 
+            {id: gameId, player1SelectedTiles : newSelectedTiles.map(obj => JSON.stringify(obj))} :
+            {id: gameId, player2SelectedTiles : newSelectedTiles.map(obj => JSON.stringify(obj))};
+
+        console.log("updateGameInput", updateGameInput)
+
+        UpdateGame(updateGameInput).then(res => {
+            setMatrixInfo(p => {
+                return {
+                    ...p,
+                    popUpMode: "none",
+                    selectedTiles: [...newSelectedTiles]
+                };
+            });
+            setLoading(false);
+        })
+        .catch(err => {
+            console.log("Err PopUpSwapTile", err);
+            setLoading(false);
+        })
     };
     
+    if(loading) return(
+        <View style={{width:"90%", height:"70%", backgroundColor:"#273447", borderRadius: 8, alignItems:'center'}}>
+            <Text style={{color: 'white'}}>Loading</Text>
+        </View>
+    )
 
     return(
         <View style={{width:"90%", height:"70%", backgroundColor:"#273447", borderRadius: 8, alignItems:'center'}}>

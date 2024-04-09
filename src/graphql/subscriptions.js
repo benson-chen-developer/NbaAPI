@@ -1,6 +1,96 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateBotGame = /* GraphQL */ `
+  subscription OnCreateBotGame($filter: ModelSubscriptionBotGameFilterInput) {
+    onCreateBotGame(filter: $filter) {
+      id
+      playerId
+      teams
+      playerTeam
+      timeoutArray
+      User {
+        id
+        email
+        score
+        userId
+        playersArray
+        name
+        xp
+        teamDepth
+        maxLiveGames
+        mainTeam
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      botGameUserId
+      __typename
+    }
+  }
+`;
+export const onUpdateBotGame = /* GraphQL */ `
+  subscription OnUpdateBotGame($filter: ModelSubscriptionBotGameFilterInput) {
+    onUpdateBotGame(filter: $filter) {
+      id
+      playerId
+      teams
+      playerTeam
+      timeoutArray
+      User {
+        id
+        email
+        score
+        userId
+        playersArray
+        name
+        xp
+        teamDepth
+        maxLiveGames
+        mainTeam
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      botGameUserId
+      __typename
+    }
+  }
+`;
+export const onDeleteBotGame = /* GraphQL */ `
+  subscription OnDeleteBotGame($filter: ModelSubscriptionBotGameFilterInput) {
+    onDeleteBotGame(filter: $filter) {
+      id
+      playerId
+      teams
+      playerTeam
+      timeoutArray
+      User {
+        id
+        email
+        score
+        userId
+        playersArray
+        name
+        xp
+        teamDepth
+        maxLiveGames
+        mainTeam
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      botGameUserId
+      __typename
+    }
+  }
+`;
 export const onCreateTeamData = /* GraphQL */ `
   subscription OnCreateTeamData($filter: ModelSubscriptionTeamDataFilterInput) {
     onCreateTeamData(filter: $filter) {
@@ -137,6 +227,8 @@ export const onCreateGame = /* GraphQL */ `
       player1CheckedIn
       player2CheckedIn
       timeoutArray
+      player1SelectedTiles
+      player2SelectedTiles
       createdAt
       updatedAt
       __typename
@@ -171,6 +263,8 @@ export const onUpdateGame = /* GraphQL */ `
       player1CheckedIn
       player2CheckedIn
       timeoutArray
+      player1SelectedTiles
+      player2SelectedTiles
       createdAt
       updatedAt
       __typename
@@ -205,6 +299,8 @@ export const onDeleteGame = /* GraphQL */ `
       player1CheckedIn
       player2CheckedIn
       timeoutArray
+      player1SelectedTiles
+      player2SelectedTiles
       createdAt
       updatedAt
       __typename
@@ -254,6 +350,8 @@ export const onCreateUserGame = /* GraphQL */ `
         player1CheckedIn
         player2CheckedIn
         timeoutArray
+        player1SelectedTiles
+        player2SelectedTiles
         createdAt
         updatedAt
         __typename
@@ -307,6 +405,8 @@ export const onUpdateUserGame = /* GraphQL */ `
         player1CheckedIn
         player2CheckedIn
         timeoutArray
+        player1SelectedTiles
+        player2SelectedTiles
         createdAt
         updatedAt
         __typename
@@ -360,6 +460,8 @@ export const onDeleteUserGame = /* GraphQL */ `
         player1CheckedIn
         player2CheckedIn
         timeoutArray
+        player1SelectedTiles
+        player2SelectedTiles
         createdAt
         updatedAt
         __typename

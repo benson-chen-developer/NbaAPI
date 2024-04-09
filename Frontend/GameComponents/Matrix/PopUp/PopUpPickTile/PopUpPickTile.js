@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { View, TouchableOpacity, Text, StyleSheet, Image } from "react-native"
-import { getFullNameOfStat } from "../../../../assets/NameConversions";
-import { abbreviateName } from "../../../../assets/TeamLogos/getTeamLogo";
-import { ProgressWheel } from "./ProgressWheel";
+import { getFullNameOfStat } from "../../../../../assets/NameConversions";
+import { abbreviateName } from "../../../../../assets/TeamLogos/getTeamLogo";
+import { UpdateGame } from "../../../../functions/MutationFunctions/GameMutation";
+import { ProgressWheel } from "../ProgressWheel";
+import { SwapTiles } from "./SwapTiles";
 
 /**
  * 
@@ -14,19 +16,40 @@ import { ProgressWheel } from "./ProgressWheel";
  * "selectedTiles": []}
  */
 export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
-
-    const {pickedTile, teams, isPlayer1, allPlayers} = matrixInfo;
-
+    
+    const {pickedTile, teams, isPlayer1, allPlayers, selectedTiles} = matrixInfo;
+    console.log
+    
+    const [loading, setLoading] = useState(false);
     const [players, setPlayers] = useState(null);
+    const [swapTile, setSwapTile] = useState(selectedTiles.find(selectedTile => 
+        selectedTile.swapTile?.index === pickedTile.index && selectedTile.swapTile?.row === pickedTile.row    
+    ));
+
     const teamView = isPlayer1 ? teams[0] : teams[1];
 
     const onPress = () => {
-        if(matrixInfo.selectedTiles.length < 3)
-            setMatrixInfo(p => ({
-                ...p, 
-                selectedTiles: [...p.selectedTiles, {index: pickedTile.index, row: pickedTile.row, swapTile: null}], 
-                popUpMode: 'none'
-            }));
+        if(matrixInfo.selectedTiles.length < 3){
+            setLoading(true);
+            const updateGameInput = isPlayer1 ? 
+                {player1SelectedTiles : [...p.selectedTiles, {index: pickedTile.index, row: pickedTile.row, swapTile: null}]} 
+                    : 
+                {player2SelectedTiles : [...p.selectedTiles, {index: pickedTile.index, row: pickedTile.row, swapTile: null}]};
+
+            UpdateGame(updateGameInput).then(res => {
+                setMatrixInfo(p => ({
+                    ...p, 
+                    selectedTiles: [...p.selectedTiles, {index: pickedTile.index, row: pickedTile.row, swapTile: null}], 
+                    popUpMode: 'none'
+                }));
+
+                setLoading(false);
+            }).catch((err) => {
+                console.log("Err PopUpPickTile", err);
+
+                setLoading(false);
+            })
+        }
         else
             setMatrixInfo(p => ({
                 ...p, 
@@ -91,23 +114,32 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
                 })}
             </View>
 
-            {/* Select Btn */}
-            {matrixInfo.selectedTiles.find(tile => tile.index === pickedTile.index && tile.row === pickedTile.row) ?
-                <View style={styles.main2} onPress={() => onPress()}>
-                    <View style={styles.inner2}> 
-                        <Text style={{color:'white', fontSize: 25, fontFamily:'Roboto-Bold'}}>
-                            Picked
-                        </Text>
+            {!swapTile ? 
+                <>
+                {selectedTiles.find(tile => tile.index === pickedTile.index && tile.row === pickedTile.row) ?
+                    <View style={styles.main2} onPress={() => onPress()}>
+                        <View style={styles.inner2}> 
+                            <Text style={{color:'white', fontSize: 25, fontFamily:'Roboto-Bold'}}>
+                                Picked
+                            </Text>
+                        </View>
                     </View>
-                </View>
+                        :
+                    <TouchableOpacity style={styles.main} onPress={() => onPress()}>
+                        <View style={styles.inner}> 
+                            <Text style={{color:'white', fontSize: 25, fontFamily:'Roboto-Bold'}}>
+                                Pick
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                }
+                </> 
                     :
-                <TouchableOpacity style={styles.main} onPress={() => onPress()}>
-                    <View style={styles.inner}> 
-                        <Text style={{color:'white', fontSize: 25, fontFamily:'Roboto-Bold'}}>
-                            Pick
-                        </Text>
-                    </View>
-                </TouchableOpacity>
+                <View style={{height:30}} />
+            }
+
+            {swapTile ?
+                <SwapTiles oldTile={swapTile} newTile={pickedTile} setMatrixInfo={setMatrixInfo}/> : null
             }
 
         </>

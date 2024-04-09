@@ -5,7 +5,7 @@ import { useMyContext } from "../../Context/MyContext";
 import { GameNavBar } from ".././Shared/GameNavBar";
 import { GamePlayers } from "../Shared/GamePlayers";
 import { GameMatrix } from "../Matrix/GameMatrix";
-import { PopUpPickTile } from "../Matrix/PopUp/PopUpPickTile";
+// import { PopUpPickTile } from "../Matrix/PopUp/PopUpPickTile/PopUpPickTile";
 import { PopUpPlayer } from "../Matrix/PopUp/PopUpPlayer";
 import { PopUpSwapTile } from "../Matrix/PopUp/PopUpSwapTile";
 import { Header } from "../Shared/Header";

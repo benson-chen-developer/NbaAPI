@@ -1,6 +1,105 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createBotGame = /* GraphQL */ `
+  mutation CreateBotGame(
+    $input: CreateBotGameInput!
+    $condition: ModelBotGameConditionInput
+  ) {
+    createBotGame(input: $input, condition: $condition) {
+      id
+      playerId
+      teams
+      playerTeam
+      timeoutArray
+      User {
+        id
+        email
+        score
+        userId
+        playersArray
+        name
+        xp
+        teamDepth
+        maxLiveGames
+        mainTeam
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      botGameUserId
+      __typename
+    }
+  }
+`;
+export const updateBotGame = /* GraphQL */ `
+  mutation UpdateBotGame(
+    $input: UpdateBotGameInput!
+    $condition: ModelBotGameConditionInput
+  ) {
+    updateBotGame(input: $input, condition: $condition) {
+      id
+      playerId
+      teams
+      playerTeam
+      timeoutArray
+      User {
+        id
+        email
+        score
+        userId
+        playersArray
+        name
+        xp
+        teamDepth
+        maxLiveGames
+        mainTeam
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      botGameUserId
+      __typename
+    }
+  }
+`;
+export const deleteBotGame = /* GraphQL */ `
+  mutation DeleteBotGame(
+    $input: DeleteBotGameInput!
+    $condition: ModelBotGameConditionInput
+  ) {
+    deleteBotGame(input: $input, condition: $condition) {
+      id
+      playerId
+      teams
+      playerTeam
+      timeoutArray
+      User {
+        id
+        email
+        score
+        userId
+        playersArray
+        name
+        xp
+        teamDepth
+        maxLiveGames
+        mainTeam
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      botGameUserId
+      __typename
+    }
+  }
+`;
 export const createTeamData = /* GraphQL */ `
   mutation CreateTeamData(
     $input: CreateTeamDataInput!
@@ -158,6 +257,8 @@ export const createGame = /* GraphQL */ `
       player1CheckedIn
       player2CheckedIn
       timeoutArray
+      player1SelectedTiles
+      player2SelectedTiles
       createdAt
       updatedAt
       __typename
@@ -195,6 +296,8 @@ export const updateGame = /* GraphQL */ `
       player1CheckedIn
       player2CheckedIn
       timeoutArray
+      player1SelectedTiles
+      player2SelectedTiles
       createdAt
       updatedAt
       __typename
@@ -232,6 +335,8 @@ export const deleteGame = /* GraphQL */ `
       player1CheckedIn
       player2CheckedIn
       timeoutArray
+      player1SelectedTiles
+      player2SelectedTiles
       createdAt
       updatedAt
       __typename
@@ -284,6 +389,8 @@ export const createUserGame = /* GraphQL */ `
         player1CheckedIn
         player2CheckedIn
         timeoutArray
+        player1SelectedTiles
+        player2SelectedTiles
         createdAt
         updatedAt
         __typename
@@ -340,6 +447,8 @@ export const updateUserGame = /* GraphQL */ `
         player1CheckedIn
         player2CheckedIn
         timeoutArray
+        player1SelectedTiles
+        player2SelectedTiles
         createdAt
         updatedAt
         __typename
@@ -396,6 +505,8 @@ export const deleteUserGame = /* GraphQL */ `
         player1CheckedIn
         player2CheckedIn
         timeoutArray
+        player1SelectedTiles
+        player2SelectedTiles
         createdAt
         updatedAt
         __typename

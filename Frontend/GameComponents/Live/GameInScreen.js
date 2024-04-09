@@ -1,11 +1,16 @@
+import { generateClient } from "aws-amplify/api";
 import { useState, useEffect } from "react";
-import { View, SafeAreaView, Text } from "react-native"
+import { View, SafeAreaView, Text, Button, TouchableOpacity } from "react-native"
+import { TextInput } from "react-native-gesture-handler";
 import { TestGameActions } from "../../../assets/TestData/TestGameActions";
+import { getGame } from "../../../src/graphql/queries";
 import { useMyContext } from "../../Context/MyContext";
 import { getAsyncPlayerMoves, setAsyncPlayerMoves } from "../../functions/AsyncStorage/PlayerMoves";
 import { fetchBoxScore, getLatestActionsAndStats } from "../../functions/GameFunctions/GameLiveFunctions";
-import { goThroughEachGameAction } from "../../functions/GameFunctions/GameLiveFunctions2";
+import { goThroughEachGameAction, goThroughEachGameAction2 } from "../../functions/GameFunctions/GameLiveFunctions2";
 import { updateTiles } from "../../functions/GameFunctions/MatrixUpdateFunctions";
+import { getTimeoutArray, updateTimeoutArray } from "../../functions/GameFunctions/TimeOut";
+import { LoadingScreen } from "../../LoadingScreen";
 import { GameNavBar } from "../Shared/GameNavBar";
 import { GamePlayers } from "../Shared/GamePlayers";
 import { Header } from "../Shared/Header";
@@ -29,50 +34,153 @@ export const GameInScreen = ({route}) => {
         selectedTiles: [],
         oppSelectedTiles: [],
         teamDepth: [],
+        oppTeamDepth: [],
         teams: [game.teams[0], game.teams[1]],
-        allPlayers: []
+        allTiles: [],
+        lastActionNumber: -1,
+        isTimeOut: false
     });
-    const playerMoves = playerMovesContext.find(playerMove => playerMove.gameId === game.id); 
-    const isPlayer1 = game.player1Id === user.id;
-    const ourTeamName = isPlayer1 ? game.player1Team : game.player2Team;
-    const oppTeamName = isPlayer1 ? game.player2Team : game.player1Team;
+    const client = generateClient(); 
 
     const [scores, setScores] = useState([0, 0]);
     const [actions, setActions] = useState([]);
-    const [allTiles, setAllTiles] = useState([
-        ...game.matrixRow1.map(JSON.parse), 
-        ...game.matrixRow2.map(JSON.parse), 
-        ...game.matrixRow3.map(JSON.parse), 
-        ...game.matrixRow4.map(JSON.parse)
-    ]);
+    const [loading, setLoading] = useState(false);
 
-    const newFunc = async () => {
-        const actionsListRes = await fetchBoxScore(game.apiLink, isPlayer1 ? game.player1LastActionNumber : player2LastActionNumber);
+    const [testInput, setTestInput] = useState('1');
+    const handleTextChange = (inputText) => {
+        setTestInput(inputText);
+    };
 
-        const res = await goThroughEachGameAction(
-            game, allTiles,
-            // actionsListRes, 
-            TestGameActions,
-            playerMoves.teamDepth
-        )
+    const setAllValues = async (
+        player1SelectedTiles, player2SelectedTiles, 
+        player1Depth, player2Depth
+    ) => {
+        let lastActionNumber = matrixInfo.lastActionNumber;
+        let isPlayer1 = matrixInfo.isPlayer1;
+        let actionsList = TestGameActions.slice(0, parseInt(testInput));
 
-        const resAllTiles = res.allTiles;
-        const resPlayer1SelectedTiles = res.player1SelectedTiles;
-        const resPlayer2SelectedTiles = res.player2SelectedTiles;
-        const allPlayers = res.allPlayers;
+        /*
+            If our lastActionNumber is -1 that means we closed the app and lost all knowledge
+            thus we should get the lastest timeout to remember our info
 
-        setAllTiles(resAllTiles);
-        setMatrixInfo(p => ({
-            ...p, 
-            selectedTiles: isPlayer1 ? resPlayer1SelectedTiles : resPlayer2SelectedTiles,
-            oppSelectedTiles: !isPlayer1 ? resPlayer1SelectedTiles : resPlayer2SelectedTiles,
-            allPlayers: allPlayers
-        }));
-        // console.log("newAllTiles", JSON.stringify(allTiles, null, 2));
-        // console.log("player1SelectedTiles", JSON.stringify(player1SelectedTiles, null, 2));
-        // console.log("player2SelectedTiles", JSON.stringify(player2SelectedTiles, null, 2));
+            If it is not -1 then we are still rocking on so we should just update normally
+        */
+        let timeoutArray = []; 
+        // if(lastActionNumber === -1){
+        //     const gameRet = await client.graphql({ query: getGame,variables: { id: game.id } });
+        //     let gameParsed = gameRet.data.getGame;
+        //     timeoutArray = gameParsed.timeoutArray.map(timeOut => JSON.parse(timeOut));
+        //     let mostRecentTimeout = timeoutArray[0];
+
+        //     timeoutArray.forEach(timeOut => {
+        //         if(timeOut.actionNumber <= actionsList[0].actionNumber && timeOut.actionNumber > mostRecentTimeout.actionNumber){
+        //             mostRecentTimeout = timeOut;
+        //         }
+        //     })
+
+        //     lastActionNumber = mostRecentTimeout.lastAction;
+        //     player1SelectedTiles = mostRecentTimeout.player1SelectedTiles;
+        //     player2SelectedTiles = mostRecentTimeout.player2SelectedTiles;
+        //     player1Depth = mostRecentTimeout.player1Depth;
+        //     player2Depth = mostRecentTimeout.player2Depth;
+        // }
         
+        /* If the latest action number is the same as our last then just return */
+        const currentActionsList = actionsList.slice(lastActionNumber, actionsList.length);
+        if(currentActionsList.length === 0){
+            return {...matrixInfo};
+        }
+
+        const res = await goThroughEachGameAction2(
+            game, matrixInfo.allTiles, currentActionsList,
+            player1SelectedTiles, player2SelectedTiles,
+            player1Depth, player2Depth,
+            isPlayer1
+        )
+        
+        const resAllTiles = res.allTiles;
+        const allPlayers = res.allPlayers;
+        
+        const lastAction = currentActionsList[currentActionsList.length-1];
+
+        return {
+            ...matrixInfo,
+            allPlayers: allPlayers,
+            allTiles: resAllTiles,
+            lastActionNumber: lastAction.actionNumber,
+            isTimeOut: lastAction.actionType === "timeout"
+        }
     }
+
+    useEffect(() => {
+        const fetchOurSelectedTiles = async () => {
+            setLoading(true);
+    
+            try {
+                const gameRet = await client.graphql({ query: getGame, variables: { id: game.id } });
+                let gameParsed = gameRet.data.getGame;
+
+                const lastActionNumber = matrixInfo.isPlayer1 ? game.player1LastActionNumber : game.player2LastActionNumber;
+
+                const selectedTiles = matrixInfo.isPlayer1 ?
+                    gameParsed.player1SelectedTiles.map(tile => JSON.parse(tile)) :
+                    gameParsed.player2SelectedTiles.map(tile => JSON.parse(tile));
+
+                const timeoutArray = gameParsed.timeoutArray.map(timeOut => JSON.parse(timeOut));
+                let mostRecentTimeout = timeoutArray[0];
+                timeoutArray.forEach(timeOut => {
+                    if(timeOut.actionNumber <= lastActionNumber && timeOut.actionNumber > mostRecentTimeout.actionNumber){
+                        mostRecentTimeout = timeOut;
+                    }
+                })
+                const oppSelectedTiles = matrixInfo.isPlayer1 ?
+                    mostRecentTimeout.player2SelectedTiles:
+                    mostRecentTimeout.player1SelectedTiles;
+                    
+                setMatrixInfo(p => ({
+                    ...p,
+                    selectedTiles: selectedTiles,
+                    allTiles: mostRecentTimeout.allTiles,
+                    oppSelectedTiles: oppSelectedTiles,
+                    lastActionNumber: mostRecentTimeout.actionNumber,
+                    teamDepth: matrixInfo.isPlayer1 ? mostRecentTimeout.player1Depth : mostRecentTimeout.player2Depth,
+                    oppTeamDepth: !matrixInfo.isPlayer1 ? mostRecentTimeout.player1Depth : mostRecentTimeout.player2Depth
+                }));
+            } catch (error) {
+                console.error("Error fetchOurSelectedTiles:", error);
+            }
+    
+            setLoading(false);
+        };
+    
+        fetchOurSelectedTiles();
+    }, []);
+    
+
+    useEffect(() => {
+        // if(matrixInfo.isTimeOut){
+        //     console.log("Gameinscren, is timeout")
+            
+        //     const newSelectedTiles = matrixInfo.selectedTiles;
+        //     console.log("selectedTiles timeout", newSelectedTiles)
+            
+        //     newSelectedTiles.forEach((selectedTile, index) => {
+        //         if(selectedTile.swapTile){
+        //             const swapTile = allTiles.find(tile => tile.row === selectedTile.swapTile.row && tile.index === selectedTile.swapTile.index);
+        //             swapTile.swapTile = null;
+        //             console.log("swapTile", swapTile)
+        //             newSelectedTiles[index] = swapTile;
+        //         }
+        //     })
+
+        //     console.log("selectedTiles updated", newSelectedTiles)
+        //     setMatrixInfo(p => ({
+        //         ...p, 
+        //         selectedTiles: newSelectedTiles,
+        //         // teamDepth: playerMovesContext.teamDepth
+        //     }));
+        // }
+    }, [matrixInfo.isTimeOut])
 
     // useEffect(() => {
     //     // const intervalId = setInterval(async () => {
@@ -123,48 +231,53 @@ export const GameInScreen = ({route}) => {
     // }, []);
 
     useEffect(() => {
-        newFunc();
-    }, [])
+        // console.log("matrixInfo.selectedTiles", matrixInfo.selectedTiles)
+        // console.log("On Matrix Change", JSON.stringify(matrixInfo, null, 2));
+        // console.log("")
 
-    // useEffect(() => {
-    //     // console.log("Change in SelectedTiles", matrixInfo.selectedTiles)
+    }, [matrixInfo])
 
-    //     let updatedAllTiles = allTiles;
-    //     matrixInfo.selectedTiles.forEach(selectedTile => {
-    //         const index = updatedAllTiles.findIndex((t) => t.index === selectedTile.index && t.row === selectedTile.row);
-    //         updatedAllTiles[index] = {
-    //             ...updatedAllTiles[index],
-    //             team1Progress: isPlayer1 ? selectedTile.progress : updatedAllTiles[index].team1Progress,
-    //             team2Progress: !isPlayer1 ? selectedTile.progress : updatedAllTiles[index].team2Progress,
-    //             team1Complete: isPlayer1 ? selectedTile.complete : updatedAllTiles[index].complete,
-    //             team2Complete: !isPlayer1 ? selectedTile.complete : updatedAllTiles[index].complete,
-    //         }
-    //     })
-    //     setAllTiles(updatedAllTiles);
-
-    //     // const updatedPlayerMoves = playerMovesContext.map(playerMove => {
-    //     //     if (playerMove.gameId !== playerMoves.gameId) {
-    //     //         return playerMove; 
-    //     //     } else {
-    //     //         return {...playerMove, selectedTiles: matrixInfo.selectedTiles};
-    //     //     }
-    //     // });
-
-    //     // setPlayerMovesContext(updatedPlayerMoves);
-    //     // setAsyncPlayerMoves(updatedPlayerMoves);
-        
-    // }, [matrixInfo.selectedTiles])
+    if(loading) return (
+        <LoadingScreen />
+    )
 
     return(
         <SafeAreaView style={{ flex: 1, backgroundColor: '#111A2B', height:"100%", width:"100%"}}>
             <View style={{width:"100%", height:"100%", backgroundColor:"#111A2B"}}>
-                
                 {/* Header */}
                 <Header 
-                    allTiles={allTiles} isPlayer1={isPlayer1}
+                    allTiles={matrixInfo.allTiles} isPlayer1={matrixInfo.is}
                     matrixInfo={matrixInfo}
                     game={game} scores={scores}
                 />
+                 <TextInput
+                    style={{width:100, height:50, borderWidth: 5, borderColor: 'white', color:'white'}}
+                    onChangeText={handleTextChange}
+                    value={testInput}
+                />
+                <TouchableOpacity onPress={async () => {
+                    let player1SelectedTiles = matrixInfo.isPlayer1 ? matrixInfo.selectedTiles : matrixInfo.oppSelectedTiles;
+                    let player2SelectedTiles = !matrixInfo.isPlayer1 ? matrixInfo.selectedTiles : matrixInfo.oppSelectedTiles;
+                    let player1Depth = matrixInfo.isPlayer1 ? matrixInfo.teamDepth : matrixInfo.oppTeamDepth;
+                    let player2Depth = !matrixInfo.isPlayer1 ? matrixInfo.teamDepth : matrixInfo.oppTeamDepth;
+
+                    const updatedMatrixInfo = await setAllValues(
+                        player1SelectedTiles, player2SelectedTiles,
+                        player1Depth, player2Depth
+                    );
+
+                    // console.log("updatedMatrixInfo", JSON.stringify(updatedMatrixInfo.allTiles, null, 2));
+                    
+                    setMatrixInfo(p => ({
+                        ...p,
+                        allTiles: updatedMatrixInfo.allTiles,
+                        lastActionNumber: updatedMatrixInfo.lastActionNumber
+                    }));
+                    // console.log("updatedMatrixInfo", updatedMatrixInfo.selectedTiles)
+                    // console.log("Matrix info updated!");
+                }}>
+                    <Text style={{color:'white'}}>setAllValues</Text>
+                </TouchableOpacity>
 
                 {/* Game Nav Bar */}
                 <GameNavBar matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} />
@@ -173,7 +286,7 @@ export const GameInScreen = ({route}) => {
                 {matrixInfo.navBar === "board" ?
                     <BoardScreen 
                         game={game}
-                        allTiles={allTiles} 
+                        allTiles={matrixInfo.allTiles} 
                         matrixInfo={matrixInfo} setMatrixInfo={setMatrixInfo} 
                     /> : null
                 }
