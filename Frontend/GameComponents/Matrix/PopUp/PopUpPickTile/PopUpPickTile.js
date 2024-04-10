@@ -5,6 +5,7 @@ import { abbreviateName } from "../../../../../assets/TeamLogos/getTeamLogo";
 import { UpdateGame } from "../../../../functions/MutationFunctions/GameMutation";
 import { ProgressWheel } from "../ProgressWheel";
 import { SwapTiles } from "./SwapTiles";
+import { TeamSwitchBtn } from "./TeamSwitchBtn";
 
 /**
  * 
@@ -17,16 +18,17 @@ import { SwapTiles } from "./SwapTiles";
  */
 export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
     
-    const {pickedTile, teams, isPlayer1, allPlayers, selectedTiles} = matrixInfo;
-    console.log
+    const {pickedTile, isPlayer1, oppTeamDepth, teamDepth, selectedTiles, oppSelectedTiles} = matrixInfo;
     
     const [loading, setLoading] = useState(false);
     const [players, setPlayers] = useState(null);
+    const [teamsForSwitch, setTeamsForSwitch] = useState([{name: matrixInfo.teams[0], picked: true}]);
     const [swapTile, setSwapTile] = useState(selectedTiles.find(selectedTile => 
         selectedTile.swapTile?.index === pickedTile.index && selectedTile.swapTile?.row === pickedTile.row    
     ));
 
-    const teamView = isPlayer1 ? teams[0] : teams[1];
+    const selected = selectedTiles.find(tile => tile.index === pickedTile.index && tile.row === pickedTile.row);
+    const oppSelected = oppSelectedTiles.find(tile => tile.index === pickedTile.index && tile.row === pickedTile.row);
 
     const onPress = () => {
         if(matrixInfo.selectedTiles.length < 3){
@@ -59,19 +61,39 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
     }
 
     useEffect(() => {
+        const allPlayers = [...oppTeamDepth, ...teamDepth];
+
+        const playersArr = [];
         allPlayers.forEach((player) => {
-            const playersArr = [];
             const tileIndex = player.tiles.findIndex((tile) => tile.row === pickedTile.row && tile.index === pickedTile.index);
 
             if(tileIndex !== -1){
                 playersArr.push({
                     name: player.name,
                     number: player.tiles[tileIndex].progress,
-                    color: player.color
+                    // color: player.color
                 })
             }
             setPlayers(playersArr);
         })
+
+        /* Sets the current team based on
+            - If you picked (then is you always else its other team if they picked)
+        */
+        let ourTeam = isPlayer1 ? matrixInfo.teams[0] : matrixInfo.teams[1];
+        let oppTeam = !isPlayer1 ? matrixInfo.teams[0] : matrixInfo.teams[1];
+
+        if(selected && oppSelected){
+            setTeamsForSwitch([
+                {name: ourTeam, picked: true}, {name: oppTeam, picked: false},
+            ]);
+        }
+        else if(oppSelected){
+            setTeamsForSwitch([ {name: oppTeam, picked: true} ]);
+        }
+        else if(selected){
+            setTeamsForSwitch([ {name: ourTeam, picked: true} ]);
+        }
     }, [])
 
     if(players)
@@ -81,7 +103,7 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
                 <View style={{width:"100%", height:"100%", position:'absolute', opacity:.5}}> 
                     <Image 
                         style={{width:100, height: 100, margin:20}}
-                        source={{uri: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${abbreviateName(teamView)}.png`}}
+                        source={{uri: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${abbreviateName(teamsForSwitch.find(t => t.picked).name)}.png`}}
                     />
                 </View>
             </View>
@@ -93,6 +115,10 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
             >
                 <Text style={{color:'white'}}>X</Text>
             </TouchableOpacity>
+
+            <TeamSwitchBtn 
+                teams={teamsForSwitch} setTeams={setTeamsForSwitch}
+            />
 
             {/* Stat Name */}
             <Text style={styles.statName}>

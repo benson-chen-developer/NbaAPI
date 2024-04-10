@@ -98,15 +98,14 @@ export const GameInScreen = ({route}) => {
             isPlayer1
         )
         
-        const resAllTiles = res.allTiles;
-        const allPlayers = res.allPlayers;
-        
         const lastAction = currentActionsList[currentActionsList.length-1];
 
         return {
             ...matrixInfo,
-            allPlayers: allPlayers,
-            allTiles: resAllTiles,
+            allPlayers: res.allPlayers,
+            allTiles: res.allTiles,
+            player1Depth: res.player1Depth,
+            player2Depth: res.player2Depth,
             lastActionNumber: lastAction.actionNumber,
             isTimeOut: lastAction.actionType === "timeout"
         }
@@ -266,15 +265,13 @@ export const GameInScreen = ({route}) => {
                         player1Depth, player2Depth
                     );
 
-                    // console.log("updatedMatrixInfo", JSON.stringify(updatedMatrixInfo.allTiles, null, 2));
-                    
                     setMatrixInfo(p => ({
                         ...p,
                         allTiles: updatedMatrixInfo.allTiles,
+                        teamDepth: matrixInfo.isPlayer1 ? updatedMatrixInfo.player1Depth : updatedMatrixInfo.player2Depth,
+                        oppTeamDepth: !matrixInfo.isPlayer1 ? updatedMatrixInfo.player1Depth : updatedMatrixInfo.player2Depth,
                         lastActionNumber: updatedMatrixInfo.lastActionNumber
                     }));
-                    // console.log("updatedMatrixInfo", updatedMatrixInfo.selectedTiles)
-                    // console.log("Matrix info updated!");
                 }}>
                     <Text style={{color:'white'}}>setAllValues</Text>
                 </TouchableOpacity>

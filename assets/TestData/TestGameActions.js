@@ -36,35 +36,6 @@ export const TestGameActions = [
             1628386
         ]
     },
-    // {
-    //     "actionNumber": 2,
-    //     "clock": "PT00M08.80S",
-    //     "timeActual": "2024-03-19T01:25:05.0Z",
-    //     "period": 4,
-    //     "periodType": "REGULAR",
-    //     "teamId": 1610612739,
-    //     "teamTricode": "CLE",
-    //     "actionType": "timeout",
-    //     "subType": "full",
-    //     "qualifiers": [
-    //         "team"
-    //     ],
-    //     "personId": 2,
-    //     "x": null,
-    //     "y": null,
-    //     "possession": 1610612739,
-    //     "scoreHome": "103",
-    //     "scoreAway": "107",
-    //     "edited": "2024-03-19T01:25:05Z",
-    //     "orderNumber": 6670000,
-    //     "isTargetScoreLastPeriod": false,
-    //     "xLegacy": null,
-    //     "yLegacy": null,
-    //     "isFieldGoal": 0,
-    //     "side": null,
-    //     "description": "CLE Timeout",
-    //     "personIdsFilter": []
-    // },
     {
         "actionNumber": 2,
         "clock": "PT00M02.60S",
@@ -99,5 +70,34 @@ export const TestGameActions = [
         "personIdsFilter": [
             1627783
         ]
+    },
+    {
+        "actionNumber": 3,
+        "clock": "PT00M08.80S",
+        "timeActual": "2024-03-19T01:25:05.0Z",
+        "period": 4,
+        "periodType": "REGULAR",
+        "teamId": 1610612739,
+        "teamTricode": "CLE",
+        "actionType": "timeout",
+        "subType": "full",
+        "qualifiers": [
+            "team"
+        ],
+        "personId": 2,
+        "x": null,
+        "y": null,
+        "possession": 1610612739,
+        "scoreHome": "103",
+        "scoreAway": "107",
+        "edited": "2024-03-19T01:25:05Z",
+        "orderNumber": 6670000,
+        "isTargetScoreLastPeriod": false,
+        "xLegacy": null,
+        "yLegacy": null,
+        "isFieldGoal": 0,
+        "side": null,
+        "description": "CLE Timeout",
+        "personIdsFilter": []
     },
 ]

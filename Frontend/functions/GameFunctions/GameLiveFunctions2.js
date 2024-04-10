@@ -164,33 +164,29 @@ export const goThroughEachGameAction2 = async (
         console.log("//////")
 
         /* Time Out */
-        // if(action.actionType === "timeout"){
-        //     const swapTiles = (selectedTiles) => {
-        //         selectedTiles.forEach((selectedTile, index) => {
-        //             if(selectedTile.swapTile){
-        //                 const swapTile = allTiles.find(t => t.row === selectedTile.swapTile.row && t.index === selectedTile.swapTile.index);
-        //                 selectedTiles[index] = {
-        //                     ...swapTile,
-        //                     swapTile: null
-        //                 }
-        //             }
-        //         }) 
+        if(action.actionType === "timeout"){
+            const swapTiles = (selectedTiles) => {
+                selectedTiles.forEach((selectedTile, index) => {
+                    if(selectedTile.swapTile){
+                        const swapTile = allTiles.find(t => t.row === selectedTile.swapTile.row && t.index === selectedTile.swapTile.index);
+                        selectedTiles[index] = {
+                            ...swapTile,
+                            swapTile: null
+                        }
+                    }
+                }) 
 
-        //         return selectedTiles;
-        //     }
+                return selectedTiles;
+            }
 
-        //     player1SelectedTiles = swapTiles(player1SelectedTiles);
-        //     player2SelectedTiles = swapTiles(player2SelectedTiles);
-
-        //     // const updatedTimeOut = updateAWSTimeOut(updatedGameRet, ourSelectedTiles, [], action.actionNumber, isPlayer1);
-        //     // console.log("post swap", JSON.stringify(swapedSelectedTiles, null, 2));
-        // }
+            player1SelectedTiles = swapTiles(player1SelectedTiles);
+            player2SelectedTiles = swapTiles(player2SelectedTiles);
+            // const updatedTimeOut = updateAWSTimeOut(updatedGameRet, ourSelectedTiles, [], action.actionNumber, isPlayer1);
+            // console.log("post swap", JSON.stringify(swapedSelectedTiles, null, 2));
+        }
 
         /* PTS, REB, BLK, STL */
         if(action.playerNameI){
-            console.log("player1Depth", player1Depth)
-            console.log("player2Depth", player2Depth)
-            console.log("")
             const playerBelongsToPlayer1 = player1Depth.find(player => player.name === action.playerNameI);
             const playerBelongsToPlayer2 = player2Depth.find(player => player.name === action.playerNameI);
             const statObjArray = convertActionToStatObj(action);
@@ -203,7 +199,22 @@ export const goThroughEachGameAction2 = async (
                         const statObj = statObjArray.find(obj => obj.name === selectedTileStat);
 
                         if(statObj){
-                            allTiles[((selectedTile.row-1)*4)+selectedTile.index].team1Progress += statObj.number;
+                            /* Add to Tile */
+                            allTiles[((selectedTile.row-1)*4)+selectedTile.index].team1Progress += statObj.amount;
+                        
+                            /* Add to Player Stat */
+                            const playerIndex = player1Depth.findIndex(p => p.name === playerBelongsToPlayer1.name);
+                            const playerTileIndex = player1Depth[playerIndex].tiles.findIndex(t => t.index === selectedTile.index && t.row === selectedTile.row);
+
+                            if(playerTileIndex === -1){
+                                player1Depth[playerIndex].tiles.push({
+                                    index: selectedTile.index,
+                                    row: selectedTile.row,
+                                    progress: allTiles[((selectedTile.row-1)*4)+selectedTile.index].team1Progress
+                                });
+                            } else {
+                                player1Depth[playerIndex].tiles[playerTileIndex].progress = allTiles[((selectedTile.row-1)*4)+selectedTile.index].team1Progress
+                            }
                         }
                     })
                 })
@@ -217,7 +228,22 @@ export const goThroughEachGameAction2 = async (
                         const statObj = statObjArray.find(obj => obj.name === selectedTileStat);
                         
                         if(statObj){
+                            /* Add to Tile */
                             allTiles[((selectedTile.row-1)*4)+selectedTile.index].team2Progress += statObj.amount;
+                        
+                            /* Add to Player Stat */
+                            const playerIndex = player2Depth.findIndex(p => p.name === playerBelongsToPlayer2.name);
+                            const playerTileIndex = player2Depth[playerIndex].tiles.findIndex(t => t.index === selectedTile.index && t.row === selectedTile.row);
+
+                            if(playerTileIndex === -1){
+                                player2Depth[playerIndex].tiles.push({
+                                    index: selectedTile.index,
+                                    row: selectedTile.row,
+                                    progress: allTiles[((selectedTile.row-1)*4)+selectedTile.index].team2Progress
+                                });
+                            } else {
+                                player2Depth[playerIndex].tiles[playerTileIndex].progress = allTiles[((selectedTile.row-1)*4)+selectedTile.index].team2Progress
+                            }
                         }
                     })
                 })
@@ -257,26 +283,14 @@ export const goThroughEachGameAction2 = async (
             }
         }
 
-        /* Update the board with all the new shit */
-        // allSelectedTiles.forEach((selectedTile) => {
-        //     const currentIndex = (selectedTile.row-1)*4 + selectedTile.index;
-
-        //     if(allTiles[currentIndex].team1 === selectedTile.team){
-        //         allTiles[currentIndex].team1Progress = selectedTile.progress;
-        //         allTiles[currentIndex].team1Complete = selectedTile.complete;
-        //     } else {
-        //         allTiles[currentIndex].team2Progress = selectedTile.progress;
-        //         allTiles[currentIndex].team2Complete = selectedTile.complete;
-        //     }
-        // })
-
-        // console.log("allTiles", JSON.stringify(allTiles[2*4+1], null, 2)); 
     });
-
+    
     return {
         allTiles: allTiles, 
         player1SelectedTiles: player1SelectedTiles, 
         player2SelectedTiles: player2SelectedTiles,
+        player1Depth, 
+        player2Depth,
         allPlayers: allPlayers,
     };
 }
