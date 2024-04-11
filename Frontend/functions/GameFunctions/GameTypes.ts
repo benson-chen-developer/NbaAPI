@@ -1,19 +1,32 @@
-import { SelectedTile } from "./PopUpFunctions/SwapFunc"
 import { Player } from "./TimeOut"
 
-export type Tile = {
+export type SelectedTile = {
+    name: string,
+    goal: number,
+    progress: number,
+    swapTile: SelectedTile,
     index: number,
     row: number,
-    name: string,
-    progress: number,
-    goal: number,
+    tileIndex: number,
     team: string,
-    swapTile: [SwapTile]
+    complete: boolean
 }
 
-export type SwapTile = {
+export type Tile = {
+    team1: string,
+    team2: string,
+    row: number,
     index: number,
-    row: number
+    tileIndex: number,
+    team1Progress: number,
+    team2Progress: number,
+    team1Goal: number,
+    team2Goal: number,
+    team2Selected: boolean,
+    team2Complete: boolean,
+    team1Selected: boolean,
+    team1Complete: boolean,
+    name: string,
 }
 
 export type MatrixInfo = {

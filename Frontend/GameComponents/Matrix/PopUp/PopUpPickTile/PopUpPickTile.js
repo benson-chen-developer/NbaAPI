@@ -31,36 +31,6 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
     const selected = selectedTiles.find(tile => tile.index === pickedTile.index && tile.row === pickedTile.row);
     const oppSelected = oppSelectedTiles.find(tile => tile.index === pickedTile.index && tile.row === pickedTile.row);
 
-    const onPress = () => {
-        if(matrixInfo.selectedTiles.length < 3){
-            setLoading(true);
-            const updateGameInput = isPlayer1 ? 
-                {player1SelectedTiles : [...p.selectedTiles, {index: pickedTile.index, row: pickedTile.row, swapTile: null}]} 
-                    : 
-                {player2SelectedTiles : [...p.selectedTiles, {index: pickedTile.index, row: pickedTile.row, swapTile: null}]};
-
-            UpdateGame(updateGameInput).then(res => {
-                setMatrixInfo(p => ({
-                    ...p, 
-                    selectedTiles: [...p.selectedTiles, {index: pickedTile.index, row: pickedTile.row, swapTile: null}], 
-                    popUpMode: 'none'
-                }));
-
-                setLoading(false);
-            }).catch((err) => {
-                console.log("Err PopUpPickTile", err);
-
-                setLoading(false);
-            })
-        }
-        else
-            setMatrixInfo(p => ({
-                ...p, 
-                pickedTile: {...pickedTile},
-                popUpMode: "swap"
-            }))
-    }
-
     const onPick = async () => {
         let completeTile = null;
         matrixInfo.selectedTiles.forEach((selectedTile) => {

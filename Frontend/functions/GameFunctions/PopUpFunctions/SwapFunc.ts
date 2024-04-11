@@ -2,19 +2,8 @@ import { generateClient } from "aws-amplify/api";
 import { updateGame } from "../../../../src/graphql/mutations";
 import { getGame } from "../../../../src/graphql/queries";
 import { UpdateGame } from "../../MutationFunctions/GameMutation";
-import { MatrixInfo, SwapTile } from "../GameTypes"
+import { MatrixInfo, SelectedTile } from "../GameTypes"
 import { TimeOut } from "../TimeOut";
-
-export type SelectedTile = {
-    name: string,
-    goal: number,
-    progress: number,
-    swapTile: SwapTile,
-    index: number,
-    row: number,
-    team: string,
-    complete: boolean
-}
 
 /*
     Should update AWS player1SelectedTiles and player1Depth
@@ -35,7 +24,17 @@ export const SwapTileFunc = async (
         selectedTiles[indexOfOldTile] = newTile;
         selectedTiles[indexOfOldTile].swapTile = null;
     } else {
-        selectedTiles[indexOfOldTile].swapTile = {index: newTile.index, row: newTile.row};
+        selectedTiles[indexOfOldTile].swapTile = {
+            index: newTile.index, 
+            row: newTile.row,
+            tileIndex: ((newTile.row-1)*4) + newTile.index,
+            name: newTile.name,
+            goal: newTile.goal,
+            progress: newTile.progress,
+            swapTile: null,
+            team: newTile.name,
+            complete: newTile.complete
+        };
     }
 
     if(indexOfOurTimeout === -1){
