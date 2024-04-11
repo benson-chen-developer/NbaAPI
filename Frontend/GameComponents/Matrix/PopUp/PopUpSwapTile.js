@@ -1,44 +1,32 @@
 import { useState } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native"
 import { getFullNameOfStat } from "../../../../assets/NameConversions";
+import { SwapTileFunc } from "../../../functions/GameFunctions/PopUpFunctions/SwapFunc";
 import { UpdateGame } from "../../../functions/MutationFunctions/GameMutation";
 
 export const PopUpSwapTile = ({matrixInfo, setMatrixInfo}) => {
     const {pickedTile, selectedTiles, isPlayer1, gameId, lastActionNumber} = matrixInfo;
 
     const [loading, setLoading] = useState(false);
-    // console.log("selectedTiles PopUpsawp", selectedTiles)
 
-    const swapThis = async ( oldTile ) => {
+    const onPressPickFunc = async (oldTile) => {
         setLoading(true);
+        try{
+            const updatedSelectedTiles = await SwapTileFunc(pickedTile, oldTile, matrixInfo);
 
-        const newSelectedTiles = matrixInfo.selectedTiles.map(tile => {
-            if (tile.index === oldTile.index && tile.row === oldTile.row) {
-                return {...tile, swapTile: {index: pickedTile.index, row: pickedTile.row}};
-            }
-            return tile;
-        })
-        const updateGameInput = isPlayer1 ? 
-            {id: gameId, player1SelectedTiles : newSelectedTiles.map(obj => JSON.stringify(obj))} :
-            {id: gameId, player2SelectedTiles : newSelectedTiles.map(obj => JSON.stringify(obj))};
-
-        console.log("updateGameInput", updateGameInput)
-
-        UpdateGame(updateGameInput).then(res => {
             setMatrixInfo(p => {
                 return {
                     ...p,
                     popUpMode: "none",
-                    selectedTiles: [...newSelectedTiles]
+                    selectedTiles: updatedSelectedTiles
                 };
             });
             setLoading(false);
-        })
-        .catch(err => {
-            console.log("Err PopUpSwapTile", err);
+        } catch(err) {
+            console.log("Pop Up Swap tile something wrong", err);
             setLoading(false);
-        })
-    };
+        }
+    }
     
     if(loading) return(
         <View style={{width:"90%", height:"70%", backgroundColor:"#273447", borderRadius: 8, alignItems:'center'}}>
@@ -61,7 +49,7 @@ export const PopUpSwapTile = ({matrixInfo, setMatrixInfo}) => {
                 {/* Current Selected Tiles */}
                 <View style={{width:"100%", alignItems:'center'}}>
                     {selectedTiles.map((tile, index) => (
-                        <Card tile={tile} key={index} isPicked={false} pressFunc={swapThis}/>
+                        <Card tile={tile} key={index} isPicked={false} pressFunc={onPressPickFunc}/>
                     ))}
                 </View>
 

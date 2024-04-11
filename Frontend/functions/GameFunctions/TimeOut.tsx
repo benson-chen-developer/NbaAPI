@@ -1,36 +1,23 @@
 import { generateClient } from "aws-amplify/api"
 import { getBotGame, getGame } from "../../../src/graphql/queries"
+import { Tile } from "./GameTypes"
+import { SelectedTile } from "./PopUpFunctions/SwapFunc"
 
-type TimeOut = {
+export type TimeOut = {
     actionNumber: number,
     player1Depth: [Player],
     player2Depth: [Player],
-    player1SelectedTiles: [Tile],
-    player2SelectedTiles: [Tile],
+    player1SelectedTiles: [SelectedTile],
+    player2SelectedTiles: [SelectedTile],
     allTiles: [Tile]
 }
 
-type Player = {
+export type Player = {
     name: string,
     index: number,
     color: string,
     team: string,
     tiles: [Tile]
-}
-
-type Tile = {
-    index: number,
-    row: number,
-    name: string,
-    progress: number,
-    goal: number,
-    team: string,
-    swapTile: [SwapTile]
-}
-
-type SwapTile = {
-    index: number,
-    row: number
 }
 
 const client = generateClient();

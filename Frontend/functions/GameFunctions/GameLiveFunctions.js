@@ -227,53 +227,6 @@ export const fetchBoxScore = async (api, lastActionNumber) => {
         }
 }
 
-/*
-    players = [Player]
-
-    Player = {
-        "name": "L. James"
-        "PTS": 0,
-        "REB": 0,
-        "AST": 0,
-        "BLK": 0,
-        "STL": 0,
-        "3PM": 0,
-        "3PA": 0
-    }
-*/
-const updatePlayerStats = (data, players) => {
-    /* First 3 index in players will be the active player and who we count stats for */
-    if(data.length === 0){
-        console.log("GameLiveFunctions: No new Changes");
-        return players;
-    }
-
-    const activePlayers = players.splice(0,3);
-    let updateThisPlayer;
-
-    data.forEach(action => {
-        if(action.playerName){
-            let index = activePlayers.findIndex(player => player.name.toLowerCase() === action.playerNameI.toLowerCase());
-            
-            if(index !== -1){
-                updateThisPlayer = addThisActionToPlayer(activePlayers[index], action.actionType);
-                activePlayers[index] = updateThisPlayer;
-            }
-        }
-
-        if(action.assistPlayerNameInitial){
-            let index = activePlayers.findIndex(player => player.name.toLowerCase() === action.assistPlayerNameInitial.toLowerCase());
-            
-            if(index !== -1){
-                updateThisPlayer = AddActionToPlayer(activePlayers[index], {actionType: 'assist'});
-                activePlayers[index] = updateThisPlayer;
-            }
-        }
-    })
-
-    return activePlayers;
-}
-
 const setTeamsGainedStats = (actionsList, homePlayers, awayPlayers, teamsGainedStats) => {
     const allPlayers = [...homePlayers.slice(0, 3), ...awayPlayers.slice(0, 3)];
 

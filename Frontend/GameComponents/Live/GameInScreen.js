@@ -270,7 +270,8 @@ export const GameInScreen = ({route}) => {
                         allTiles: updatedMatrixInfo.allTiles,
                         teamDepth: matrixInfo.isPlayer1 ? updatedMatrixInfo.player1Depth : updatedMatrixInfo.player2Depth,
                         oppTeamDepth: !matrixInfo.isPlayer1 ? updatedMatrixInfo.player1Depth : updatedMatrixInfo.player2Depth,
-                        lastActionNumber: updatedMatrixInfo.lastActionNumber
+                        lastActionNumber: updatedMatrixInfo.lastActionNumber,
+                        isTimeOut: updatedMatrixInfo.isTimeOut
                     }));
                 }}>
                     <Text style={{color:'white'}}>setAllValues</Text>

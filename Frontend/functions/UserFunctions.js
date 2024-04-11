@@ -2,7 +2,6 @@ import { generateClient } from 'aws-amplify/api';
 import { createUser, updateGame, updateUser } from '../../src/graphql/mutations';
 import { userGamesByUserId, getUser, getGame, listUsers } from '../../src/graphql/queries';
 import { fetchBoxScore, getLatestActionsAndUpdateGame, updatePlayerStats } from './GameFunctions/GameLiveFunctions';
-import { UpdateGame } from './MutationFunctions/GameMutation';
 
 const client = generateClient();
 

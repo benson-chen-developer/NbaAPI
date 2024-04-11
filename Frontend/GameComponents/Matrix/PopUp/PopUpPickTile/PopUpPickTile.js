@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { View, TouchableOpacity, Text, StyleSheet, Image } from "react-native"
 import { getFullNameOfStat } from "../../../../../assets/NameConversions";
 import { abbreviateName } from "../../../../../assets/TeamLogos/getTeamLogo";
+import { SwapTileFunc } from "../../../../functions/GameFunctions/PopUpFunctions/SwapFunc";
 import { UpdateGame } from "../../../../functions/MutationFunctions/GameMutation";
 import { ProgressWheel } from "../ProgressWheel";
 import { SwapTiles } from "./SwapTiles";
@@ -18,7 +19,7 @@ import { TeamSwitchBtn } from "./TeamSwitchBtn";
  */
 export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
     
-    const {pickedTile, isPlayer1, oppTeamDepth, teamDepth, selectedTiles, oppSelectedTiles} = matrixInfo;
+    const {pickedTile, isPlayer1, oppTeamDepth, teamDepth, selectedTiles, oppSelectedTiles, allTiles} = matrixInfo;
     
     const [loading, setLoading] = useState(false);
     const [players, setPlayers] = useState(null);
@@ -60,6 +61,42 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
             }))
     }
 
+    const onPick = async () => {
+        let completeTile = null;
+        matrixInfo.selectedTiles.forEach((selectedTile) => {
+            let tileIndex = ((selectedTile.row-1)*4)+selectedTile.index;
+
+            if(allTiles[tileIndex].team1Complete || allTiles[tileIndex].team2Complete){
+                completeTile = selectedTile;
+            }
+        })
+
+        if(matrixInfo.selectedTiles.length < 3 || completeTile ){
+            setLoading(true);
+            try{
+                const updatedSelectedTiles = await SwapTileFunc(pickedTile, completeTile, matrixInfo);
+
+                setMatrixInfo(p => {
+                    return {
+                        ...p,
+                        popUpMode: "none",
+                        selectedTiles: updatedSelectedTiles
+                    };
+                });
+                setLoading(false);
+            } catch(err) {
+                console.log("Pop Up Swap tile something wrong", err);
+                setLoading(false);
+            }
+        } else {
+            setMatrixInfo(p => ({
+                ...p, 
+                pickedTile: {...pickedTile},
+                popUpMode: "swap"
+            }))
+        }
+    }
+
     useEffect(() => {
         const allPlayers = [...oppTeamDepth, ...teamDepth];
 
@@ -95,6 +132,12 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
             setTeamsForSwitch([ {name: ourTeam, picked: true} ]);
         }
     }, [])
+
+    if(loading) return(
+        <View style={{width:"90%", height:"70%", backgroundColor:"#273447", borderRadius: 8, alignItems:'center'}}>
+            <Text style={{color: 'white'}}>Loading</Text>
+        </View>
+    )
 
     if(players)
     return(
@@ -143,7 +186,7 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
             {!swapTile ? 
                 <>
                 {selectedTiles.find(tile => tile.index === pickedTile.index && tile.row === pickedTile.row) ?
-                    <View style={styles.main2} onPress={() => onPress()}>
+                    <View style={styles.main2} onPress={() => onPick()}>
                         <View style={styles.inner2}> 
                             <Text style={{color:'white', fontSize: 25, fontFamily:'Roboto-Bold'}}>
                                 Picked
@@ -151,7 +194,7 @@ export const PopUpPickTile = ({matrixInfo, setMatrixInfo}) => {
                         </View>
                     </View>
                         :
-                    <TouchableOpacity style={styles.main} onPress={() => onPress()}>
+                    <TouchableOpacity style={styles.main} onPress={() => onPick()}>
                         <View style={styles.inner}> 
                             <Text style={{color:'white', fontSize: 25, fontFamily:'Roboto-Bold'}}>
                                 Pick
