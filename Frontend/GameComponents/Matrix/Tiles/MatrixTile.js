@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import { Text, View, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { getTeamLogo } from "../../../assets/TeamLogos/getTeamLogo";
+import { getTeamLogo } from "../../../../assets/TeamLogos/getTeamLogo";
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { CompleteTile } from "./CompleteTile";
+import { Icons } from "./Icons";
 
 export default function MatrixTile({item, matrixInfo, setMatrixInfo}) {
     const tileStats = item;
@@ -19,7 +21,7 @@ export default function MatrixTile({item, matrixInfo, setMatrixInfo}) {
             popUpMode: "default"
         }))
     }
-    // console.log("matrixInfo.selectedTiles", matrixInfo.selectedTiles)
+    // console.log("tileStats", tileStats)
     // console.log("")
 
     useEffect(() => {
@@ -54,6 +56,12 @@ export default function MatrixTile({item, matrixInfo, setMatrixInfo}) {
         
     }, [matrixInfo])
     
+    if(tileStats.team1Complete || tileStats.team2Complete) return (
+        <CompleteTile 
+            tileStats={tileStats}
+        />
+    )
+
     return (
         <TouchableOpacity 
             style={
@@ -106,9 +114,10 @@ export default function MatrixTile({item, matrixInfo, setMatrixInfo}) {
                     </View>
                 </View>
                 
-                <Text>{tileStats.team1Complete ? "team1 won" : null}</Text>
-                <Text>{tileStats.team2Complete ? "team2 won" : null}</Text>
+            </View>
 
+            <View style={{margin: 5}}>
+                <Icons stats={tileStats.name.split("+")}/>
             </View>
 
             {progress !== 0 || isOpp || selectedTile ?

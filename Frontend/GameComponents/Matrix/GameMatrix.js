@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Text, View, ScrollView } from 'react-native';
-import MatrixTile from './MatrixTile';
+import MatrixTile from './Tiles/MatrixTile';
 
 export const GameMatrix = ({  matrixInfo, setMatrixInfo }) => {
 

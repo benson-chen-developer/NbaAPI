@@ -10,7 +10,7 @@ interface Props {
     allTiles: [Tile];
 }
 
-export const  Card: React.FC<Props> = ({selectedTile, pressFunc, isPlayer1, allTiles}) => {
+export const Card: React.FC<Props> = ({selectedTile, pressFunc, isPlayer1, allTiles}) => {
 
     const [thisTile, setThisTile] = useState<Tile>(selectedTile.swapTile ? allTiles[selectedTile.swapTile.tileIndex] : allTiles[selectedTile.tileIndex]);
 

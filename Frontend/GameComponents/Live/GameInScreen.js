@@ -5,14 +5,12 @@ import { TextInput } from "react-native-gesture-handler";
 import { TestGameActions } from "../../../assets/TestData/TestGameActions";
 import { getGame } from "../../../src/graphql/queries";
 import { useMyContext } from "../../Context/MyContext";
+
 import { getAsyncPlayerMoves, setAsyncPlayerMoves } from "../../functions/AsyncStorage/PlayerMoves";
-import { fetchBoxScore, getLatestActionsAndStats } from "../../functions/GameFunctions/GameLiveFunctions";
-import { goThroughEachGameAction, goThroughEachGameAction2 } from "../../functions/GameFunctions/GameLiveFunctions2";
-import { updateTiles } from "../../functions/GameFunctions/MatrixUpdateFunctions";
-import { getTimeoutArray, updateTimeoutArray } from "../../functions/GameFunctions/TimeOut";
+import { goThroughEachGameAction } from "../../functions/GameFunctions/GameLiveFunctions";
+import { fetchBoxScore, getLatestActionsAndStats } from "../../functions/GameFunctions/GameLiveHelper";
 import { LoadingScreen } from "../../LoadingScreen";
 import { GameNavBar } from "../Shared/GameNavBar";
-import { GamePlayers } from "../Shared/GamePlayers";
 import { Header } from "../Shared/Header";
 import { BoardScreen } from "./BoardScreen";
 import { GameScreen } from "./GameScreen";
@@ -91,8 +89,9 @@ export const GameInScreen = ({route}) => {
             return {...matrixInfo};
         }
 
-        const res = await goThroughEachGameAction2(
-            game, matrixInfo.allTiles, currentActionsList,
+        const res = await goThroughEachGameAction(
+            matrixInfo.allTiles, 
+            currentActionsList,
             player1SelectedTiles, player2SelectedTiles,
             player1Depth, player2Depth,
             isPlayer1

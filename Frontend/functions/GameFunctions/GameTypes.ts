@@ -1,5 +1,3 @@
-import { Player } from "./TimeOut"
-
 export type SelectedTile = {
     name: string,
     goal: number,
@@ -44,4 +42,17 @@ export type MatrixInfo = {
     allTiles: [Tile],
     lastActionNumber: number,
     isTimeOut: boolean
+}
+
+export type Player = {
+    name: string,
+    index: number,
+    color: string,
+    team: string,
+    tiles: [{
+        index: number, 
+        row: number,
+        tileIndex: number,
+        progress: number
+    }]
 }
