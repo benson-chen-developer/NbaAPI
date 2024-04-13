@@ -3,7 +3,6 @@ import { View, Text, Image, TouchableOpacity } from "react-native"
 import { abbreviateName, getTeamLogo } from "../../../assets/TeamLogos/getTeamLogo"
 import { playBtnColor } from "../../../assets/Themes/ThemeColors"
 import { ThemeFonts } from "../../../assets/Themes/ThemeFont"
-import { InGamePlayer } from "../../../Classes/InGamePlayer"
 import { useMyContext } from "../../Context/MyContext"
 import { startSearchForGame } from "../../functions/GameFunctions/GameStartFunctions"
 
