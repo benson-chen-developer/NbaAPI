@@ -4,6 +4,8 @@ import { abbreviateName } from "../../../assets/TeamLogos/getTeamLogo";
 import { Entypo } from '@expo/vector-icons';
 
 export const Header = ({game, scores=[-1, -1], matrixInfo}) => {
+    const {allTiles} = matrixInfo;
+
     const completedSelectedTiles = matrixInfo.selectedTiles.map(selectedTile => ({
         ...selectedTile,
         complete: true
@@ -18,13 +20,7 @@ export const Header = ({game, scores=[-1, -1], matrixInfo}) => {
     const homeFontSize = scores[0] > scores[1] ? 34 : 28;
     const awayFontSize = scores[1] > scores[0] ? 34 : 28;
 
-    if(completedSelectedTiles !== 3) return(
-        <View style={styles.header}>
-            <Text>Please Pick {3-completedSelectedTiles} More Tile{3-completedSelectedTiles === 1 ? "" : "s"}</Text>
-        </View>
-    )
-
-    else if(matrixInfo.isTimeOut) return(
+    if(matrixInfo.isTimeOut) return(
         <View style={styles.headerTimeOut}>
             <Image 
                 style={{height:50, width:50, marginRight: 20 }}

@@ -94,7 +94,6 @@ export default function MatrixTile({item, matrixInfo, setMatrixInfo}) {
 
                 <View style={{flexDirection:'row', justifyContent:'space-between', marginTop:5}}>
                     <View style={{flexDirection:'row'}}>
-                        {/* <Image style={{width:20, height:20, marginRight:3}} source={getTeamLogo(matrixInfo.teams[0])}/> */}
                         <Text style={{color:"white", fontFamily:'Roboto-Bold', fontSize: 16}}>
                             IND
                         </Text>
@@ -103,8 +102,6 @@ export default function MatrixTile({item, matrixInfo, setMatrixInfo}) {
                         </Text>
                     </View>
                     <View style={{flexDirection:'row'}}>
-                        {/* <Image style={{width:20, height:20, marginRight:3}} source={getTeamLogo(matrixInfo.teams[1])}/>
-                        <Text style={styles.statText}>{tileStats.team2Goal }</Text> */}
                         <Text style={{color:"white", fontFamily:'Roboto-Bold', fontSize: 16}}>
                             CLE
                         </Text>

@@ -12,13 +12,19 @@ import { fetchBoxScore, getLatestActionsAndStats } from "../../functions/GameFun
 import { LoadingScreen } from "../../LoadingScreen";
 import { GameNavBar } from "../Shared/GameNavBar";
 import { Header } from "../Shared/Header";
+import { NotificationBar } from "../Shared/NotificationBar/NotificationBar";
+import { TopBar } from "../Shared/TopBar";
 import { BoardScreen } from "./BoardScreen";
+import { Ionicons } from '@expo/vector-icons';
 import { GameScreen } from "./GameScreen";
+import { useNavigation } from "@react-navigation/native";
+import { NavDestination } from "../../../assets/Enums/navigation";
 
 export const GameInScreen = ({route}) => {
     
     const { user, playerMovesContext, setPlayerMovesContext } = useMyContext();
     const { game } = route.params;
+    const navigation = useNavigation();
 
     // const player1Team = game.player1Id === user.id ? JSON.parse(game.player1Depth) : JSON.parse(game.player2Depth);
 
@@ -36,6 +42,7 @@ export const GameInScreen = ({route}) => {
         teams: [game.teams[0], game.teams[1]],
         allTiles: [],
         lastActionNumber: -1,
+        notifications: [],
         isTimeOut: false
     });
     const client = generateClient(); 
@@ -242,17 +249,24 @@ export const GameInScreen = ({route}) => {
     return(
         <SafeAreaView style={{ flex: 1, backgroundColor: '#111A2B', height:"100%", width:"100%"}}>
             <View style={{width:"100%", height:"100%", backgroundColor:"#111A2B"}}>
-                {/* Header */}
+                
                 <Header 
                     allTiles={matrixInfo.allTiles} isPlayer1={matrixInfo.is}
                     matrixInfo={matrixInfo}
                     game={game} scores={scores}
                 />
-                 <TextInput
+
+                <NotificationBar 
+                    selectedTiles={matrixInfo.selectedTiles} 
+                    allTiles={matrixInfo.allTiles}
+                    notifications={matrixInfo.notifications}
+                />
+                <TextInput
                     style={{width:100, height:50, borderWidth: 5, borderColor: 'white', color:'white'}}
                     onChangeText={handleTextChange}
                     value={testInput}
                 />
+
                 <TouchableOpacity onPress={async () => {
                     let player1SelectedTiles = matrixInfo.isPlayer1 ? matrixInfo.selectedTiles : matrixInfo.oppSelectedTiles;
                     let player2SelectedTiles = !matrixInfo.isPlayer1 ? matrixInfo.selectedTiles : matrixInfo.oppSelectedTiles;
@@ -297,6 +311,10 @@ export const GameInScreen = ({route}) => {
                         : 
                     null
                 }
+
+                <TouchableOpacity onPress={() => {navigation.navigate(NavDestination.MAIN)}}>
+                    <Ionicons name="backspace-sharp" size={40} color="white" style={{margin:10, marginLeft:20}}/>
+                </TouchableOpacity>
 
             </View>
         </SafeAreaView>
