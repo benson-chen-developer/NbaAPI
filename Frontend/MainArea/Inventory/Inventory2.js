@@ -2,7 +2,6 @@ import { Text, TouchableOpacity, useColorScheme, View, ScrollView } from 'react-
 import { useEffect, useState } from 'react'
 import { useMyContext } from '../../Context/MyContext';
 import { getPlayerStatsToday } from '../../functions/AsyncStorage';
-import { IsAnActualPlayers } from '../../../assets/AcutalPlayers';
 import { PopUp } from './PopUp/PopUp';
 import { InventorySecondBar } from './InventorySecondBar';
 import { InventoryFirstBar } from './InventoryFirstBar';

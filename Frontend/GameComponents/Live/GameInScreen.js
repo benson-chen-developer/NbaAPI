@@ -6,7 +6,6 @@ import { TestGameActions } from "../../../assets/TestData/TestGameActions";
 import { getGame } from "../../../src/graphql/queries";
 import { useMyContext } from "../../Context/MyContext";
 
-import { getAsyncPlayerMoves, setAsyncPlayerMoves } from "../../functions/AsyncStorage/PlayerMoves";
 import { goThroughEachGameAction } from "../../functions/GameFunctions/GameLiveFunctions";
 import { fetchBoxScore, getLatestActionsAndStats } from "../../functions/GameFunctions/GameLiveHelper";
 import { LoadingScreen } from "../../LoadingScreen";
@@ -18,11 +17,11 @@ import { BoardScreen } from "./BoardScreen";
 import { Ionicons } from '@expo/vector-icons';
 import { GameScreen } from "./GameScreen";
 import { useNavigation } from "@react-navigation/native";
-import { NavDestination } from "../../../assets/Enums/navigation";
+import { NavDestination } from "../../Global/Enums/navigation";
 
 export const GameInScreen = ({route}) => {
     
-    const { user, playerMovesContext, setPlayerMovesContext } = useMyContext();
+    const { user } = useMyContext();
     const { game } = route.params;
     const navigation = useNavigation();
 
@@ -182,7 +181,6 @@ export const GameInScreen = ({route}) => {
         //     setMatrixInfo(p => ({
         //         ...p, 
         //         selectedTiles: newSelectedTiles,
-        //         // teamDepth: playerMovesContext.teamDepth
         //     }));
         // }
     }, [matrixInfo.isTimeOut])
@@ -217,7 +215,6 @@ export const GameInScreen = ({route}) => {
     //         setMatrixInfo(p => ({
     //             ...p, 
     //             selectedTiles: selectedTiles,
-    //             teamDepth: playerMovesContext.teamDepth
     //         }));
 
     //         // setAsyncPlayerMove()

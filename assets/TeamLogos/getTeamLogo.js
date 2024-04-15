@@ -20,6 +20,7 @@ import Bulls from './Bulls.png';
 import Hawks from './Hawks.png';
 import Raptors from './Raptors.png';
 import Wizards from './Wizards.png';
+import allstar from './allstar.png';
 
 export const getTeamLogo = (n) => {
     const name = n.toLowerCase();
@@ -72,6 +73,9 @@ export const getTeamLogo = (n) => {
         return Raptors;
     } else if(name === "wizards"){
         return Wizards;
+    } 
+    else if(name === "allstar"){
+        return allstar;
     }
 }
 

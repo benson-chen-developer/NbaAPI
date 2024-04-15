@@ -9,7 +9,6 @@ import { GameMatrix } from "../Matrix/GameMatrix";
 import { PopUpPlayer } from "../Matrix/PopUp/PopUpPlayer";
 import { PopUpSwapTile } from "../Matrix/PopUp/PopUpSwap.js/PopUpSwapTile";
 import { Header } from "../Shared/Header";
-import { getAsyncPlayerMoves, setAsyncPlayerMove } from "../../functions/AsyncStorage/PlayerMoves";
 
 export const GamePreScreen = ({route}) => {
     const { game } = route.params;
@@ -21,20 +20,6 @@ export const GamePreScreen = ({route}) => {
         pickedPlayer: null,
         selectedTiles: []
     });
-
-    useEffect(() => {
-        // getAsyncPlayerMoves().then(playerMoveRes => {
-        //     playerMoveRes.selectedTiles = matrixInfo.selectedTiles;
-
-        //     setAsyncPlayerMove(playerMoveRes).then(newPlayerMoveRes => {
-        //         console.log("GamePreScreen", newPlayerMoveRes);
-        //     })
-        // })
-    }, [matrixInfo.selectedTiles])
-
-    useEffect(() => {
-        setAsyncPlayerMove();
-    }, [])
 
     return(
         <SafeAreaView style={{ flex: 1, backgroundColor: '#111A2B', height:"100%", width:"100%"}}>

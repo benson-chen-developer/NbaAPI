@@ -6,11 +6,17 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GamePreScreen } from './Frontend/GameComponents/Pre/GamePreScreen';
 import { GameInScreen } from './Frontend/GameComponents/Live/GameInScreen';
 import { GameEnd } from './Frontend/GameComponents/GameEnd/GameEnd';
+import { useFonts } from '@expo-google-fonts/roboto';
 
 const Stack = createStackNavigator();
 
 
 function App() {
+  let [fontsLoaded] = useFonts({
+    'Roboto': require('./assets/Fonts/Roboto/Roboto-Regular.ttf'),
+    'Roboto-Bold': require('./assets/Fonts/Roboto/Roboto-Bold.ttf'),
+  });
+
   return (
     <SafeAreaProvider>
       <MyContextProvider>

@@ -2,7 +2,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { useState } from 'react'
 import MainAreaGames from './Games/MainAreaGames';
 import { useMyContext } from '../Context/MyContext';
-import Inventory from './Inventory/Inventory';
+import { Inventory } from './Inventory/Inventory';
 import Navbar from './NavBar/Navbar';
 import LiveMainArea from './Live/LiveMainArea';
 

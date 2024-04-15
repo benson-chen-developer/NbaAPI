@@ -17,21 +17,12 @@ export const MyContextProvider = ({ children }) => {
   const [todayGames, setTodayGames] = useState([]);
   const [liveGames, setLiveGames] = useState([]);
   const [playerStats, setPlayerStats] = useState([]);
-  const [playerMovesContext, setPlayerMovesContext] = useState([]);
-  const [teamDepthObjArray, setTeamDepthObjArray] = useState([]);
 
-  /*
-    [
-      {awayTeam: {teamName}}, {homeTeam: {teamName}}
-    ]
-  */
   const value = {
     user, setUser,
     todayGames, setTodayGames,
     liveGames, setLiveGames,
     playerStats, setPlayerStats,
-    playerMovesContext, setPlayerMovesContext,
-    teamDepthObjArray, setTeamDepthObjArray,
     loading, setLoading
   };
 

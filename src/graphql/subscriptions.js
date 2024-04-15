@@ -17,7 +17,6 @@ export const onCreateBotGame = /* GraphQL */ `
         playersArray
         name
         xp
-        teamDepth
         maxLiveGames
         mainTeam
         createdAt
@@ -47,7 +46,6 @@ export const onUpdateBotGame = /* GraphQL */ `
         playersArray
         name
         xp
-        teamDepth
         maxLiveGames
         mainTeam
         createdAt
@@ -77,7 +75,6 @@ export const onDeleteBotGame = /* GraphQL */ `
         playersArray
         name
         xp
-        teamDepth
         maxLiveGames
         mainTeam
         createdAt
@@ -140,7 +137,6 @@ export const onCreateUser = /* GraphQL */ `
       playersArray
       name
       xp
-      teamDepth
       LiveGames {
         nextToken
         __typename
@@ -163,7 +159,6 @@ export const onUpdateUser = /* GraphQL */ `
       playersArray
       name
       xp
-      teamDepth
       LiveGames {
         nextToken
         __typename
@@ -186,7 +181,6 @@ export const onDeleteUser = /* GraphQL */ `
       playersArray
       name
       xp
-      teamDepth
       LiveGames {
         nextToken
         __typename
@@ -321,7 +315,6 @@ export const onCreateUserGame = /* GraphQL */ `
         playersArray
         name
         xp
-        teamDepth
         maxLiveGames
         mainTeam
         createdAt
@@ -376,7 +369,6 @@ export const onUpdateUserGame = /* GraphQL */ `
         playersArray
         name
         xp
-        teamDepth
         maxLiveGames
         mainTeam
         createdAt
@@ -431,7 +423,6 @@ export const onDeleteUserGame = /* GraphQL */ `
         playersArray
         name
         xp
-        teamDepth
         maxLiveGames
         mainTeam
         createdAt

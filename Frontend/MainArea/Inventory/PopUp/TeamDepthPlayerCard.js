@@ -5,7 +5,7 @@ import { useMyContext } from "../../../Context/MyContext";
 import { setAsyncTeamDepthObjArray } from "../../../functions/AsyncStorage/TeamDepth";
 
 export const TeamDepthPlayerCard = ({pickedName, playerName, teamName, setPopUpInfo}) => {
-    const {teamDepthObjArray, setTeamDepthObjArray} = useMyContext();
+    // const {teamDepthObjArray, setTeamDepthObjArray} = useMyContext();
 
     const onPress = (cardName) => {
         let teamObj = teamDepthObjArray.find(team => team.name === teamName);
@@ -27,7 +27,7 @@ export const TeamDepthPlayerCard = ({pickedName, playerName, teamName, setPopUpI
         console.log("teamDepthObjArray", teamDepthObjArray)
 
         setAsyncTeamDepthObjArray(updatedTeamDepthObjArray).then(res => {
-            setTeamDepthObjArray(res);
+            // setTeamDepthObjArray(res);
             setPopUpInfo(p => ({ ...p, popUpScreen: "" }));
         })
     };

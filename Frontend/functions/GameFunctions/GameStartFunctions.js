@@ -2,7 +2,6 @@ import { generateClient } from 'aws-amplify/api';
 import {listGames, listUsers} from '../../../src/graphql/queries';
 import {updateGame, createGame, updateUser, createUserGame} from '../../../src/graphql/mutations';
 import { generateMatrix2 } from '../MatrixFunctions';
-import { setAsyncPlayerMove } from '../AsyncStorage/PlayerMoves';
 import { getAverages } from '../StatFunctions';
 
 const client = generateClient();
@@ -143,12 +142,6 @@ export const createGameFuncion = async (
             }
         });
         
-        await setAsyncPlayerMove({
-            gameId: newGame.data.createGame.id,
-            selectedTiles: [],
-            teamDepth: []
-        });
-
         return newGame.data.createGame;
     } catch (error) {
         console.error("CreateGameFunction err", error);

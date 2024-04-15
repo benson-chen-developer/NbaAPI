@@ -22,7 +22,6 @@ type User @model @auth(rules: [{allow: public}]) {
   playersArray: [AWSJSON]
   name: String
   xp: Int
-  teamDepth: [AWSJSON]
   LiveGames: [Game] @manyToMany(relationName: "UserGame")
   maxLiveGames: Int
   mainTeam: String
