@@ -13,7 +13,7 @@ interface Props {
 
 export const BottomSheetViewMine: React.FC<Props> = ({playerStats}) => {
     return(
-        <View style={{height:'100%', width:"100%", backgroundColor:'white'}}>
+        <View style={{height:'100%', width:"100%", backgroundColor:'rgba(255,255,255,.9)'}}>
             
             {/* 1st Half */}
             <View style={{width:"100%", backgroundColor:'#273447', height:"30%"}}>

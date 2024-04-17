@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { View, Text } from "react-native"
+import { TouchableOpacity } from "react-native-gesture-handler"
 import { PlayerData } from "../../../Global/DataTypes"
 import { Colors } from "../../../Global/Enums/color"
 
@@ -36,6 +37,8 @@ export const SecondHalf: React.FC<Props> = ({lastFiveGames, currentPlayer}) => {
     const [maxStats, setMaxStats] = useState<MaxStats>(null)
     const [selectedStat, setSelectedStat] = useState<string>("PTS");
     const [loading, setLoading] = useState<boolean>(true);
+
+    const stats = ["PTS", "REB", "AST", "BLK", "STL"];
 
     useEffect(() => {
         setLoading(true);
@@ -80,6 +83,23 @@ export const SecondHalf: React.FC<Props> = ({lastFiveGames, currentPlayer}) => {
                     Performance
                 </Text>
 
+                {/* Btns */}
+                <View style={{width:'100%', flexDirection:'row', justifyContent:'space-evenly', margin:10}}>
+                    {stats.map((stat, index) => (
+                        <TouchableOpacity key={index} style={{
+                            width:60, height:40, borderRadius: 5,
+                            justifyContent:'center', alignItems:'center',
+                            backgroundColor: selectedStat === stat ? "#FFAE57" : '#CBCBCB',
+                        }} onPress={() => setSelectedStat(stat)}>
+                            <Text style={{
+                                color:'white', fontFamily:'Roboto-Bold', fontSize:18
+                            }}>
+                                {stat}
+                            </Text>
+                        </TouchableOpacity>
+                    ))}
+                </View>
+
                 <View style={{width:"100%", justifyContent:'center', marginTop: 10, flexDirection:'row'}}>
                     
                     {/* Side Stats */}
@@ -88,7 +108,7 @@ export const SecondHalf: React.FC<Props> = ({lastFiveGames, currentPlayer}) => {
                             30
                         </Text>
                         <Text style={{fontFamily:'Roboto-Bold', fontSize:20}}>
-                            Avg. {currentPlayer[selectedStat].toFixed(0)}
+                            Avg {currentPlayer[selectedStat].toFixed(0)}
                         </Text>
                         <Text style={{fontFamily:'Roboto-Bold', fontSize:20}}>
                             20
@@ -96,7 +116,7 @@ export const SecondHalf: React.FC<Props> = ({lastFiveGames, currentPlayer}) => {
                     </View>
 
                     {/* Chart */}
-                    <View style={{width:"70%", height: 175, backgroundColor:'#273447', borderRadius:10}}>
+                    <View style={{width:"70%", height: 175, backgroundColor:'#273447', borderRadius:10, borderWidth:3, borderColor:'#CBCBCB'}}>
                         <View style={{justifyContent:'space-evenly', flexDirection:'row', height:'100%', width:"100%", alignItems:'flex-end'}}>
                             {lastFiveData.map((stats, index) => (
                                 <View key={index} style={{
@@ -112,12 +132,20 @@ export const SecondHalf: React.FC<Props> = ({lastFiveGames, currentPlayer}) => {
                         </View>
 
                         <View style={{ position: 'absolute', height: '100%', width:"100%", justifyContent: 'space-evenly' }}>
-                            <Text style={{color:'white', bottom: 5}} numberOfLines={1}>- - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
+                            <Text style={{color:'white', bottom: 5}} numberOfLines={1}>- - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
                             <View style={{ borderBottomWidth: 1, borderBottomColor: 'white'}} />
-                            <Text style={{color:'white', top: 5}} numberOfLines={1}>- - - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
+                            <Text style={{color:'white', top: 5}} numberOfLines={1}>- - - - - - - - - - - - - - - - - - - - - - - - - -</Text>
                         </View>
                     </View>
+                </View>
 
+                {/* Last 5 Avg */}
+                <View style={{width:"100%", alignItems:'center', marginTop:20}}>
+                    <View style={{width:"50%", height:50, backgroundColor: Colors.bgDark, justifyContent:'center', alignItems:'center', borderRadius:5}}>
+                        <Text style={{fontFamily:"Roboto-Bold", color:'white', fontSize:22}}>
+                            Last 5 Avg | {lastFiveData.length > 0 ? (lastFiveData.reduce((acc, curr) => acc + curr[selectedStat], 0) / lastFiveData.length).toFixed(1) : 0}
+                        </Text>
+                    </View>
                 </View>
             </View>
         </View>
