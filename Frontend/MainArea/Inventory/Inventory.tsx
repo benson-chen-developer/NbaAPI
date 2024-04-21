@@ -1,11 +1,14 @@
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
-import { useCallback, useEffect, useMemo, useRef } from "react";
-import { Text, View } from "react-native";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { abbreviateName, abbreviateThreeLetterName } from "../../../assets/TeamLogos/getTeamLogo";
 import { useMyContext } from "../../Context/MyContext";
 import { getTeamDataAWS } from "../../functions/AsyncStorage/PlayerStats";
 import { BottomSheetViewMine } from "./BottomSheet/BottomSheetViewMine";
 import { PlayerCard } from "./PlayerCard";
+import {PlayerData} from '../../Global/DataTypes';
+import { Header } from "./Header";
 
 interface Props {}
 
@@ -74,30 +77,41 @@ const fetchPlayerStats = async () => {
 
 export const Inventory: React.FC<Props> = () => {
 
-    const {playerStats, setPlayerStats} = useMyContext();
-
-    useEffect(() => {
-        const fetchData = async () => {
-            if (playerStats.length === 0) {
-                const playerStats = await fetchPlayerStats();
-                // console.log("playerStats", playerStats)
-                setPlayerStats(playerStats);
-            }
-
-            // handleClosePress();
-        };
-    
-        fetchData();
-    }, []);
-    
-    const snapPoints = useMemo(() => ["85%"], [])
-    const bottomSheetRef = useRef<BottomSheet>(null)
+    const {user, playerStats} = useMyContext();
+    const [currentTeam, setCurrentTeam] = useState<string>(abbreviateThreeLetterName(user.mainTeam));
+    const [currentPlayer, setCurrentPlayer] = useState<string>("");
+    const [players, setPlayers] = useState<PlayerData[]>([]);
 
     const handleOpenPress = () => bottomSheetRef.current?.snapToIndex(0);
     const handleClosePress = () => bottomSheetRef.current?.close();
     const renderBackdrop = useCallback(
         (props: any) => <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props}/>
     , [])
+
+    useEffect(() => {
+        let playerStats = []; let players = [];
+
+        playerStats.forEach(p => {
+            if(p.abbreviated === abbreviateThreeLetterName(user.mainTeam)){
+                players.push(p);
+            }
+        })
+
+        setPlayers(players);
+    }, []);
+
+    useEffect(() => {
+        let players = [];
+        playerStats.forEach(p => {
+            if(p.abbreviated === currentTeam){
+                players.push(p);
+            }
+        })
+        setPlayers(players);
+    }, [currentTeam])
+
+    const snapPoints = useMemo(() => ["85%"], [])
+    const bottomSheetRef = useRef<BottomSheet>(null)
 
     if(playerStats.length === 0) return(
         <View>
@@ -106,28 +120,42 @@ export const Inventory: React.FC<Props> = () => {
     )
 
     return (
-        <SafeAreaView style={{
-            alignItems: 'center', flexDirection:'row', justifyContent:'space-evenly',
-            width: '100%', height:"100%", backgroundColor:'#273447'
-        }}>
-            <PlayerCard 
-                playerData={playerStats[0]} 
-                playerLevels={null}
-                handleOpenPress={handleOpenPress}
-            />
+        <View style={{width: '100%', height:"100%", backgroundColor:'#273447'}}>
+            <Header 
+                teamName={currentTeam}
+                setCurrentTeam={setCurrentTeam}
+            />            
 
-            <BottomSheet 
-                ref={bottomSheetRef} 
-                snapPoints={snapPoints}
-                enablePanDownToClose={true}
-                backdropComponent={renderBackdrop}
-                handleIndicatorStyle={{backgroundColor:'white'}}
-                backgroundStyle={{backgroundColor:'#007A32'}}
-            >
-                <BottomSheetViewMine 
-                    playerStats={playerStats[0]}
-                />
-            </BottomSheet>
-        </SafeAreaView>
+            <ScrollView style={{ width: '100%', maxHeight: '80%', overflow: 'hidden' }}>
+                <View style={{ width: '100%', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    {players.map((player, index) => (
+                    <View key={index} style={{ width: '50%', alignItems: 'center', marginBottom: 20, marginTop: 20 }}>
+                        <PlayerCard 
+                            playerData={player} 
+                            playerLevels={null}
+                            setCurrentPlayer={setCurrentPlayer}
+                            handleOpenPress={handleOpenPress}
+                        />
+                    </View>
+                    ))}
+                </View>
+            </ScrollView>
+
+
+            {currentPlayer ? 
+                <BottomSheet 
+                    ref={bottomSheetRef} 
+                    snapPoints={snapPoints}
+                    enablePanDownToClose={true}
+                    backdropComponent={renderBackdrop}
+                    handleIndicatorStyle={{backgroundColor:'white'}}
+                    backgroundStyle={{backgroundColor:'#007A32'}}
+                >
+                    <BottomSheetViewMine 
+                        playerStats={playerStats[playerStats.findIndex(p => p.name === currentPlayer)]}
+                    />
+                </BottomSheet> : null
+            }
+        </View>
     );
 };

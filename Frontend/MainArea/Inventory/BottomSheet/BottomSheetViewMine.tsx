@@ -6,9 +6,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Colors } from "../../../Global/Enums/color";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SecondHalf } from "./SecondHalf";
+import { Dispatch, SetStateAction } from "react";
 
 interface Props {
-    playerStats: PlayerData
+    playerStats: PlayerData;
 }
 
 export const BottomSheetViewMine: React.FC<Props> = ({playerStats}) => {
@@ -38,7 +39,7 @@ export const BottomSheetViewMine: React.FC<Props> = ({playerStats}) => {
                     {/* All stats on right of pic */}
                     <View style={{width:"60%", height:"100%", marginLeft: 30}}>
                         <Text style={{color:'white', fontSize: 25, fontFamily:'Roboto-Bold', marginTop: 10}}>
-                            Jayson Tatum
+                            {playerStats.name}
                         </Text>
 
                         <View style={{flexDirection:'row', height: 50, alignItems:'center'}}>
@@ -127,24 +128,7 @@ export const BottomSheetViewMine: React.FC<Props> = ({playerStats}) => {
                     }
                 ]} 
                 
-                currentPlayer={{
-                    "PTS": 26.9,
-                    "REB": 2,
-                    "AST": 3,
-                    "STL": 4,
-                    "BLK": 5,
-                    "FG": 1,
-                    "FGA": 2,
-                    "FG3": 2,
-                    "FG3A": 2, 
-                    "FT": 2,
-                    "FTA": 2,
-                    "Games Played": 2,
-                    "PF": 2,
-                    "TO": 2,
-                    "abbreviated": "BOS",
-                    "name": "Jayson Tatum"
-                }}
+                currentPlayer={playerStats}
             />
         </View>
     )

@@ -74,6 +74,7 @@ export const getTeamDataAWS = async () => {
 
                     await AsyncStorage.setItem('playersToday', JSON.stringify(playersArrayRet));
 
+                    // console.log("playersToday", playersToday)
                     return playersArrayRet;
             } catch(err) {
                 console.log("AsyncStorage Error, players fetching", err)

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { View, Text } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { PlayerData } from "../../../Global/DataTypes"
@@ -32,6 +32,7 @@ interface Props {
 }
 
 export const SecondHalf: React.FC<Props> = ({lastFiveGames, currentPlayer}) => {
+    console.log("currentPlayer hi",currentPlayer)
 
     const [lastFiveData, setLastFiveData] = useState<LastFiveData[]>([]);
     const [maxStats, setMaxStats] = useState<MaxStats>(null)
@@ -44,26 +45,26 @@ export const SecondHalf: React.FC<Props> = ({lastFiveGames, currentPlayer}) => {
         setLoading(true);
         let arr = [];
 
-        lastFiveGames.forEach((game, index) => {
-            const foundPlayer = game.players.find(player => player.name === currentPlayer.name);
+        // lastFiveGames.forEach((game, index) => {
+        //     const foundPlayer = game.players.find(player => player.name === currentPlayer.name);
             
-            arr.push({
-                "PTS": foundPlayer.PTS,
-                "REB": foundPlayer.REB,
-                "AST": foundPlayer.AST,
-                "STL": foundPlayer.STL,
-                "BLK": foundPlayer.BLK,
-            })
-        })
+        //     arr.push({
+        //         "PTS": foundPlayer.PTS,
+        //         "REB": foundPlayer.REB,
+        //         "AST": foundPlayer.AST,
+        //         "STL": foundPlayer.STL,
+        //         "BLK": foundPlayer.BLK,
+        //     })
+        // })
 
-        setMaxStats({
-            "PTS" : arr.reduce((max, game) => {return game.PTS > max ? game.PTS : max}, 0),
-            "REB" : arr.reduce((max, game) => {return game.REB > max ? game.REB : max}, 0),
-            "AST" : arr.reduce((max, game) => {return game.AST > max ? game.AST : max}, 0),
-            "STL" : arr.reduce((max, game) => {return game.STL > max ? game.STL : max}, 0),
-            "BLK" : arr.reduce((max, game) => {return game.BLK > max ? game.BLK : max}, 0),
-        })
-        setLastFiveData(arr);
+        // setMaxStats({
+        //     "PTS" : arr.reduce((max, game) => {return game.PTS > max ? game.PTS : max}, 0),
+        //     "REB" : arr.reduce((max, game) => {return game.REB > max ? game.REB : max}, 0),
+        //     "AST" : arr.reduce((max, game) => {return game.AST > max ? game.AST : max}, 0),
+        //     "STL" : arr.reduce((max, game) => {return game.STL > max ? game.STL : max}, 0),
+        //     "BLK" : arr.reduce((max, game) => {return game.BLK > max ? game.BLK : max}, 0),
+        // })
+        // setLastFiveData(arr);
         setLoading(false);
     }, [])
 
@@ -76,8 +77,7 @@ export const SecondHalf: React.FC<Props> = ({lastFiveGames, currentPlayer}) => {
     return(
         <View style={{width:"100%", backgroundColor:'#273447', height:"70%"}}>
             <View style={{
-                width:"100%", backgroundColor:'white', height:"100%", borderRadius:20,
-                alignItems:'center'
+                width:"100%", backgroundColor:'white', height:"100%", borderRadius:20, alignItems:'center'
             }}>
                 <Text style={{color:'black', fontFamily:'Roboto-Bold', fontSize: 25, marginTop: 15}}>
                     Performance
@@ -101,14 +101,13 @@ export const SecondHalf: React.FC<Props> = ({lastFiveGames, currentPlayer}) => {
                 </View>
 
                 <View style={{width:"100%", justifyContent:'center', marginTop: 10, flexDirection:'row'}}>
-                    
                     {/* Side Stats */}
-                    <View style={{height: 175, justifyContent:'space-evenly', alignItems:'flex-end', marginRight:12}}>
+                    <View style={{height: 175, width: 70 ,justifyContent:'space-evenly', alignItems:'flex-end', marginRight:12}}>
                         <Text style={{fontFamily:'Roboto-Bold', fontSize:20}}>
                             30
                         </Text>
                         <Text style={{fontFamily:'Roboto-Bold', fontSize:20}}>
-                            Avg {currentPlayer[selectedStat].toFixed(0)}
+                            Avg {(currentPlayer[selectedStat]/currentPlayer["Games Played"]).toFixed(0)}
                         </Text>
                         <Text style={{fontFamily:'Roboto-Bold', fontSize:20}}>
                             20
@@ -121,11 +120,11 @@ export const SecondHalf: React.FC<Props> = ({lastFiveGames, currentPlayer}) => {
                             {lastFiveData.map((stats, index) => (
                                 <View key={index} style={{
                                     width: 33, height: `${(stats[selectedStat] / maxStats[selectedStat] * 100)-5}%`, 
-                                    backgroundColor: currentPlayer[selectedStat].toFixed(0) > stats[selectedStat] ? Colors.red : Colors.green,
+                                    backgroundColor: (currentPlayer[selectedStat]/currentPlayer["Games Played"]).toFixed(0) > stats[selectedStat] ? Colors.red : Colors.green,
                                     borderTopLeftRadius: 3, borderTopRightRadius: 3
                                 }}>
                                     <Text style={{}}>
-                                        {stats[selectedStat].toFixed(0)}
+                                        {(currentPlayer[selectedStat]/currentPlayer["Games Played"]).toFixed(0)}
                                     </Text>
                                 </View>
                             ))}

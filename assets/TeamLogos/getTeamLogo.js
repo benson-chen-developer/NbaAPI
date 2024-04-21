@@ -97,6 +97,18 @@ export const abbreviateName = (name) => {
         return "ind"
     else if(n === "mavericks")
         return "dal"
+    else if(n === "boston" || "celtics")
+        return "bos"
+    else 
+        return n;
+
+}
+
+export const abbreviateThreeLetterName = (name) => {
+    const n = name.toLowerCase();
+
+    if(n === "celtics")
+      return "BOS"
     else 
         return "";
 

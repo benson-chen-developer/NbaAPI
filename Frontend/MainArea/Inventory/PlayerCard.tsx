@@ -1,18 +1,23 @@
+import { Dispatch, SetStateAction } from "react";
 import { Image, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { PlayerData, PlayerLevels } from "../../Global/DataTypes";
 
 interface Props {
-    playerData: PlayerData,
+    playerData: PlayerData
     playerLevels: PlayerLevels
     handleOpenPress: () => void
+    setCurrentPlayer: Dispatch<SetStateAction<string>>
 }
 
-export const PlayerCard: React.FC<Props> = ({playerData, playerLevels, handleOpenPress}) => {
+export const PlayerCard: React.FC<Props> = ({playerData, playerLevels, setCurrentPlayer, handleOpenPress}) => {
     return (
         <TouchableOpacity 
             style={{alignItems: 'center', backgroundColor:"white", width: 160, height: 175, borderTopLeftRadius:15, borderTopRightRadius:15}}
-            onPress={() => handleOpenPress()}
+            onPress={() => {
+                setCurrentPlayer(playerData.name)
+                handleOpenPress();
+            }}
         >
             
             <View style={{position:'absolute', width:"100%", top: -25, alignItems:'center'}}>
