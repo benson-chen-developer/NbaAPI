@@ -3,43 +3,44 @@ import { useState } from 'react'
 import MainAreaGames from './Games/MainAreaGames';
 import { useMyContext } from '../Context/MyContext';
 import { Inventory } from './Inventory/Inventory';
-import Navbar from './NavBar/Navbar';
 import LiveMainArea from './Live/LiveMainArea';
+import { Navbar } from './NavBar/NavBar';
+import { NavbarEnums } from '../Global/Enums/navigation';
 
 export default function MainArea() {
 
     const [loading, setLoading] = useState(false);
-    const [screen, setScreen] = useState("Games");
+    const [screen, setScreen] = useState(NavbarEnums.GAMES);
     const { user } = useMyContext();
-
     if(!loading) { return (
       <View style={{alignItems:'center', justifyContent:'center', width: "100%", height:'100%'}}>
         
-        {screen === "Games" ?
-          <MainAreaGames /> 
-            : 
-          null
-        }
+        <View style={{height:"5%"}}/>
 
-        {screen === "Inventory" ?
-          <Inventory /> 
-            : 
-          null
-        }
+        <View style={{height:"86%", width:"100%"}}>
+          {screen === NavbarEnums.GAMES ?
+            <MainAreaGames /> 
+              : 
+            null
+          }
 
-        {screen === "Live" ?
-          <LiveMainArea /> 
-            : 
-          null
-        }
+          {screen === NavbarEnums.PLAYERS ?
+            <Inventory /> 
+              : 
+            null
+          }
 
-        {screen === "Profile" ?
-          null
-            :
-          null
-        }
+          {screen === NavbarEnums.LIVE ?
+            <LiveMainArea /> 
+              : 
+            null
+          }
+        </View>
 
-        <Navbar setScreen={setScreen}/>
+        <View style={{width:"100%", height:"9%"}}>
+          <Navbar screen={screen} setScreen={setScreen}/>
+        </View>
+
       </View>
     )} else {
       <Text>Loading</Text>

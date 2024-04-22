@@ -129,14 +129,14 @@ export const Inventory: React.FC<Props> = () => {
             <ScrollView style={{ width: '100%', maxHeight: '80%', overflow: 'hidden' }}>
                 <View style={{ width: '100%', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
                     {players.map((player, index) => (
-                    <View key={index} style={{ width: '50%', alignItems: 'center', marginBottom: 20, marginTop: 20 }}>
-                        <PlayerCard 
-                            playerData={player} 
-                            playerLevels={null}
-                            setCurrentPlayer={setCurrentPlayer}
-                            handleOpenPress={handleOpenPress}
-                        />
-                    </View>
+                        <View key={index} style={{ width: '50%', alignItems: 'center', marginBottom: 20, marginTop: 20 }}>
+                            <PlayerCard 
+                                playerData={player} 
+                                playerLevels={null}
+                                setCurrentPlayer={setCurrentPlayer}
+                                handleOpenPress={handleOpenPress}
+                            />
+                        </View>
                     ))}
                 </View>
             </ScrollView>

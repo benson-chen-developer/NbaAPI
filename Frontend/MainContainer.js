@@ -96,7 +96,7 @@ export default function MainContainer() {
   else 
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor:'#121724' }}>
+    <View style={{ flex: 1, backgroundColor:'#121724' }}>
       <StatusBar style={{color: "white"}} />
 
       <View style={{flex:1}}>
@@ -124,6 +124,6 @@ export default function MainContainer() {
       {loading ?
         <LoadingScreen /> : null
       }
-    </SafeAreaView>
+    </View>
   );
 }

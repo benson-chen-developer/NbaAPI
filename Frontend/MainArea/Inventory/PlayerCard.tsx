@@ -13,7 +13,7 @@ interface Props {
 export const PlayerCard: React.FC<Props> = ({playerData, playerLevels, setCurrentPlayer, handleOpenPress}) => {
     return (
         <TouchableOpacity 
-            style={{alignItems: 'center', backgroundColor:"white", width: 160, height: 175, borderTopLeftRadius:15, borderTopRightRadius:15}}
+            style={{alignItems: 'center', backgroundColor:"white", width: 150, height: 160, borderTopLeftRadius:15, borderTopRightRadius:15}}
             onPress={() => {
                 setCurrentPlayer(playerData.name)
                 handleOpenPress();
@@ -23,7 +23,7 @@ export const PlayerCard: React.FC<Props> = ({playerData, playerLevels, setCurren
             <View style={{position:'absolute', width:"100%", top: -25, alignItems:'center'}}>
                 <Image 
                     source={{ uri: "https://cdn.nba.com/headshots/nba/latest/1040x760/1628369.png"}} 
-                    style={{height:125, width: 160}}
+                    style={{height:115, width: 150}}
                 />
             </View>
 
