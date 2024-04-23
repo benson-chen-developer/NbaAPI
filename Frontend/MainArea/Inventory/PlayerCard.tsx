@@ -22,7 +22,7 @@ export const PlayerCard: React.FC<Props> = ({playerData, playerLevels, setCurren
             
             <View style={{position:'absolute', width:"100%", top: -25, alignItems:'center'}}>
                 <Image 
-                    source={{ uri: "https://cdn.nba.com/headshots/nba/latest/1040x760/1628369.png"}} 
+                    source={{ uri: `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${playerData.picId}.png`}} 
                     style={{height:115, width: 150}}
                 />
             </View>
@@ -38,13 +38,13 @@ export const PlayerCard: React.FC<Props> = ({playerData, playerLevels, setCurren
                 width:"100%", height: "45%", backgroundColor:'black', 
                 alignItems:'center', justifyContent:'space-evenly'
             }}>
-                <Text style={{color:'white', fontSize:20,fontFamily:'Roboto-Bold'}}>{playerData.name}</Text>
+                <Text style={{color:'white', fontSize:18,fontFamily:'Roboto-Bold'}}>{playerData.name}</Text>
 
                 <View style={{width:"100%", alignItems:'center', justifyContent:'space-evenly', flexDirection:'row'}}>
-                    <Text style={{color:'white', fontSize:20,fontFamily:'Roboto-Bold'}}>
+                    <Text style={{color:'white', fontSize:18,fontFamily:'Roboto-Bold'}}>
                         LV 5
                     </Text>
-                    <View style={{width:100, height:18, backgroundColor:'#D9D9D9', borderRadius:5}}>
+                    <View style={{width:80, height:18, backgroundColor:'#D9D9D9', borderRadius:5}}>
                         <View style={{width:"25%", height:18, backgroundColor:'#2BD6B2', borderRadius:4}}/>
                     </View>
                 </View>

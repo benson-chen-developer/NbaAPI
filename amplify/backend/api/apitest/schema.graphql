@@ -10,7 +10,7 @@ type BotGame @model @auth(rules: [{allow: public}]) {
 type TeamData @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
-  players: [String]
+  players: [AWSJSON]
   abbreviated: String
 }
 
@@ -25,6 +25,11 @@ type User @model @auth(rules: [{allow: public}]) {
   LiveGames: [Game] @manyToMany(relationName: "UserGame")
   maxLiveGames: Int
   mainTeam: String
+  allStarPoints: Int
+  hallOfFamePoints: Int
+  coins: Int
+  wins: Int
+  loss: Int
 }
 
 type Game @model @auth(rules: [{allow: public}]) {

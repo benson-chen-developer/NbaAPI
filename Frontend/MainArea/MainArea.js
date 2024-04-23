@@ -6,6 +6,7 @@ import { Inventory } from './Inventory/Inventory';
 import LiveMainArea from './Live/LiveMainArea';
 import { Navbar } from './NavBar/NavBar';
 import { NavbarEnums } from '../Global/Enums/navigation';
+import { TopNavBar } from './NavBar/TopNavBar';
 
 export default function MainArea() {
 
@@ -15,9 +16,11 @@ export default function MainArea() {
     if(!loading) { return (
       <View style={{alignItems:'center', justifyContent:'center', width: "100%", height:'100%'}}>
         
-        <View style={{height:"5%"}}/>
+        <View style={{width:"100%", height:"12%"}}>
+          <TopNavBar />
+        </View>
 
-        <View style={{height:"86%", width:"100%"}}>
+        <View style={{height:"80%", width:"100%"}}>
           {screen === NavbarEnums.GAMES ?
             <MainAreaGames /> 
               : 
@@ -37,7 +40,7 @@ export default function MainArea() {
           }
         </View>
 
-        <View style={{width:"100%", height:"9%"}}>
+        <View style={{width:"100%", height:"8%"}}>
           <Navbar screen={screen} setScreen={setScreen}/>
         </View>
 

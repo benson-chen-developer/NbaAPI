@@ -19,6 +19,11 @@ export const getBotGame = /* GraphQL */ `
         xp
         maxLiveGames
         mainTeam
+        allStarPoints
+        hallOfFamePoints
+        coins
+        wins
+        loss
         createdAt
         updatedAt
         __typename
@@ -103,6 +108,11 @@ export const getUser = /* GraphQL */ `
       }
       maxLiveGames
       mainTeam
+      allStarPoints
+      hallOfFamePoints
+      coins
+      wins
+      loss
       createdAt
       updatedAt
       __typename
@@ -126,6 +136,11 @@ export const listUsers = /* GraphQL */ `
         xp
         maxLiveGames
         mainTeam
+        allStarPoints
+        hallOfFamePoints
+        coins
+        wins
+        loss
         createdAt
         updatedAt
         __typename
@@ -227,6 +242,11 @@ export const getUserGame = /* GraphQL */ `
         xp
         maxLiveGames
         mainTeam
+        allStarPoints
+        hallOfFamePoints
+        coins
+        wins
+        loss
         createdAt
         updatedAt
         __typename

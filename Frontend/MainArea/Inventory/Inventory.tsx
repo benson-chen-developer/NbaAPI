@@ -9,6 +9,7 @@ import { BottomSheetViewMine } from "./BottomSheet/BottomSheetViewMine";
 import { PlayerCard } from "./PlayerCard";
 import {PlayerData} from '../../Global/DataTypes';
 import { Header } from "./Header";
+import { Colors } from "../../Global/Enums/color";
 
 interface Props {}
 
@@ -120,7 +121,7 @@ export const Inventory: React.FC<Props> = () => {
     )
 
     return (
-        <View style={{width: '100%', height:"100%", backgroundColor:'#273447'}}>
+        <View style={{width: '100%', height:"100%", backgroundColor: Colors.bgDark}}>
             <Header 
                 teamName={currentTeam}
                 setCurrentTeam={setCurrentTeam}

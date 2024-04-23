@@ -31,7 +31,8 @@ const Button = ({screen, name, setScreen}) => {
             onPress={() => setScreen(name)} 
             style={{
                flex:1, backgroundColor: "#000", alignItems:'center',
-               height:"100%", justifyContent:'flex-end'
+               height:"100%", justifyContent:'flex-end', 
+               borderTopColor:'rgba(255,255,255,.2)', borderTopWidth: 1
             }}
         >
             {name === NavbarEnums.LIVE ? 

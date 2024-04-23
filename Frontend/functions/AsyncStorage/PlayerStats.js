@@ -23,7 +23,8 @@ export const getTeamDataAWS = async () => {
     try{
         const playersToday = await AsyncStorage.getItem('playersToday');
 
-        if(regrabInfo){
+        // if(regrabInfo){
+        if(true){
             console.log("AsynceStorage: We didnt cached it (players)");
 
             try{
@@ -33,14 +34,21 @@ export const getTeamDataAWS = async () => {
                     const lines = playerResParsed.split("\n");
                     const linesToProcess = lines.slice(2); // Remove the first two line
                     const playersArrayRet = [];
+                    const allPlayers = [];
+                    teams.forEach(team => {
+                        team.players.forEach(playerString => {
+                            const playerObject = JSON.parse(playerString);
+                            allPlayers.push(playerObject);
+                        });
+                    });
+                    // console.log("allPlayers", allPlayers)
                     
                     linesToProcess.map(line => {
                         const playerNameAndStats = line.split(" ").filter(word => word.trim() !== "")
                         const playerName = `${playerNameAndStats[4] + playerNameAndStats[3]}`.replace(',', ' ').slice(0, -1);
                         
-                        const playerExists = teams.some(team => team.players.includes(playerName));
-
-                        if(playerExists)
+                        const foundPlayer = allPlayers.find(p => p.name === playerName);
+                        if(foundPlayer)
                             playersArrayRet.push({
                                 ["name"]: playerName,
                                 ["FG"]: playerNameAndStats[9],
@@ -58,7 +66,8 @@ export const getTeamDataAWS = async () => {
                                 ["PTS"]: playerNameAndStats[27],
                                 ["PPG"]: playerNameAndStats[28],
                                 ["Games Played"]: playerNameAndStats[6],
-                                ["abbreviated"]: playerNameAndStats[1]
+                                ["abbreviated"]: playerNameAndStats[1],
+                                ["picId"]: foundPlayer.picId
                             });
                     });
 
@@ -72,10 +81,24 @@ export const getTeamDataAWS = async () => {
                         }
                     }
 
+                    // For some reason there is still a double of players where one only plays
+                    // like 1 game so remove the lowest games played one
+                    playersArrayRet.sort((a, b) => a["Games Played"] - b["Games Played"]);
+                    const uniquePlayers = {};
+                    playersArrayRet.forEach(player => {
+                        const playerName = player.name;
+                        const gamesPlayed = player["Games Played"];
+                        if (!uniquePlayers[playerName] || gamesPlayed > uniquePlayers[playerName]["Games Played"]) {
+                            uniquePlayers[playerName] = player;
+                        }
+                    });
+                    const uniquePlayersArray = Object.values(uniquePlayers);
+
+
                     await AsyncStorage.setItem('playersToday', JSON.stringify(playersArrayRet));
 
                     // console.log("playersToday", playersToday)
-                    return playersArrayRet;
+                    return uniquePlayersArray;
             } catch(err) {
                 console.log("AsyncStorage Error, players fetching", err)
                 return [];

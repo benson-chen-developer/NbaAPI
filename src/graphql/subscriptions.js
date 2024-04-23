@@ -19,6 +19,11 @@ export const onCreateBotGame = /* GraphQL */ `
         xp
         maxLiveGames
         mainTeam
+        allStarPoints
+        hallOfFamePoints
+        coins
+        wins
+        loss
         createdAt
         updatedAt
         __typename
@@ -48,6 +53,11 @@ export const onUpdateBotGame = /* GraphQL */ `
         xp
         maxLiveGames
         mainTeam
+        allStarPoints
+        hallOfFamePoints
+        coins
+        wins
+        loss
         createdAt
         updatedAt
         __typename
@@ -77,6 +87,11 @@ export const onDeleteBotGame = /* GraphQL */ `
         xp
         maxLiveGames
         mainTeam
+        allStarPoints
+        hallOfFamePoints
+        coins
+        wins
+        loss
         createdAt
         updatedAt
         __typename
@@ -143,6 +158,11 @@ export const onCreateUser = /* GraphQL */ `
       }
       maxLiveGames
       mainTeam
+      allStarPoints
+      hallOfFamePoints
+      coins
+      wins
+      loss
       createdAt
       updatedAt
       __typename
@@ -165,6 +185,11 @@ export const onUpdateUser = /* GraphQL */ `
       }
       maxLiveGames
       mainTeam
+      allStarPoints
+      hallOfFamePoints
+      coins
+      wins
+      loss
       createdAt
       updatedAt
       __typename
@@ -187,6 +212,11 @@ export const onDeleteUser = /* GraphQL */ `
       }
       maxLiveGames
       mainTeam
+      allStarPoints
+      hallOfFamePoints
+      coins
+      wins
+      loss
       createdAt
       updatedAt
       __typename
@@ -317,6 +347,11 @@ export const onCreateUserGame = /* GraphQL */ `
         xp
         maxLiveGames
         mainTeam
+        allStarPoints
+        hallOfFamePoints
+        coins
+        wins
+        loss
         createdAt
         updatedAt
         __typename
@@ -371,6 +406,11 @@ export const onUpdateUserGame = /* GraphQL */ `
         xp
         maxLiveGames
         mainTeam
+        allStarPoints
+        hallOfFamePoints
+        coins
+        wins
+        loss
         createdAt
         updatedAt
         __typename
@@ -425,6 +465,11 @@ export const onDeleteUserGame = /* GraphQL */ `
         xp
         maxLiveGames
         mainTeam
+        allStarPoints
+        hallOfFamePoints
+        coins
+        wins
+        loss
         createdAt
         updatedAt
         __typename

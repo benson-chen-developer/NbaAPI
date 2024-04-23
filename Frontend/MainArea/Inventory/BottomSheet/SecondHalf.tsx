@@ -32,8 +32,6 @@ interface Props {
 }
 
 export const SecondHalf: React.FC<Props> = ({lastFiveGames, currentPlayer}) => {
-    console.log("currentPlayer hi",currentPlayer)
-
     const [lastFiveData, setLastFiveData] = useState<LastFiveData[]>([]);
     const [maxStats, setMaxStats] = useState<MaxStats>(null)
     const [selectedStat, setSelectedStat] = useState<string>("PTS");
@@ -77,7 +75,7 @@ export const SecondHalf: React.FC<Props> = ({lastFiveGames, currentPlayer}) => {
     return(
         <View style={{width:"100%", backgroundColor:'#273447', height:"70%"}}>
             <View style={{
-                width:"100%", backgroundColor:'white', height:"100%", borderRadius:20, alignItems:'center'
+                width:"100%", backgroundColor:'white', height:"100%", borderTopLeftRadius:20, borderTopRightRadius:20, alignItems:'center'
             }}>
                 <Text style={{color:'black', fontFamily:'Roboto-Bold', fontSize: 25, marginTop: 15}}>
                     Performance

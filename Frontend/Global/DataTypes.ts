@@ -25,7 +25,8 @@ export type PlayerData = {
     "PF": number,
     "TO": number,
     "abbreviated": string,
-    "name": string
+    "name": string,
+    "picId": string
 }
 
 export type PlayerLevels = {

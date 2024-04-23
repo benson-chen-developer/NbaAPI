@@ -31,8 +31,8 @@ export const BottomSheetViewMine: React.FC<Props> = ({playerStats}) => {
                 <View style={{height:"100%", alignItems:'flex-end', flexDirection:'row'}}>
                     {/* Player Pic */}
                     <View style={{width:"40%", height:"100%", justifyContent:'flex-end'}}>
-                        <Image source={{uri: "https://cdn.nba.com/headshots/nba/latest/1040x760/1628369.png"}}
-                            style={{width:200, height:150, marginLeft: 20}}
+                        <Image source={{uri: `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${playerStats.picId}.png`}}
+                            style={{width:200, height:150}}
                         />
                     </View>
 
@@ -52,7 +52,7 @@ export const BottomSheetViewMine: React.FC<Props> = ({playerStats}) => {
                         </View>
 
                         <View style={{flexDirection:'row', width:195, justifyContent:'flex-start', top: -5}}>
-                            <Image source={{uri: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/bos.png&h=200&w=200"}}
+                            <Image source={{uri: `"https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/bos.png&h=200&w=200"`}}
                                 style={{width:22, height:22, top: -2, marginRight:5}}
                             />
                             <Text style={{color:'white', fontSize:15,fontFamily:'Roboto-Bold'}}>

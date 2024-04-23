@@ -27,7 +27,7 @@ export default function MainAreaGames({setCurrentGame}) {
       return (
         <View style={{ flex: 1, alignItems: 'center', width:"100%"}}>
 
-          <View style={{marginTop: 50}}/>
+          <View style={{marginTop: 20}}/>
 
           <View style={{width:"100%", justifyContent:'center', flexDirection:'row', alignItems:'center'}}>
             <MaterialCommunityIcons 
