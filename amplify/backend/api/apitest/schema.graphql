@@ -30,6 +30,7 @@ type User @model @auth(rules: [{allow: public}]) {
   coins: Int
   wins: Int
   loss: Int
+  teamShards: [AWSJSON]
 }
 
 type Game @model @auth(rules: [{allow: public}]) {
@@ -57,5 +58,4 @@ type Game @model @auth(rules: [{allow: public}]) {
   timeoutArray: [AWSJSON]
   player1SelectedTiles: [AWSJSON]
   player2SelectedTiles: [AWSJSON]
-}
- 
+} 

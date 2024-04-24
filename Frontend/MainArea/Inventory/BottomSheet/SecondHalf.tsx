@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { View, Text } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
-import { PlayerData } from "../../../Global/DataTypes"
+import { PlayerData } from "../../../Global/Types/DataTypes"
 import { Colors } from "../../../Global/Enums/color"
 
 type GameData = {

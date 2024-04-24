@@ -1,5 +1,5 @@
 import { View, Image, Text } from "react-native"
-import { PlayerData } from "../../../Global/DataTypes"
+import { PlayerData } from "../../../Global/Types/DataTypes"
 import { LinearGradient } from 'expo-linear-gradient';
 import { getTeamLogo } from "../../../../assets/TeamLogos/getTeamLogo";
 import { MaterialCommunityIcons } from '@expo/vector-icons';

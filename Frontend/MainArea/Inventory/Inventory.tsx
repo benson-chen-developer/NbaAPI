@@ -1,15 +1,16 @@
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { abbreviateName, abbreviateThreeLetterName } from "../../../assets/TeamLogos/getTeamLogo";
 import { useMyContext } from "../../Context/MyContext";
 import { getTeamDataAWS } from "../../functions/AsyncStorage/PlayerStats";
 import { BottomSheetViewMine } from "./BottomSheet/BottomSheetViewMine";
 import { PlayerCard } from "./PlayerCard";
-import {PlayerData} from '../../Global/DataTypes';
+import {PlayerData} from '../../Global/Types/DataTypes';
 import { Header } from "./Header";
 import { Colors } from "../../Global/Enums/color";
+import { PlayerLevel } from "../../Global/Types/InventoryTypes";
 
 interface Props {}
 
@@ -82,6 +83,9 @@ export const Inventory: React.FC<Props> = () => {
     const [currentTeam, setCurrentTeam] = useState<string>(abbreviateThreeLetterName(user.mainTeam));
     const [currentPlayer, setCurrentPlayer] = useState<string>("");
     const [players, setPlayers] = useState<PlayerData[]>([]);
+    // const [playersLevelArr, setPlayersLevelArr] = useState<PlayerLevel[]>(user.playersArray);
+    
+    const playersLevels = user.playersArray.map(p => JSON.parse(p));
 
     const handleOpenPress = () => bottomSheetRef.current?.snapToIndex(0);
     const handleClosePress = () => bottomSheetRef.current?.close();
@@ -129,19 +133,22 @@ export const Inventory: React.FC<Props> = () => {
 
             <ScrollView style={{ width: '100%', maxHeight: '80%', overflow: 'hidden' }}>
                 <View style={{ width: '100%', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-                    {players.map((player, index) => (
-                        <View key={index} style={{ width: '50%', alignItems: 'center', marginBottom: 20, marginTop: 20 }}>
-                            <PlayerCard 
-                                playerData={player} 
-                                playerLevels={null}
-                                setCurrentPlayer={setCurrentPlayer}
-                                handleOpenPress={handleOpenPress}
-                            />
-                        </View>
-                    ))}
+                    {players.map((player, index) => {
+                        const playerLevel = playersLevels?.find(p => p.name === player.name)?.level;
+                        
+                        return (
+                            <View key={index} style={{ width: '50%', alignItems: 'center', marginBottom: 20, marginTop: 20 }}>
+                                <PlayerCard 
+                                    playerData={player} 
+                                    playerLevel={playerLevel}
+                                    setCurrentPlayer={setCurrentPlayer}
+                                    handleOpenPress={handleOpenPress}
+                                />
+                            </View>
+                        );
+                    })}
                 </View>
             </ScrollView>
-
 
             {currentPlayer ? 
                 <BottomSheet 
