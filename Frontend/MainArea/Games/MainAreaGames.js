@@ -7,12 +7,13 @@ import { CapacityGames } from './CapacityGames';
 import { GamesCarousel } from './GamesCarousel';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeFonts } from '../../../assets/Themes/ThemeFont';
+import { PickingPlayers } from './PickingPlayers/PickingPlayers';
 
 export default function MainAreaGames({setCurrentGame}) {
 
     const [index, setIndex] = useState(0);
     const [selectedGame, setSelectedGame] = useState(null);
-    const [gameScreen, setGameScreen] = useState("MainAreaGames");
+    const [screen, setScreen] = useState("home");
 
     const {user, setUser, todayGames, setTodayGames, liveGames} = useMyContext();
     
@@ -23,7 +24,13 @@ export default function MainAreaGames({setCurrentGame}) {
 
     }, []);
 
-    if (selectedGame && todayGames.length > 0) {
+    if(screen === "pickingPlayers") return (
+        <PickingPlayers 
+          setScreen={setScreen}
+        />
+    )
+
+    if (selectedGame && todayGames.length > 0 && screen === "home") {
       return (
         <View style={{ flex: 1, alignItems: 'center', width:"100%"}}>
 
@@ -58,6 +65,10 @@ export default function MainAreaGames({setCurrentGame}) {
               : 
             null
           }
+
+          <TouchableOpacity onPress={() => setScreen("pickingPlayers")}>
+            <Text style={{color:'#fff'}}>Go to pciking players</Text>
+          </TouchableOpacity>
 
         </View>
       );
