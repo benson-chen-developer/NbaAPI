@@ -1,84 +1,152 @@
 import { Dispatch, SetStateAction } from "react"
 import { View, Image, Text, ScrollView } from "react-native"
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { PlayerData } from "../../../Global/Types/DataTypes"
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { FontAwesome5 } from '@expo/vector-icons';
 
 interface Props {
     playerData: PlayerData
     playerLevel: number
+    selectedIndex: number,
+    setSelectedIndex: Dispatch<SetStateAction<number>>
     handleOpenPress: () => void
     setCurrentPlayer: Dispatch<SetStateAction<string>>
+    setSelectedPlayers:  Dispatch<SetStateAction<{name: string, picId: string}[]>>
+    highestValues: {"PTS": number, "REB": number, "AST": number, "BLK": number, "STL": number, "TO": number, "PF": number}
 }
 
-export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentPlayer, handleOpenPress}) => {
+export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentPlayer, handleOpenPress, setSelectedPlayers, highestValues, selectedIndex, setSelectedIndex}) => {
     
-    const stats = playerData;
+    const stats = {
+        "PTS": (playerData["PTS"] / playerData["Games Played"]).toFixed(1),
+        "REB": (playerData["REB"] / playerData["Games Played"]).toFixed(1),
+        "AST": (playerData["AST"] / playerData["Games Played"]).toFixed(1),
+        "STL": (playerData["STL"] / playerData["Games Played"]).toFixed(1),
+        "BLK": (playerData["BLK"] / playerData["Games Played"]).toFixed(1),
+        "FG%": `${(playerData["FG"]/playerData["FGA"] * 100).toFixed(0)}%`,
+        "3PT%": `${(playerData["FG3"]/playerData["FG3A"] * 100).toFixed(0)}%`,
+        "FT%": `${(playerData["FT"]/playerData["FTA"] * 100).toFixed(0)}%`,
+        "PF": (playerData["PF"] / playerData["Games Played"]).toFixed(1),
+        "TO": (playerData["TO"] / playerData["Games Played"]).toFixed(1),
+    }
     
     return(
         <View style={{
             width: "100%", height:100, borderBottomColor:'#3b3d41', borderBottomWidth:.5,
             flexDirection:'row', alignItems:'center'
         }}>
-            {/* PFP */}
-            <View style={{
-                width:70, height:70, borderRadius:50, marginLeft: 20, marginBottom: 10,
-                backgroundColor:'#fff', overflow:'hidden'
-            }}>
-                <Image 
-                    source={{uri: `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${playerData.picId}.png`}}
-                    style={{width: "100%", height:"100%"}}
-                />
-            </View>
 
-            {/* Lvl Box */}
             <View style={{
-                height:"100%", borderRadius: 10, position:'absolute', justifyContent:'flex-end'
+                width:"45%", flexDirection:'row', height:"100%", alignItems:'center',
+                overflow:'hidden'
             }}>
-                <View style={{
-                    width: 70, height:25, borderRadius: 15, backgroundColor:'white',
-                    borderWidth: 1, borderBlockColor:'black', 
-                    marginLeft: 20, marginBottom: 10, 
-                    alignItems:'center', justifyContent:'center'
+                <TouchableOpacity style={{
+                    width:"100%", flexDirection:'row', height:"100%", alignItems:'center'
+                }} onPress={() => {
+                    setSelectedPlayers(p => {
+                        const arr = [...p]; 
+                        arr[selectedIndex] = {name: playerData.name, picId: playerData.picId};
+                        
+                        return arr;
+                    });
+
+                    if(selectedIndex < 3){
+                        setSelectedIndex(p => p+1);
+                    }
                 }}>
-                    <Text style={{fontFamily: 'Roboto-Bold', fontSize: 16}}>
-                        Lvl {playerLevel}
-                    </Text>
+
+                {/* PFP */}
+                <View style={{
+                    width:70, height:70, borderRadius:50, marginLeft: 10, marginBottom: 10,
+                    backgroundColor:'#fff', overflow:'hidden'
+                }}>
+                    <Image 
+                        source={{uri: `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${playerData.picId}.png`}}
+                        style={{width: "100%", height:"100%"}}
+                    />
                 </View>
-            </View>
 
-            {/* Name and Jersy Number */}
-            <View style={{height:"100%", marginLeft: 10, justifyContent:'center'}}>
-                <Text style={{fontFamily:"Roboto-Bold", color:'white', fontSize: 18}}>
-                    {playerData.name.charAt(0).toUpperCase() + '. '}
-                    {playerData.name.split(" ")[1]}
-                </Text>
-                <Text style={{fontFamily:"Roboto-Bold", color:'white', marginTop: 5, fontSize: 16}}>
-                    #0
-                </Text>
-            </View>
+                {/* Lvl Box */}
+                <View style={{height:"100%", borderRadius: 10, position:'absolute', justifyContent:'flex-end'}}>
+                    <View style={{
+                        width: 70, height:25, borderRadius: 15, backgroundColor:'white',
+                        borderWidth: 1, borderBlockColor:'black', 
+                        marginLeft: 10, marginBottom: 10, 
+                        alignItems:'center', justifyContent:'center'
+                    }}>
+                        <Text style={{fontFamily: 'Roboto-Bold', fontSize: 16}}>
+                            Lvl {playerLevel}
+                        </Text>
+                    </View>
+                </View>
 
-            {/* All The Stats */}
-            <ScrollView style={{ width: "50%", marginLeft: 20 }} horizontal={true}>
-                <View style={{width:30, alignItems:'center'}}>
+                {/* Name and Jersy Number */}
+                <View style={{height:"100%", marginLeft: 10, justifyContent:'center'}}>
                     <Text style={{fontFamily:"Roboto-Bold", color:'white', fontSize: 18}}>
-                        20
+                        {playerData.name.charAt(0).toUpperCase() + '. '}
+                        {playerData.name.split(" ")[1]}
                     </Text>
-                    <Text style={{fontFamily:"Roboto-Bold", color:'#b6b6b6', fontSize: 14}}>
-                        PTS
+                    <Text style={{fontFamily:"Roboto-Bold", color:'white', marginTop: 5, fontSize: 16}}>
+                        #0
                     </Text>
                 </View>
-                {/* {playerData.map((data, index) => {
-                    return (
-                        <View style={{width:30, alignItems:'center'}}>
-                            <Text style={{fontFamily:"Roboto-Bold", color:'white', fontSize: 18}}>
-                                20
-                            </Text>
-                            <Text style={{fontFamily:"Roboto-Bold", color:'#b6b6b6', fontSize: 14}}>
-                                PTS
-                            </Text>
-                        </View>
-                    )
-                })} */}
-            </ScrollView>
+                
+                </TouchableOpacity>
+            </View>
+
+            {/* The stats side */}
+            <View style={{height:"100%", width:"55%"}}>
+
+                {/* BarChart + Fire Icon */}
+                <View style={{width:"100%", height:"50%", alignItems:'center', justifyContent:'space-between', flexDirection:'row'}}> 
+                    
+                    <View style={{flexDirection:'row', marginLeft: 20, alignItems:'center'}}>
+                        <FontAwesome5 name="fire" size={22} color="#fa5f0d" style={{marginRight: 5}}/>
+                        <Text style={{ fontFamily: "Roboto-Bold", color: "#fff", fontSize: 16 }}>
+                            14.1k
+                        </Text>
+                    </View>
+
+                    <TouchableOpacity onPress={() => {
+                        setCurrentPlayer(playerData["name"]);
+                        handleOpenPress();
+                    }}>
+                        <MaterialCommunityIcons name="chart-bar" size={24} color="white" style={{marginRight: 10}}/>
+                    </TouchableOpacity>
+                </View>
+
+                {/* All The Stats */}
+                <ScrollView style={{ width: "100%", marginLeft: 10 }} horizontal={true}>
+                    {Object.entries(stats).map(([key, value], index) => {
+                        const isMax = highestValues[key] === value;
+
+                        return (
+                            <View key={index} style={{ width: 40, alignItems: 'center', marginRight: index === Object.entries(stats).length-1 ? 10 : 0}}>
+                                {key === "TO" || key === "PF" ?
+                                    <>
+                                        <Text style={{ fontFamily: "Roboto-Bold", color: isMax ? '#F2133B' : "#fff", fontSize: 16 }}>
+                                            {value}
+                                        </Text>
+                                        <Text style={{ fontFamily: "Roboto-Bold", color: isMax ? '#9d122b' : "#b6b6b6", fontSize: 12 }}>
+                                            {key}
+                                        </Text>
+                                    </>
+                                        :
+                                    <>
+                                        <Text style={{ fontFamily: "Roboto-Bold", color: isMax ? '#f7f711' : "#fff", fontSize: 16 }}>
+                                            {value}
+                                        </Text>
+                                        <Text style={{ fontFamily: "Roboto-Bold", color: isMax ? '#ead15c' : "#b6b6b6", fontSize: 12 }}>
+                                            {key}
+                                        </Text>
+                                    </>
+                                }
+                            </View>
+                        );
+                    })}
+                </ScrollView>
+            </View>
 
         </View>
     )

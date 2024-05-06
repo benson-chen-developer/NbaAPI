@@ -90,44 +90,6 @@ export const BottomSheetViewMine: React.FC<Props> = ({playerStats}) => {
             </View>
 
             <SecondHalf 
-                lastFiveGames={[
-                    {
-                        date: "4/1",
-                        opp: "DET",
-                        players: [
-                            {"PTS": 20,"REB": 2,"AST": 3,"STL": 4,"BLK": 5,"FG": 1, "FGA": 2,"FG3": 2, "FG3A": 2, "FT": 2,"FTA": 2, "Games Played": 2,"PF": 2,"TO": 2, "abbreviated": "BOS","name": "Jayson Tatum"}
-                        ]
-                    },
-                    {
-                        date: "4/3",
-                        opp: "ATL",
-                        players: [
-                            {"PTS": 23,"REB": 2,"AST": 3,"STL": 4,"BLK": 5,"FG": 1, "FGA": 2,"FG3": 2, "FG3A": 2, "FT": 2,"FTA": 2, "Games Played": 2,"PF": 2,"TO": 2, "abbreviated": "BOS","name": "Jayson Tatum"}
-                        ]
-                    },
-                    {
-                        date: "4/7",
-                        opp: "IND",
-                        players: [
-                            {"PTS": 27,"REB": 2,"AST": 3,"STL": 4,"BLK": 5,"FG": 1, "FGA": 2,"FG3": 2, "FG3A": 2, "FT": 2,"FTA": 2, "Games Played": 2,"PF": 2,"TO": 2, "abbreviated": "BOS","name": "Jayson Tatum"}
-                        ]
-                    },
-                    {
-                        date: "4/12",
-                        opp: "WAS",
-                        players: [
-                            {"PTS": 41,"REB": 2,"AST": 3,"STL": 4,"BLK": 5,"FG": 1, "FGA": 2,"FG3": 2, "FG3A": 2, "FT": 2,"FTA": 2, "Games Played": 2,"PF": 2,"TO": 2, "abbreviated": "BOS","name": "Jayson Tatum"}
-                        ]
-                    },
-                    {
-                        date: "4/15",
-                        opp: "MIL",
-                        players: [
-                            {"PTS": 15,"REB": 2,"AST": 3,"STL": 4,"BLK": 5,"FG": 1, "FGA": 2,"FG3": 2, "FG3A": 2, "FT": 2,"FTA": 2, "Games Played": 2,"PF": 2,"TO": 2, "abbreviated": "BOS","name": "Jayson Tatum"}
-                        ]
-                    }
-                ]} 
-                
                 currentPlayer={playerStats}
             />
         </View>

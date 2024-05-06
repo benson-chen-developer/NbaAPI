@@ -67,7 +67,8 @@ export const getTeamDataAWS = async () => {
                                 ["PPG"]: playerNameAndStats[28],
                                 ["Games Played"]: playerNameAndStats[6],
                                 ["abbreviated"]: playerNameAndStats[1],
-                                ["picId"]: foundPlayer.picId
+                                ["picId"]: foundPlayer.picId,
+                                lastFive: foundPlayer.lastFive
                             });
                     });
 

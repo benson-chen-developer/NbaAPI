@@ -18,7 +18,15 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
     const {user, playerStats} = useMyContext();
     const [currentTeam, setCurrentTeam] = useState<string>(abbreviateThreeLetterName(user.mainTeam));
     const [currentPlayer, setCurrentPlayer] = useState<string>("");
+    const [selectedPlayers, setSelectedPlayers] = useState<{name: string, picId: string}[]>([
+        {name: null, picId: null},
+        {name: null, picId: null},
+        {name: null, picId: null},
+        {name: null, picId: null}
+    ]);
+    const [selectedIndex, setSelectedIndex] = useState<number>(0);
     const [players, setPlayers] = useState<PlayerData[]>([]);
+    const [highestValues, setHighestValues] = useState({"PTS": 0, "REB": 0, "AST": 0, "BLK": 0, "STL": 0, "TO": 0, "PF": 0});
     // const [playersLevelArr, setPlayersLevelArr] = useState<PlayerLevel[]>(user.playersArray);
     
     const playersLevels = user.playersArray.map(p => JSON.parse(p));
@@ -41,6 +49,16 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
             }
         })
 
+        // const highestValues = {
+        //     "PTS": 0, "REB": 0, "AST": 0
+        // };
+        // players.forEach(p => {
+        //     // if( (p["PTS"] / p["Games Played"]).toFixed(1) > highestValues["PTS"]){
+                
+        //     // }
+        //     console.log("p", p)
+        // });
+
         setPlayers(players);
     }, []);
 
@@ -51,6 +69,16 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
                 players.push(p);
             }
         })
+        let highestValues = {"PTS": 0, "REB": 0, "AST": 0, "BLK": 0, "STL": 0, "TO": 0, "PF": 0};
+        players.forEach(p => {
+            for (let key in highestValues) {
+                if((p[key] / p["Games Played"]) > highestValues[key]){
+                    highestValues[key] = (p[key] / p["Games Played"]).toFixed(1);
+                }
+            }
+        });
+
+        setHighestValues(highestValues);
         setPlayers(players);
     }, [currentTeam])
 
@@ -58,10 +86,13 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
         <View style={{ flex: 1, alignItems: 'center', width:"100%"}}>
             
             <ScrollView style={{width: "95%", marginTop:20}} horizontal={true}>
-                <PlayerCard />
-                <PlayerCard />
-                <PlayerCard />
-                <PlayerCard />
+                {selectedPlayers.map((p, index) => {
+                    return <PlayerCard 
+                        player={p}
+                        selectedIndex={selectedIndex}
+                        key={index} index={index}
+                    />
+                })}
             </ScrollView>
 
             <ScrollView style={{ width: '100%', maxHeight: '60%', overflow: 'hidden' }}>
@@ -75,6 +106,10 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
                                 playerLevel={playerLevel}
                                 setCurrentPlayer={setCurrentPlayer}
                                 handleOpenPress={handleOpenPress}
+                                setSelectedPlayers={setSelectedPlayers}
+                                highestValues={highestValues}
+                                selectedIndex={selectedIndex} 
+                                setSelectedIndex={setSelectedIndex}
                             />
                         );
                     })}

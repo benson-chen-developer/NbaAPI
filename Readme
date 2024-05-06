@@ -21,3 +21,16 @@ How to use [AWSJSON] just use
 
 
 No Gamble, No Money, Just Hoops
+No Bets, No Cash, Just Hoops
+
+
+//Issue with using expo go on phone
+Error: The package '@aws-amplify/react-native' doesn't seem to be linked. Make sure: 
+
+- You have run 'pod install'
+- You rebuilt the app after installing the package
+- You are not using Expo Go
+, js engine: hermes
+ ERROR  Invariant Violation: "main" has not been registered. This can happen if:
+* Metro (the local dev server) is run from the wrong folder. Check if Metro is running, stop it and restart it in the current project.
+* A module failed to load due to an error and `AppRegistry.registerComponent` wasn't called., js engine: hermes

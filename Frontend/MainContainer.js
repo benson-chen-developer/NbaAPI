@@ -53,7 +53,7 @@ export default function MainContainer() {
           getTeamDataAWS().then(teamDataRes => {
             getPlayerStatsToday(regrabInfo, teamDataRes).then(playerStatsRes => {
               // playerStatsRes.forEach(p => {
-              //   console.log("p", p.name)
+              //   console.log("p", p)
               // })
               setPlayerStats(playerStatsRes);
               setPlayerStatsLoading(false);
