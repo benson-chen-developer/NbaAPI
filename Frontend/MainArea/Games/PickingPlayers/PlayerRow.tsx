@@ -8,15 +8,14 @@ import { FontAwesome5 } from '@expo/vector-icons';
 interface Props {
     playerData: PlayerData
     playerLevel: number
-    selectedIndex: number,
-    setSelectedIndex: Dispatch<SetStateAction<number>>
     handleOpenPress: () => void
     setCurrentPlayer: Dispatch<SetStateAction<string>>
     setSelectedPlayers:  Dispatch<SetStateAction<{name: string, picId: string}[]>>
+    selectedPlayers: {name: string, picId: string}[];
     highestValues: {"PTS": number, "REB": number, "AST": number, "BLK": number, "STL": number, "TO": number, "PF": number}
 }
 
-export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentPlayer, handleOpenPress, setSelectedPlayers, highestValues, selectedIndex, setSelectedIndex}) => {
+export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentPlayer, handleOpenPress, selectedPlayers, setSelectedPlayers, highestValues}) => {
     
     const stats = {
         "PTS": (playerData["PTS"] / playerData["Games Played"]).toFixed(1),
@@ -44,16 +43,33 @@ export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentP
                 <TouchableOpacity style={{
                     width:"100%", flexDirection:'row', height:"100%", alignItems:'center'
                 }} onPress={() => {
-                    setSelectedPlayers(p => {
-                        const arr = [...p]; 
-                        arr[selectedIndex] = {name: playerData.name, picId: playerData.picId};
-                        
-                        return arr;
-                    });
-
-                    if(selectedIndex < 3){
-                        setSelectedIndex(p => p+1);
+                    let foundPlayerIndex = selectedPlayers.findIndex(p => p.name === playerData.name)
+                    let firstNullIndex = 0;
+                    for (const p of selectedPlayers) {
+                        if ((!p.name || !p.picId) || firstNullIndex === 3) {
+                            break;
+                        } else {
+                            firstNullIndex++;
+                        }
                     }
+
+                    setSelectedPlayers(p => {
+                        if(foundPlayerIndex === -1){
+                            const arr = [...p]; 
+                            arr[firstNullIndex] = {name: playerData.name, picId: playerData.picId};
+                            return arr;
+                        } else {
+                            const updatedPlayers = [...p];
+                            const frontOfArray = updatedPlayers.slice(0, foundPlayerIndex);
+                            const backOfArray = updatedPlayers.slice(foundPlayerIndex+1, updatedPlayers.length);
+
+                            let newArr = frontOfArray.concat(backOfArray);
+                            while(newArr.length < 4)
+                                newArr.push({"name": null, "picId": null});
+
+                            return newArr; 
+                        }
+                    });
                 }}>
 
                 {/* PFP */}

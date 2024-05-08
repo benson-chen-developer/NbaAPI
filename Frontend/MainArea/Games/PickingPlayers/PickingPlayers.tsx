@@ -24,7 +24,7 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
         {name: null, picId: null},
         {name: null, picId: null}
     ]);
-    const [selectedIndex, setSelectedIndex] = useState<number>(0);
+    // const [selectedIndex, setSelectedIndex] = useState<number>(0);
     const [players, setPlayers] = useState<PlayerData[]>([]);
     const [highestValues, setHighestValues] = useState({"PTS": 0, "REB": 0, "AST": 0, "BLK": 0, "STL": 0, "TO": 0, "PF": 0});
     // const [playersLevelArr, setPlayersLevelArr] = useState<PlayerLevel[]>(user.playersArray);
@@ -85,12 +85,13 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
     return(
         <View style={{ flex: 1, alignItems: 'center', width:"100%"}}>
             
-            <ScrollView style={{width: "95%", marginTop:20}} horizontal={true}>
+            <ScrollView style={{width: "100%"}} horizontal={true} contentContainerStyle={{alignItems:'center'}}>
                 {selectedPlayers.map((p, index) => {
                     return <PlayerCard 
                         player={p}
-                        selectedIndex={selectedIndex}
-                        key={index} index={index}
+                        key={index} 
+                        index={index} maxLength={selectedPlayers.length}
+                        setSelectedPlayers={setSelectedPlayers}
                     />
                 })}
             </ScrollView>
@@ -106,10 +107,9 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
                                 playerLevel={playerLevel}
                                 setCurrentPlayer={setCurrentPlayer}
                                 handleOpenPress={handleOpenPress}
+                                selectedPlayers={selectedPlayers}
                                 setSelectedPlayers={setSelectedPlayers}
                                 highestValues={highestValues}
-                                selectedIndex={selectedIndex} 
-                                setSelectedIndex={setSelectedIndex}
                             />
                         );
                     })}
