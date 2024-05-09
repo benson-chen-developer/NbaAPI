@@ -4,14 +4,19 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { PlayerData } from "../../../Global/Types/DataTypes"
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesome5 } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
+import { PlayerCardType } from "../../../Global/Types/PickingPlayerTypes";
+import { Colors } from "../../../Global/Enums/color";
+import { LinearGradient } from "expo-linear-gradient";
+import { getLevelColor } from "../../../Global/Colors";
 
 interface Props {
     playerData: PlayerData
     playerLevel: number
     handleOpenPress: () => void
     setCurrentPlayer: Dispatch<SetStateAction<string>>
-    setSelectedPlayers:  Dispatch<SetStateAction<{name: string, picId: string}[]>>
-    selectedPlayers: {name: string, picId: string}[];
+    setSelectedPlayers:  Dispatch<SetStateAction<PlayerCardType[]>>
+    selectedPlayers: PlayerCardType[];
     highestValues: {"PTS": number, "REB": number, "AST": number, "BLK": number, "STL": number, "TO": number, "PF": number}
 }
 
@@ -29,17 +34,21 @@ export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentP
         "PF": (playerData["PF"] / playerData["Games Played"]).toFixed(1),
         "TO": (playerData["TO"] / playerData["Games Played"]).toFixed(1),
     }
-    
+
     return(
         <View style={{
             width: "100%", height:100, borderBottomColor:'#3b3d41', borderBottomWidth:.5,
             flexDirection:'row', alignItems:'center'
         }}>
-
-            <View style={{
-                width:"45%", flexDirection:'row', height:"100%", alignItems:'center',
-                overflow:'hidden'
-            }}>
+            <LinearGradient 
+                colors={selectedPlayers.find(p => p.name === playerData.name) ? [Colors.bgDarker, Colors.green] : [Colors.bgDarker, Colors.bgDarker] }
+                start={{ x: 1, y: 0 }}
+                end={{ x: 0, y: 0 }}
+                style={{
+                    width:"45%", flexDirection:'row', height:"100%", alignItems:'center',
+                    overflow:'hidden'
+                }}
+            >
                 <TouchableOpacity style={{
                     width:"100%", flexDirection:'row', height:"100%", alignItems:'center'
                 }} onPress={() => {
@@ -56,7 +65,12 @@ export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentP
                     setSelectedPlayers(p => {
                         if(foundPlayerIndex === -1){
                             const arr = [...p]; 
-                            arr[firstNullIndex] = {name: playerData.name, picId: playerData.picId};
+                            arr[firstNullIndex] = {
+                                name: playerData.name, 
+                                picId: playerData.picId, 
+                                level: playerLevel,
+                                backgroundColor: "#fff"
+                            };
                             return arr;
                         } else {
                             const updatedPlayers = [...p];
@@ -65,7 +79,7 @@ export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentP
 
                             let newArr = frontOfArray.concat(backOfArray);
                             while(newArr.length < 4)
-                                newArr.push({"name": null, "picId": null});
+                                newArr.push({"name": null, "picId": null, level: 0, backgroundColor:null});
 
                             return newArr; 
                         }
@@ -86,12 +100,16 @@ export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentP
                 {/* Lvl Box */}
                 <View style={{height:"100%", borderRadius: 10, position:'absolute', justifyContent:'flex-end'}}>
                     <View style={{
-                        width: 70, height:25, borderRadius: 15, backgroundColor:'white',
+                        width: 70, height:25, borderRadius: 15, 
+                        backgroundColor: getLevelColor(playerLevel),
                         borderWidth: 1, borderBlockColor:'black', 
                         marginLeft: 10, marginBottom: 10, 
                         alignItems:'center', justifyContent:'center'
                     }}>
-                        <Text style={{fontFamily: 'Roboto-Bold', fontSize: 16}}>
+                        <Text style={{
+                            fontFamily: 'Roboto-Bold', fontSize: 16, 
+                            color: getLevelColor(playerLevel) === '#FAF9F6' ? "#000" : "#FFF"
+                        }}>
                             Lvl {playerLevel}
                         </Text>
                     </View>
@@ -109,7 +127,21 @@ export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentP
                 </View>
                 
                 </TouchableOpacity>
-            </View>
+
+                <View style={{
+                    position:'absolute', width: 25, height: 25, 
+                    backgroundColor: selectedPlayers.find(p => p.name === playerData.name) ? "#000" : "#fff",
+                    justifyContent:'center', alignItems:'center',
+                    borderRadius: 20,
+                    borderBlockColor: '#000', borderWidth: 2, top: 5, left: 3
+                }}>
+                    {selectedPlayers.find(p => p.name === playerData.name) ? 
+                        <Feather name="x" size={20} color="#fff" />
+                            :
+                        <FontAwesome5 name="plus" size={18} color="#1AD1AD" />
+                    }
+                </View>
+            </LinearGradient>
 
             {/* The stats side */}
             <View style={{height:"100%", width:"55%"}}>

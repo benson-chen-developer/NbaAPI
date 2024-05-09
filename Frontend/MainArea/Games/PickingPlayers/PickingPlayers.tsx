@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { View } from "react-native"
+import { View, Text, TouchableOpacity } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { abbreviateThreeLetterName } from "../../../../assets/TeamLogos/getTeamLogo"
 import { useMyContext } from "../../../Context/MyContext"
@@ -8,6 +8,7 @@ import { PlayerCard } from "./PlayerCard"
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { BottomSheetViewMine } from "../../Inventory/BottomSheet/BottomSheetViewMine"
 import { PlayerRow } from "./PlayerRow"
+import { PlayerCardType } from "../../../Global/Types/PickingPlayerTypes"
 
 interface Props {
     setScreen: Dispatch<SetStateAction<string>>
@@ -18,11 +19,11 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
     const {user, playerStats} = useMyContext();
     const [currentTeam, setCurrentTeam] = useState<string>(abbreviateThreeLetterName(user.mainTeam));
     const [currentPlayer, setCurrentPlayer] = useState<string>("");
-    const [selectedPlayers, setSelectedPlayers] = useState<{name: string, picId: string}[]>([
-        {name: null, picId: null},
-        {name: null, picId: null},
-        {name: null, picId: null},
-        {name: null, picId: null}
+    const [selectedPlayers, setSelectedPlayers] = useState<PlayerCardType[]>([
+        {name: null, picId: null, level: 0, backgroundColor: null},
+        {name: null, picId: null, level: 0, backgroundColor: null},
+        {name: null, picId: null, level: 0, backgroundColor: null},
+        {name: null, picId: null, level: 0, backgroundColor: null},
     ]);
     // const [selectedIndex, setSelectedIndex] = useState<number>(0);
     const [players, setPlayers] = useState<PlayerData[]>([]);
@@ -85,6 +86,17 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
     return(
         <View style={{ flex: 1, alignItems: 'center', width:"100%"}}>
             
+            <View style={{
+                width:"100%", height: 40, flexDirection:'row',
+                justifyContent:'center', alignItems:'center'
+            }}>
+                <TouchableOpacity>
+                    <Text>
+
+                    </Text>
+                </TouchableOpacity>
+            </View>
+
             <ScrollView style={{width: "100%"}} horizontal={true} contentContainerStyle={{alignItems:'center'}}>
                 {selectedPlayers.map((p, index) => {
                     return <PlayerCard 
