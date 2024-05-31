@@ -24,6 +24,7 @@ export const getBotGame = /* GraphQL */ `
         coins
         wins
         loss
+        teamShards
         createdAt
         updatedAt
         __typename
@@ -65,6 +66,11 @@ export const getTeamData = /* GraphQL */ `
       name
       players
       abbreviated
+      mainColor
+      secondColor
+      textColor
+      imgUrl
+      city
       createdAt
       updatedAt
       __typename
@@ -83,6 +89,11 @@ export const listTeamData = /* GraphQL */ `
         name
         players
         abbreviated
+        mainColor
+        secondColor
+        textColor
+        imgUrl
+        city
         createdAt
         updatedAt
         __typename
@@ -113,6 +124,7 @@ export const getUser = /* GraphQL */ `
       coins
       wins
       loss
+      teamShards
       createdAt
       updatedAt
       __typename
@@ -141,6 +153,7 @@ export const listUsers = /* GraphQL */ `
         coins
         wins
         loss
+        teamShards
         createdAt
         updatedAt
         __typename
@@ -247,6 +260,7 @@ export const getUserGame = /* GraphQL */ `
         coins
         wins
         loss
+        teamShards
         createdAt
         updatedAt
         __typename

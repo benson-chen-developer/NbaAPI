@@ -25,8 +25,6 @@ export const getTeamDataAWS = async () => {
 
         // if(regrabInfo){
         if(true){
-            console.log("AsynceStorage: We didnt cached it (players)");
-
             try{
                 const playerRes = await fetch("https://cdn.nba.com/static/json/staticData/EliasGameStats/00/all_players_season.txt")
                 const playerResParsed = await playerRes.text();
@@ -41,14 +39,13 @@ export const getTeamDataAWS = async () => {
                             allPlayers.push(playerObject);
                         });
                     });
-                    // console.log("allPlayers", allPlayers)
                     
                     linesToProcess.map(line => {
                         const playerNameAndStats = line.split(" ").filter(word => word.trim() !== "")
                         const playerName = `${playerNameAndStats[4] + playerNameAndStats[3]}`.replace(',', ' ').slice(0, -1);
                         
-                        const foundPlayer = allPlayers.find(p => p.name === playerName);
-                        if(foundPlayer)
+                        const foundPlayer = allPlayers.find(p => p.name.toLowerCase() === playerName.toLowerCase());
+                        if(foundPlayer){
                             playersArrayRet.push({
                                 ["name"]: playerName,
                                 ["FG"]: playerNameAndStats[9],
@@ -70,7 +67,9 @@ export const getTeamDataAWS = async () => {
                                 ["picId"]: foundPlayer.picId,
                                 lastFive: foundPlayer.lastFive
                             });
+                        }
                     });
+                    // console.log('playersArrayRet', playersArrayRet)
 
                     //Remove the dupes and keep the middle (this is due to players playing on 2 teams)
                     for (let i=0; i<playersArrayRet.length; i++){

@@ -33,7 +33,8 @@ export default function MainContainer() {
     setPlayerStats, 
     loading, 
     setLiveGames, 
-    setTodayGames 
+    setTodayGames,
+    setTeamDataContext
   } = useMyContext();
 
   
@@ -51,6 +52,8 @@ export default function MainContainer() {
           // console.log("Main RegrabInfo?" ,regrabInfo)
 
           getTeamDataAWS().then(teamDataRes => {
+            setTeamDataContext(teamDataRes);
+            
             getPlayerStatsToday(regrabInfo, teamDataRes).then(playerStatsRes => {
               // playerStatsRes.forEach(p => {
               //   console.log("p", p)

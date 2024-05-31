@@ -10,17 +10,19 @@ import { Dispatch, SetStateAction } from "react";
 
 interface Props {
     playerStats: PlayerData;
+    mainColor: string;
+    imgUrl: string
 }
 
-export const BottomSheetViewMine: React.FC<Props> = ({playerStats}) => {
+export const BottomSheetViewMine: React.FC<Props> = ({playerStats, imgUrl, mainColor}) => {
     return(
         <View style={{height:'100%', width:"100%", backgroundColor:'rgba(255,255,255,.9)'}}>
             
             {/* 1st Half */}
             <View style={{width:"100%", backgroundColor:'#273447', height:"30%"}}>
                 {/* Absolute Positions */}
-                <LinearGradient colors={["#007A32", "#273447"]} style={{width:"100%", height:"60%", position:'absolute'}} />
-                <Image source={{uri: "https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/bos.png&h=200&w=200"}}
+                <LinearGradient colors={[mainColor, "#273447"]} style={{width:"100%", height:"70%", position:'absolute'}} />
+                <Image source={{uri: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${imgUrl}.png&h=200&w=200`}}
                     style={{width:100, height:100, opacity:.75, margin: 15, position:'absolute'}}
                 />
                 <Text style={{color:'white', fontSize: 28, fontFamily:'Roboto-Bold', position:'absolute', marginLeft: 12}}>
@@ -39,7 +41,7 @@ export const BottomSheetViewMine: React.FC<Props> = ({playerStats}) => {
                     {/* All stats on right of pic */}
                     <View style={{width:"60%", height:"100%", marginLeft: 30}}>
                         <Text style={{color:'white', fontSize: 25, fontFamily:'Roboto-Bold', marginTop: 10}}>
-                            {playerStats.name}
+                            {playerStats.name.slice(0, 16)}{playerStats.name.length > 16 ? "." : null}
                         </Text>
 
                         <View style={{flexDirection:'row', height: 50, alignItems:'center'}}>
@@ -48,11 +50,14 @@ export const BottomSheetViewMine: React.FC<Props> = ({playerStats}) => {
                             </Text>
                             <View style={{width:125, height:23, backgroundColor:'#D9D9D9', borderRadius:5, marginBottom:3}}>
                                 <View style={{width:"40%", height:23, backgroundColor:'#2BD6B2', borderRadius:4}}/>
+                                <View style={{position:'absolute', width:'100%', height:'100%', justifyContent:'center'}}>
+                                    <Text style={{position:'absolute', marginLeft: 5, fontFamily:'Roboto-Bold', fontSize:15}}>100/250</Text>
+                                </View>
                             </View>
                         </View>
 
                         <View style={{flexDirection:'row', width:195, justifyContent:'flex-start', top: -5}}>
-                            <Image source={{uri: `"https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/bos.png&h=200&w=200"`}}
+                            <Image source={{uri: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${imgUrl}.png`}}
                                 style={{width:22, height:22, top: -2, marginRight:5}}
                             />
                             <Text style={{color:'white', fontSize:15,fontFamily:'Roboto-Bold'}}>
@@ -67,19 +72,12 @@ export const BottomSheetViewMine: React.FC<Props> = ({playerStats}) => {
                             </Text>
                         </View>
 
-                        <View style={{flexDirection:'row', width:"100%", top: -5, marginTop:2}}>
-                            <View style={{flexDirection:'row'}}>
-                                <MaterialCommunityIcons name="crown" size={24} color="#b44ef2" style={{top: -4, left: 2, marginRight:5}}/>
-                                <Text style={{color:'white', fontSize:15,fontFamily:'Roboto-Bold', top:-1}}>
-                                    5 / 10
-                                </Text>
-                            </View>
-
+                        <View style={{flexDirection:'row', width:"100%", justifyContent:'center', marginTop: -20, marginLeft: 10}}>
                             <TouchableOpacity style={{
-                                width:90, height:40, borderRadius:10, backgroundColor: "#27b799", marginLeft: 30,
+                                width:80, height:37, borderRadius:10, backgroundColor: "#27b799", marginLeft: 30,
                             }}>
-                                <View style={{width:"100%", height: 37, backgroundColor: Colors.green, borderRadius:10, alignItems:'center', justifyContent:'center'}}>
-                                    <Text style={{color:'white', fontFamily:"Roboto-Bold", fontSize:18}}>
+                                <View style={{width:"100%", height: 33, backgroundColor: Colors.green, borderRadius:10, alignItems:'center', justifyContent:'center'}}>
+                                    <Text style={{color:'white', fontFamily:"Roboto-Bold", fontSize:16}}>
                                         Upgrade
                                     </Text>
                                 </View>

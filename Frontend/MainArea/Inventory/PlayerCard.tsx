@@ -49,7 +49,7 @@ export const PlayerCard: React.FC<Props> = ({playerData, playerLevel, setCurrent
                 width:"100%", height: "45%", backgroundColor:'black', 
                 alignItems:'center', justifyContent:'space-evenly'
             }}>
-                <Text style={{color:'white', fontSize:18,fontFamily:'Roboto-Bold'}}>{playerData.name}</Text>
+                <Text style={{color:'white', fontSize:18,fontFamily:'Roboto-Bold'}}>{playerData.name.slice(0, 16)}{playerData.name.length > 16 ? "." : null}</Text>
 
                 <View style={{width:"100%", alignItems:'center', justifyContent:'space-evenly', flexDirection:'row'}}>
                     <Text style={{color:'white', fontSize:18,fontFamily:'Roboto-Bold'}}>

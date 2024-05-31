@@ -5,10 +5,11 @@ import {TeamData} from '../../Global/TeamData';
 
 interface Props {
     teamName: string;
-    setCurrentTeam: Dispatch<SetStateAction<string>>
+    teamDataContext: TeamData[];
+    setCurrentTeam: Dispatch<SetStateAction<TeamData>>
 }
 
-export const Header: React.FC<Props> = ({ teamName, setCurrentTeam }) => {
+export const Header: React.FC<Props> = ({ teamName, setCurrentTeam, teamDataContext }) => {
     const teamColor = "#16a540";
     return(
         <View style={{width:"100%", height:100, flexDirection:'row', marginTop:20, marginBottom:10}}>
@@ -29,13 +30,13 @@ export const Header: React.FC<Props> = ({ teamName, setCurrentTeam }) => {
                     contentContainerStyle={{alignItems:'flex-end'}}
                     horizontal={true}
                 >
-                    {TeamData.map((team, index) => (
+                    {teamDataContext.map((team, index) => (
                         <TouchableOpacity 
                             style={teamName === team.abbreviated ? styles.picked : styles.notPicked}
-                            onPress={() => setCurrentTeam(team.abbreviated)}
+                            onPress={() => setCurrentTeam(team)}
                             key={index}
                         >
-                            <Image style={{width:30, height:30}} source={{uri: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${team.abbreviatedPic}.png`}}/>
+                            <Image style={{width:30, height:30}} source={{uri: `https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${team.imgUrl}.png`}}/>
                             <Text style={{
                                 fontFamily:"Roboto-Bold", fontSize:20,
                                 color: teamName === team.abbreviated ? 'black' : 'white'

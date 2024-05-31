@@ -11,9 +11,9 @@ import {PlayerData} from '../../Global/Types/DataTypes';
 import { Header } from "./Header";
 import { Colors } from "../../Global/Enums/color";
 import { PlayerLevel } from "../../Global/Types/InventoryTypes";
+import { TeamData } from "../../Global/TeamData";
 
 interface Props {}
-
 
 const fetchPlayerStats = async () => {
     try {
@@ -79,9 +79,10 @@ const fetchPlayerStats = async () => {
 
 export const Inventory: React.FC<Props> = () => {
 
-    const {user, playerStats} = useMyContext();
-    const [currentTeam, setCurrentTeam] = useState<string>(abbreviateThreeLetterName(user.mainTeam));
+    const {user, playerStats, teamDataContext} = useMyContext();
+    const [currentTeam, setCurrentTeam] = useState<TeamData>(teamDataContext.find(team => team.name === user.mainTeam));
     const [currentPlayer, setCurrentPlayer] = useState<string>("");
+    const [allTeams, setAllTeams] = useState<TeamData[]>([]);
     const [players, setPlayers] = useState<PlayerData[]>([]);
     // const [playersLevelArr, setPlayersLevelArr] = useState<PlayerLevel[]>(user.playersArray);
     
@@ -108,7 +109,7 @@ export const Inventory: React.FC<Props> = () => {
     useEffect(() => {
         let players = [];
         playerStats.forEach(p => {
-            if(p.abbreviated === currentTeam){
+            if(p.abbreviated === currentTeam.abbreviated){
                 players.push(p);
             }
         })
@@ -127,7 +128,8 @@ export const Inventory: React.FC<Props> = () => {
     return (
         <View style={{width: '100%', height:"100%", backgroundColor: Colors.bgDark}}>
             <Header 
-                teamName={currentTeam}
+                teamName={currentTeam.name}
+                teamDataContext={teamDataContext}
                 setCurrentTeam={setCurrentTeam}
             />            
 
@@ -157,9 +159,11 @@ export const Inventory: React.FC<Props> = () => {
                     enablePanDownToClose={true}
                     backdropComponent={renderBackdrop}
                     handleIndicatorStyle={{backgroundColor:'white'}}
-                    backgroundStyle={{backgroundColor:'#007A32'}}
+                    backgroundStyle={{backgroundColor: currentTeam.mainColor}}
                 >
                     <BottomSheetViewMine 
+                        imgUrl={currentTeam.imgUrl}
+                        mainColor={currentTeam.mainColor}
                         playerStats={playerStats[playerStats.findIndex(p => p.name === currentPlayer)]}
                     />
                 </BottomSheet> : null

@@ -1,4 +1,12 @@
-export const TeamData = [
-    {name: "Celtics", abbreviated: "BOS", abbreviatedPic: "bos", conference: "East"},
-    {name: "Lakers", abbreviated: "LAL", abbreviatedPic: "lal", conference: "West"}
-]
+import { PlayerData } from "./Types/DataTypes"
+
+export type TeamData = {
+    name: string,
+    players: PlayerData,
+    abbreviated: string,
+    mainColor: string,
+    secondColor: string,
+    textColor: string,
+    imgUrl: string,
+    city: string
+}

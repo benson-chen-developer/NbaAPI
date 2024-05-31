@@ -27,6 +27,7 @@ export const createBotGame = /* GraphQL */ `
         coins
         wins
         loss
+        teamShards
         createdAt
         updatedAt
         __typename
@@ -64,6 +65,7 @@ export const updateBotGame = /* GraphQL */ `
         coins
         wins
         loss
+        teamShards
         createdAt
         updatedAt
         __typename
@@ -101,6 +103,7 @@ export const deleteBotGame = /* GraphQL */ `
         coins
         wins
         loss
+        teamShards
         createdAt
         updatedAt
         __typename
@@ -122,6 +125,11 @@ export const createTeamData = /* GraphQL */ `
       name
       players
       abbreviated
+      mainColor
+      secondColor
+      textColor
+      imgUrl
+      city
       createdAt
       updatedAt
       __typename
@@ -138,6 +146,11 @@ export const updateTeamData = /* GraphQL */ `
       name
       players
       abbreviated
+      mainColor
+      secondColor
+      textColor
+      imgUrl
+      city
       createdAt
       updatedAt
       __typename
@@ -154,6 +167,11 @@ export const deleteTeamData = /* GraphQL */ `
       name
       players
       abbreviated
+      mainColor
+      secondColor
+      textColor
+      imgUrl
+      city
       createdAt
       updatedAt
       __typename
@@ -184,6 +202,7 @@ export const createUser = /* GraphQL */ `
       coins
       wins
       loss
+      teamShards
       createdAt
       updatedAt
       __typename
@@ -214,6 +233,7 @@ export const updateUser = /* GraphQL */ `
       coins
       wins
       loss
+      teamShards
       createdAt
       updatedAt
       __typename
@@ -244,6 +264,7 @@ export const deleteUser = /* GraphQL */ `
       coins
       wins
       loss
+      teamShards
       createdAt
       updatedAt
       __typename
@@ -391,6 +412,7 @@ export const createUserGame = /* GraphQL */ `
         coins
         wins
         loss
+        teamShards
         createdAt
         updatedAt
         __typename
@@ -453,6 +475,7 @@ export const updateUserGame = /* GraphQL */ `
         coins
         wins
         loss
+        teamShards
         createdAt
         updatedAt
         __typename
@@ -515,6 +538,7 @@ export const deleteUserGame = /* GraphQL */ `
         coins
         wins
         loss
+        teamShards
         createdAt
         updatedAt
         __typename

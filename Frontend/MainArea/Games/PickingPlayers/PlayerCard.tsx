@@ -4,7 +4,6 @@ import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { PlayerCardType } from "../../../Global/Types/PickingPlayerTypes";
 import { getLevelColor } from "../../../Global/Colors";
-import { FontAwesome5 } from '@expo/vector-icons';
 
 interface Props {
     player: PlayerCardType
@@ -22,13 +21,6 @@ export const PlayerCard: React.FC<Props> = ({ player, index, maxLength, setSelec
             marginLeft: index !== 0 ? 25 : 25, marginRight: index === maxLength-1 ? 25 : 5,
             borderRadius: 5,
         }}>
-            <View style={{
-                justifyContent:'flex-end', alignItems:'flex-start', width:'100%', height:"100%"
-            }}>
-                {index === 3 ?
-                    <BombIcon/> : null
-                }
-            </View>
         </View>
     )
 
@@ -67,7 +59,7 @@ export const PlayerCard: React.FC<Props> = ({ player, index, maxLength, setSelec
                         style={{
                             width:35, height:35, backgroundColor:'#323232', 
                             borderRadius:50, justifyContent:'center', alignItems:'center',
-                            top: -15, left: -15,
+                            top: -10, left: -10,
                         }} 
                         onPress={() => {
                             setSelectedPlayers(p => {
@@ -78,7 +70,7 @@ export const PlayerCard: React.FC<Props> = ({ player, index, maxLength, setSelec
                                 const backOfArray = updatedPlayers.slice(foundPlayerIndex+1, updatedPlayers.length);
 
                                 let newArr = frontOfArray.concat(backOfArray);
-                                while(newArr.length < 4)
+                                while(newArr.length < 3)
                                     newArr.push({"name": null, "picId": null, level:0, backgroundColor:null});
 
                                 return newArr; 
@@ -91,7 +83,7 @@ export const PlayerCard: React.FC<Props> = ({ player, index, maxLength, setSelec
                     {/* Level */}
                     <View style={{
                         width:80, height:30, backgroundColor: getLevelColor(player.level),
-                        top: -13, left: 10, borderRadius: 20,
+                        top: -9, left: 10, borderRadius: 20,
                         justifyContent:'center', alignItems:'center',
                         shadowColor: '#000',
                         shadowOffset: { width: 0, height: 2 },
@@ -105,26 +97,6 @@ export const PlayerCard: React.FC<Props> = ({ player, index, maxLength, setSelec
                         </Text>
                     </View>
                 </View>
-
-                {index === 3 ?
-                    <BombIcon/> : null
-                }
-            </View>
-        </View>
-    )
-}
-
-const BombIcon = () => {
-    return(
-        <View style={{
-            flexDirection:'row', alignItems:'flex-end',
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.5,  elevation: 4,
-            shadowRadius: 4,
-        }}>
-            <View style={{left: -12}}>
-                <FontAwesome5 name="bomb" size={50} color="#fff" />
             </View>
         </View>
     )

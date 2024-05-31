@@ -15,12 +15,12 @@ interface Props {
     playerLevel: number
     handleOpenPress: () => void
     setCurrentPlayer: Dispatch<SetStateAction<string>>
-    setSelectedPlayers:  Dispatch<SetStateAction<PlayerCardType[]>>
-    selectedPlayers: PlayerCardType[];
+    isSelected: boolean,
     highestValues: {"PTS": number, "REB": number, "AST": number, "BLK": number, "STL": number, "TO": number, "PF": number}
+    onClickRowFunc: (playerData: PlayerData, playerLevel: number) => void
 }
 
-export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentPlayer, handleOpenPress, selectedPlayers, setSelectedPlayers, highestValues}) => {
+export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentPlayer, handleOpenPress, highestValues, onClickRowFunc, isSelected}) => {
     
     const stats = {
         "PTS": (playerData["PTS"] / playerData["Games Played"]).toFixed(1),
@@ -40,108 +40,145 @@ export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentP
             width: "100%", height:100, borderBottomColor:'#3b3d41', borderBottomWidth:.5,
             flexDirection:'row', alignItems:'center'
         }}>
-            <LinearGradient 
-                colors={selectedPlayers.find(p => p.name === playerData.name) ? [Colors.bgDarker, Colors.green] : [Colors.bgDarker, Colors.bgDarker] }
-                start={{ x: 1, y: 0 }}
-                end={{ x: 0, y: 0 }}
-                style={{
+            {isSelected ? 
+                <LinearGradient 
+                    colors={[Colors.bgDarker, Colors.green]}
+                    start={{ x: 1, y: 0 }}
+                    end={{ x: 0, y: 0 }}
+                    style={{
                     width:"45%", flexDirection:'row', height:"100%", alignItems:'center',
                     overflow:'hidden'
                 }}
-            >
-                <TouchableOpacity style={{
-                    width:"100%", flexDirection:'row', height:"100%", alignItems:'center'
-                }} onPress={() => {
-                    let foundPlayerIndex = selectedPlayers.findIndex(p => p.name === playerData.name)
-                    let firstNullIndex = 0;
-                    for (const p of selectedPlayers) {
-                        if ((!p.name || !p.picId) || firstNullIndex === 3) {
-                            break;
-                        } else {
-                            firstNullIndex++;
-                        }
-                    }
+                >
+                    <TouchableOpacity style={{
+                        width:"100%", flexDirection:'row', height:"100%", alignItems:'center'
+                    }} onPress={() => onClickRowFunc(playerData, playerLevel)}>
 
-                    setSelectedPlayers(p => {
-                        if(foundPlayerIndex === -1){
-                            const arr = [...p]; 
-                            arr[firstNullIndex] = {
-                                name: playerData.name, 
-                                picId: playerData.picId, 
-                                level: playerLevel,
-                                backgroundColor: "#fff"
-                            };
-                            return arr;
-                        } else {
-                            const updatedPlayers = [...p];
-                            const frontOfArray = updatedPlayers.slice(0, foundPlayerIndex);
-                            const backOfArray = updatedPlayers.slice(foundPlayerIndex+1, updatedPlayers.length);
-
-                            let newArr = frontOfArray.concat(backOfArray);
-                            while(newArr.length < 4)
-                                newArr.push({"name": null, "picId": null, level: 0, backgroundColor:null});
-
-                            return newArr; 
-                        }
-                    });
-                }}>
-
-                {/* PFP */}
-                <View style={{
-                    width:70, height:70, borderRadius:50, marginLeft: 10, marginBottom: 10,
-                    backgroundColor:'#fff', overflow:'hidden'
-                }}>
-                    <Image 
-                        source={{uri: `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${playerData.picId}.png`}}
-                        style={{width: "100%", height:"100%"}}
-                    />
-                </View>
-
-                {/* Lvl Box */}
-                <View style={{height:"100%", borderRadius: 10, position:'absolute', justifyContent:'flex-end'}}>
+                    {/* PFP */}
                     <View style={{
-                        width: 70, height:25, borderRadius: 15, 
-                        backgroundColor: getLevelColor(playerLevel),
-                        borderWidth: 1, borderBlockColor:'black', 
-                        marginLeft: 10, marginBottom: 10, 
-                        alignItems:'center', justifyContent:'center'
+                        width:70, height:70, borderRadius:50, marginLeft: 10, marginBottom: 10,
+                        backgroundColor:'#fff', overflow:'hidden'
                     }}>
-                        <Text style={{
-                            fontFamily: 'Roboto-Bold', fontSize: 16, 
-                            color: getLevelColor(playerLevel) === '#FAF9F6' ? "#000" : "#FFF"
+                        <Image 
+                            source={{uri: `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${playerData.picId}.png`}}
+                            style={{width: "100%", height:"100%"}}
+                        />
+                    </View>
+
+                    {/* Lvl Box */}
+                    <View style={{height:"100%", borderRadius: 10, position:'absolute', justifyContent:'flex-end'}}>
+                        <View style={{
+                            width: 70, height:25, borderRadius: 15, 
+                            backgroundColor: getLevelColor(playerLevel),
+                            borderWidth: 1, borderBlockColor:'black', 
+                            marginLeft: 10, marginBottom: 10, 
+                            alignItems:'center', justifyContent:'center'
                         }}>
-                            Lvl {playerLevel}
+                            <Text style={{
+                                fontFamily: 'Roboto-Bold', fontSize: 16, 
+                                color: getLevelColor(playerLevel) === '#FAF9F6' ? "#000" : "#FFF"
+                            }}>
+                                Lvl {playerLevel}
+                            </Text>
+                        </View>
+                    </View>
+
+                    {/* Name and Jersy Number */}
+                    <View style={{height:"100%", marginLeft: 10, justifyContent:'center'}}>
+                        <Text style={{fontFamily:"Roboto-Bold", color:'white', fontSize: 18}}>
+                            {playerData.name.charAt(0).toUpperCase() + '. '}
+                            {playerData.name.split(" ")[1]}
+                        </Text>
+                        <Text style={{fontFamily:"Roboto-Bold", color:'white', marginTop: 5, fontSize: 16}}>
+                            #0
                         </Text>
                     </View>
-                </View>
+                    
+                    </TouchableOpacity>
 
-                {/* Name and Jersy Number */}
-                <View style={{height:"100%", marginLeft: 10, justifyContent:'center'}}>
-                    <Text style={{fontFamily:"Roboto-Bold", color:'white', fontSize: 18}}>
-                        {playerData.name.charAt(0).toUpperCase() + '. '}
-                        {playerData.name.split(" ")[1]}
-                    </Text>
-                    <Text style={{fontFamily:"Roboto-Bold", color:'white', marginTop: 5, fontSize: 16}}>
-                        #0
-                    </Text>
+                    <View style={{
+                        position:'absolute', width: 25, height: 25, 
+                        backgroundColor: isSelected ? "#000" : "#fff",
+                        justifyContent:'center', alignItems:'center',
+                        borderRadius: 20,
+                        borderBlockColor: '#000', borderWidth: 2, top: 5, left: 3
+                    }}>
+                        {isSelected ? 
+                            <Feather name="x" size={20} color="#fff" />
+                                :
+                            <FontAwesome5 name="plus" size={18} color="#1AD1AD" />
+                        }
+                    </View>
+                </LinearGradient>
+                    :
+                <View 
+                    style={{
+                        width:"45%", flexDirection:'row', height:"100%", alignItems:'center',
+                        overflow:'hidden', backgroundColor: Colors.bgDarker
+                    }}
+                >
+                    <TouchableOpacity style={{
+                        width:"100%", flexDirection:'row', height:"100%", alignItems:'center'
+                    }} onPress={() => onClickRowFunc(playerData, playerLevel)}>
+    
+                    {/* PFP */}
+                    <View style={{
+                        width:70, height:70, borderRadius:50, marginLeft: 10, marginBottom: 10,
+                        backgroundColor:'#fff', overflow:'hidden'
+                    }}>
+                        <Image 
+                            source={{uri: `https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/${playerData.picId}.png`}}
+                            style={{width: "100%", height:"100%"}}
+                        />
+                    </View>
+    
+                    {/* Lvl Box */}
+                    <View style={{height:"100%", borderRadius: 10, position:'absolute', justifyContent:'flex-end'}}>
+                        <View style={{
+                            width: 70, height:25, borderRadius: 15, 
+                            backgroundColor: getLevelColor(playerLevel),
+                            borderWidth: 1, borderBlockColor:'black', 
+                            marginLeft: 10, marginBottom: 10, 
+                            alignItems:'center', justifyContent:'center'
+                        }}>
+                            <Text style={{
+                                fontFamily: 'Roboto-Bold', fontSize: 16, 
+                                color: getLevelColor(playerLevel) === '#FAF9F6' ? "#000" : "#FFF"
+                            }}>
+                                Lvl {playerLevel}
+                            </Text>
+                        </View>
+                    </View>
+    
+                    {/* Name and Jersy Number */}
+                    <View style={{height:"100%", marginLeft: 10, justifyContent:'center'}}>
+                        <Text style={{fontFamily:"Roboto-Bold", color:'white', fontSize: 18}}>
+                            {playerData.name.charAt(0).toUpperCase() + '. '}
+                            {playerData.name.split(" ")[1]}
+                        </Text>
+                        <Text style={{fontFamily:"Roboto-Bold", color:'white', marginTop: 5, fontSize: 16}}>
+                            #0
+                        </Text>
+                    </View>
+                    
+                    </TouchableOpacity>
+    
+                    <View style={{
+                        position:'absolute', width: 25, height: 25, 
+                        backgroundColor: isSelected ? "#000" : "#fff",
+                        justifyContent:'center', alignItems:'center',
+                        borderRadius: 20,
+                        borderBlockColor: '#000', borderWidth: 2, top: 5, left: 3
+                    }}>
+                        {isSelected ? 
+                            <Feather name="x" size={20} color="#fff" />
+                                :
+                            <FontAwesome5 name="plus" size={18} color="#1AD1AD" />
+                        }
+                    </View>
                 </View>
-                
-                </TouchableOpacity>
+            }
 
-                <View style={{
-                    position:'absolute', width: 25, height: 25, 
-                    backgroundColor: selectedPlayers.find(p => p.name === playerData.name) ? "#000" : "#fff",
-                    justifyContent:'center', alignItems:'center',
-                    borderRadius: 20,
-                    borderBlockColor: '#000', borderWidth: 2, top: 5, left: 3
-                }}>
-                    {selectedPlayers.find(p => p.name === playerData.name) ? 
-                        <Feather name="x" size={20} color="#fff" />
-                            :
-                        <FontAwesome5 name="plus" size={18} color="#1AD1AD" />
-                    }
-                </View>
-            </LinearGradient>
 
             {/* The stats side */}
             <View style={{height:"100%", width:"55%"}}>
