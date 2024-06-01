@@ -10,6 +10,8 @@ import { BottomSheetViewMine } from "../../Inventory/BottomSheet/BottomSheetView
 import { PlayerRow } from "./PlayerRow"
 import { PlayerCardType } from "../../../Global/Types/PickingPlayerTypes"
 import { SaboTage } from "./Sabotage"
+import { ReadyBtn } from "./ReadyBtn"
+import { startSearchForGame } from "../../../functions/GameFunctions/StartFunctions"
 
 interface Props {
     setScreen: Dispatch<SetStateAction<string>>
@@ -21,7 +23,6 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
     const currentTeamData = teamDataContext.find(t => t.abbreviated === "BOS");
     const oppTeamData = teamDataContext.find(t => t.abbreviated === "LAL");
 
-    const [currentTeam, setCurrentTeam] = useState<string>(abbreviateThreeLetterName(user.mainTeam));
     const [currentPlayer, setCurrentPlayer] = useState<string>("");
     const [selectedPlayers, setSelectedPlayers] = useState<PlayerCardType[]>([
         {name: null, picId: null, level: 0, backgroundColor: null},
@@ -34,6 +35,7 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
     const [players, setPlayers] = useState<PlayerData[]>([]);
     const [oppPlayers, setOppPlayers] = useState<PlayerData[]>([]);
     const [onPlayers, setOnPlayers] = useState<boolean>(true);
+    const [btnText, setBtnText] = useState<string>("");
     const [highestValues, setHighestValues] = useState({"PTS": 0, "REB": 0, "AST": 0, "BLK": 0, "STL": 0, "TO": 0, "PF": 0});
     // const [playersLevelArr, setPlayersLevelArr] = useState<PlayerLevel[]>(user.playersArray);
     
@@ -73,7 +75,20 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
         setHighestValues(highestValues);
         setPlayers(players);
         setOppPlayers(oppPlayers);
-    }, [currentTeam])
+    }, [])
+
+    useEffect(() => {
+        let playersCount = 3;
+        selectedPlayers.forEach(p => { if(p.name) playersCount--; });
+    
+        if (playersCount !== 0) {
+          setBtnText(`Select ${playersCount} Player${playersCount === 1 ? "" : "s"}`);
+        } else if (selectedOpp.name === null) {
+          setBtnText(`Select Sabotage`);
+        } else {
+          setBtnText("Ready");
+        }
+    }, [selectedPlayers, selectedOpp, oppPlayers, players]);
 
     const onClickRowNormal = (selectedPlayerData: PlayerData, selectedPlayerLevel: number): void => {
         let foundPlayerIndex = selectedPlayers.findIndex(p => p.name === selectedPlayerData.name)
@@ -121,6 +136,18 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
                 backgroundColor: oppTeamData.mainColor
             });
         }
+    }
+
+    const startGame = async (): Promise<void> => {
+        startSearchForGame(
+            user, 
+            currentTeamData.name, 
+            currentTeamData.name,
+            oppTeamData.name,
+            "timeStart",
+            "apiLink",
+            selectedPlayers
+        );
     }
 
     return(
@@ -204,13 +231,17 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
                     enablePanDownToClose={true}
                     backdropComponent={renderBackdrop}
                     handleIndicatorStyle={{backgroundColor:'white'}}
-                    backgroundStyle={{backgroundColor:'#007A32'}}
+                    backgroundStyle={{backgroundColor:onPlayers ? currentTeamData.mainColor : oppTeamData.mainColor}}
                 >
                     <BottomSheetViewMine 
+                        imgUrl={onPlayers ? currentTeamData.imgUrl : oppTeamData.imgUrl}
+                        mainColor={onPlayers ? currentTeamData.mainColor : oppTeamData.mainColor}
                         playerStats={playerStats[playerStats.findIndex(p => p.name === currentPlayer)]}
                     />
                 </BottomSheet> : null
             }
+
+            <ReadyBtn text={btnText} startGame={startGame}/>
         </View>
     )
 }

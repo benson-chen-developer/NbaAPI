@@ -255,11 +255,6 @@ export const onCreateGame = /* GraphQL */ `
       player2Team
       player2LastActionNumber
       player1LastActionNumber
-      matrixRow1
-      matrixRow2
-      matrixRow3
-      matrixRow4
-      teams
       player2Depth
       player1Depth
       timeStart
@@ -274,6 +269,9 @@ export const onCreateGame = /* GraphQL */ `
       timeoutArray
       player1SelectedTiles
       player2SelectedTiles
+      matrix
+      homeTeam
+      awayTeam
       createdAt
       updatedAt
       __typename
@@ -291,11 +289,6 @@ export const onUpdateGame = /* GraphQL */ `
       player2Team
       player2LastActionNumber
       player1LastActionNumber
-      matrixRow1
-      matrixRow2
-      matrixRow3
-      matrixRow4
-      teams
       player2Depth
       player1Depth
       timeStart
@@ -310,6 +303,9 @@ export const onUpdateGame = /* GraphQL */ `
       timeoutArray
       player1SelectedTiles
       player2SelectedTiles
+      matrix
+      homeTeam
+      awayTeam
       createdAt
       updatedAt
       __typename
@@ -327,11 +323,6 @@ export const onDeleteGame = /* GraphQL */ `
       player2Team
       player2LastActionNumber
       player1LastActionNumber
-      matrixRow1
-      matrixRow2
-      matrixRow3
-      matrixRow4
-      teams
       player2Depth
       player1Depth
       timeStart
@@ -346,6 +337,9 @@ export const onDeleteGame = /* GraphQL */ `
       timeoutArray
       player1SelectedTiles
       player2SelectedTiles
+      matrix
+      homeTeam
+      awayTeam
       createdAt
       updatedAt
       __typename
@@ -387,11 +381,6 @@ export const onCreateUserGame = /* GraphQL */ `
         player2Team
         player2LastActionNumber
         player1LastActionNumber
-        matrixRow1
-        matrixRow2
-        matrixRow3
-        matrixRow4
-        teams
         player2Depth
         player1Depth
         timeStart
@@ -402,6 +391,9 @@ export const onCreateUserGame = /* GraphQL */ `
         timeoutArray
         player1SelectedTiles
         player2SelectedTiles
+        matrix
+        homeTeam
+        awayTeam
         createdAt
         updatedAt
         __typename
@@ -447,11 +439,6 @@ export const onUpdateUserGame = /* GraphQL */ `
         player2Team
         player2LastActionNumber
         player1LastActionNumber
-        matrixRow1
-        matrixRow2
-        matrixRow3
-        matrixRow4
-        teams
         player2Depth
         player1Depth
         timeStart
@@ -462,6 +449,9 @@ export const onUpdateUserGame = /* GraphQL */ `
         timeoutArray
         player1SelectedTiles
         player2SelectedTiles
+        matrix
+        homeTeam
+        awayTeam
         createdAt
         updatedAt
         __typename
@@ -507,11 +497,6 @@ export const onDeleteUserGame = /* GraphQL */ `
         player2Team
         player2LastActionNumber
         player1LastActionNumber
-        matrixRow1
-        matrixRow2
-        matrixRow3
-        matrixRow4
-        teams
         player2Depth
         player1Depth
         timeStart
@@ -522,6 +507,9 @@ export const onDeleteUserGame = /* GraphQL */ `
         timeoutArray
         player1SelectedTiles
         player2SelectedTiles
+        matrix
+        homeTeam
+        awayTeam
         createdAt
         updatedAt
         __typename

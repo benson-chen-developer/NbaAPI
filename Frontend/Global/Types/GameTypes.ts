@@ -1,0 +1,32 @@
+type Game = {
+    player1Id: string,
+    player2Id: string,
+    apiLink: string,
+    player1Team: string,
+    player2Team: string,
+    homeTeam:string,
+    awayTeam: string,
+    player1LastActionNumber: number,
+    player2LastActionNumber: number,
+    matrix: any[],
+    player1Depth: any[],
+    player2Depth: any[],
+    timeStart: string,
+    ended: boolean,
+    player1CheckedIn: boolean,
+    player2CheckedIn: boolean,
+    timeoutArray: any[],
+    player1SelectedTiles: any[],
+    player2SelectedTiles: any[],
+}
+
+type UserDepthItem = {
+    name: string,
+    PTS: number, 
+    REB: number, 
+    AST: number, 
+    BLK: number, 
+    STL: number, 
+    "3PM": number, 
+    "3PA": number,
+}

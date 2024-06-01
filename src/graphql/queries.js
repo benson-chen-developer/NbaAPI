@@ -174,11 +174,6 @@ export const getGame = /* GraphQL */ `
       player2Team
       player2LastActionNumber
       player1LastActionNumber
-      matrixRow1
-      matrixRow2
-      matrixRow3
-      matrixRow4
-      teams
       player2Depth
       player1Depth
       timeStart
@@ -193,6 +188,9 @@ export const getGame = /* GraphQL */ `
       timeoutArray
       player1SelectedTiles
       player2SelectedTiles
+      matrix
+      homeTeam
+      awayTeam
       createdAt
       updatedAt
       __typename
@@ -215,11 +213,6 @@ export const listGames = /* GraphQL */ `
         player2Team
         player2LastActionNumber
         player1LastActionNumber
-        matrixRow1
-        matrixRow2
-        matrixRow3
-        matrixRow4
-        teams
         player2Depth
         player1Depth
         timeStart
@@ -230,6 +223,9 @@ export const listGames = /* GraphQL */ `
         timeoutArray
         player1SelectedTiles
         player2SelectedTiles
+        matrix
+        homeTeam
+        awayTeam
         createdAt
         updatedAt
         __typename
@@ -274,11 +270,6 @@ export const getUserGame = /* GraphQL */ `
         player2Team
         player2LastActionNumber
         player1LastActionNumber
-        matrixRow1
-        matrixRow2
-        matrixRow3
-        matrixRow4
-        teams
         player2Depth
         player1Depth
         timeStart
@@ -289,6 +280,9 @@ export const getUserGame = /* GraphQL */ `
         timeoutArray
         player1SelectedTiles
         player2SelectedTiles
+        matrix
+        homeTeam
+        awayTeam
         createdAt
         updatedAt
         __typename
