@@ -3,6 +3,7 @@ import {listGames, listUsers} from '../../../src/graphql/queries';
 import {updateGame, createGame, updateUser, createUserGame} from '../../../src/graphql/mutations';
 import { generateMatrix2 } from '../MatrixFunctions';
 import { getAverages } from '../StatFunctions';
+import { UserDepthType } from '../../Global/Types/GameTypes';
 
 const client = generateClient();
 
@@ -13,7 +14,7 @@ export const startSearchForGame = async (
     awayTeam: string, 
     timeStart: string, 
     apiLink: string,
-    userDepth: any
+    playerDepth: any
 ) => {
     const joiningPlayerId = user.id;
 
@@ -29,9 +30,8 @@ export const startSearchForGame = async (
                 selectedTeam, 
                 homeTeam, 
                 awayTeam, 
-                teamAverages,
                 timeStart, 
-                userDepth, 
+                playerDepth, 
                 apiLink,
             );
         }
@@ -92,60 +92,55 @@ export const createGameFuncion = async (
     selectedTeam:string, 
     homeTeam:string, 
     awayTeam:string, 
-    teamAverages,
     timeStart: string, 
-    userDepth: UserDepthItem[], 
+    playerDepth: UserDepthType[], 
     apiLink:string
 ) => {
     try {
-
         const stringifyRow = (row) => {
             let retRow = [];
             row.forEach(i => retRow.push(JSON.stringify(i)));
             return retRow;
         }
 
-        const matrix = generateMatrix2(teamAverages)
+        const matrix = generateMatrix2(playerDepth, selectedTeam);
         // console.log("GaneStartFunction", JSON.stringify(matrix, null, 2));
 
-        const newGame = await client.graphql({
-            query: createGame,
-            variables: {
-                input: {
-                    "player1Id": joiningPlayerId,
-                    "player2Id": null,
-                    "started": false,
-                    "ended": false,
-                    "apiLink": apiLink,
-                    "player1Team": selectedTeam, 
-                    "player2Team": selectedTeam === homeTeam ? awayTeam : homeTeam,
-                    "teams": [homeTeam, awayTeam],
-                    "player1Depth": userDepth.map(value => JSON.stringify(value)),
-                    "player2Depth": [],
-                    "matrixRow1": stringifyRow(matrix[0]),
-                    "matrixRow2": stringifyRow(matrix[1]),
-                    "matrixRow3": stringifyRow(matrix[2]),
-                    "matrixRow4": stringifyRow(matrix[3]),
-                    "player1LastActionNumber": 0,
-                    "player2LastActionNumber": 0,
-                    "timeStart": timeStart,
-                }
-            }
-        });
+        // const newGame = await client.graphql({
+        //     query: createGame,
+        //     variables: {
+        //         input: {
+        //             "player1Id": joiningPlayerId,
+        //             "player2Id": null,
+        //             "started": false,
+        //             "ended": false,
+        //             "apiLink": apiLink,
+        //             "player1Team": selectedTeam, 
+        //             "player2Team": selectedTeam === homeTeam ? awayTeam : homeTeam,
+        //             "teams": [homeTeam, awayTeam],
+        //             "player1Depth": userDepth.map(value => JSON.stringify(value)),
+        //             "player2Depth": [],
+        //             "matrix": stringifyRow(matrix[0]),
+        //             "player1LastActionNumber": 0,
+        //             "player2LastActionNumber": 0,
+        //             "timeStart": timeStart,
+        //         }
+        //     }
+        // });
 
-        // console.log("newGame", newGame.data.createGame.id)
+        // // console.log("newGame", newGame.data.createGame.id)
 
-        const newUserGame = await client.graphql({
-            query: createUserGame,
-            variables: {
-                input: {
-                    userId: joiningPlayerId,
-                    gameId: newGame.data.createGame.id,
-                },
-            }
-        });
+        // const newUserGame = await client.graphql({
+        //     query: createUserGame,
+        //     variables: {
+        //         input: {
+        //             userId: joiningPlayerId,
+        //             gameId: newGame.data.createGame.id,
+        //         },
+        //     }
+        // });
         
-        return newGame.data.createGame;
+        // return newGame.data.createGame;
     } catch (error) {
         console.error("CreateGameFunction err", error);
     }

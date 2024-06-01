@@ -12,6 +12,7 @@ import { PlayerCardType } from "../../../Global/Types/PickingPlayerTypes"
 import { SaboTage } from "./Sabotage"
 import { ReadyBtn } from "./ReadyBtn"
 import { startSearchForGame } from "../../../functions/GameFunctions/StartFunctions"
+import { UserDepthType } from "../../../Global/Types/GameTypes"
 
 interface Props {
     setScreen: Dispatch<SetStateAction<string>>
@@ -139,6 +140,22 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
     }
 
     const startGame = async (): Promise<void> => {
+        let playerDepth = [];
+        selectedPlayers.forEach(player => {
+            const foundPlayerData = players.find(p => p.name === player.name);
+
+            playerDepth.push({
+                name: foundPlayerData.name,
+                PTS: foundPlayerData.PTS/foundPlayerData["Games Played"], 
+                REB: foundPlayerData.REB/foundPlayerData["Games Played"], 
+                AST: foundPlayerData.AST/foundPlayerData["Games Played"], 
+                BLK: foundPlayerData.BLK/foundPlayerData["Games Played"], 
+                STL: foundPlayerData.STL/foundPlayerData["Games Played"], 
+                "3PM": foundPlayerData["FG3"]/foundPlayerData["Games Played"], 
+                "3PA": foundPlayerData["FG3A"]/foundPlayerData["Games Played"],
+            })
+        })
+
         startSearchForGame(
             user, 
             currentTeamData.name, 
@@ -146,7 +163,7 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
             oppTeamData.name,
             "timeStart",
             "apiLink",
-            selectedPlayers
+            playerDepth
         );
     }
 
