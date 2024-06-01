@@ -3,7 +3,7 @@ import {listGames, listUsers} from '../../../src/graphql/queries';
 import {updateGame, createGame, updateUser, createUserGame} from '../../../src/graphql/mutations';
 import { generateMatrix2 } from '../MatrixFunctions';
 import { getAverages } from '../StatFunctions';
-import { UserDepthType } from '../../Global/Types/GameTypes';
+import { Game, UserDepthType } from '../../Global/Types/GameTypes';
 
 const client = generateClient();
 
@@ -15,7 +15,7 @@ export const startSearchForGame = async (
     timeStart: string, 
     apiLink: string,
     playerDepth: any
-) => {
+): Promise<Game> => {
     const joiningPlayerId = user.id;
 
     try {
@@ -97,38 +97,48 @@ export const createGameFuncion = async (
     apiLink:string
 ) => {
     try {
-        const stringifyRow = (row) => {
-            let retRow = [];
-            row.forEach(i => retRow.push(JSON.stringify(i)));
-            return retRow;
-        }
-
         const matrix = generateMatrix2(playerDepth, selectedTeam);
-        // console.log("GaneStartFunction", JSON.stringify(matrix, null, 2));
+        console.log("GaneStartFunction", JSON.stringify(matrix, null, 2));
 
-        // const newGame = await client.graphql({
-        //     query: createGame,
-        //     variables: {
-        //         input: {
-        //             "player1Id": joiningPlayerId,
-        //             "player2Id": null,
-        //             "started": false,
-        //             "ended": false,
-        //             "apiLink": apiLink,
-        //             "player1Team": selectedTeam, 
-        //             "player2Team": selectedTeam === homeTeam ? awayTeam : homeTeam,
-        //             "teams": [homeTeam, awayTeam],
-        //             "player1Depth": userDepth.map(value => JSON.stringify(value)),
-        //             "player2Depth": [],
-        //             "matrix": stringifyRow(matrix[0]),
-        //             "player1LastActionNumber": 0,
-        //             "player2LastActionNumber": 0,
-        //             "timeStart": timeStart,
-        //         }
-        //     }
-        // });
+        const newGame = await client.graphql({
+            query: createGame,
+            variables: {
+                input: {
+                    player1Id: joiningPlayerId,
+                    player2Id: null,
+                    apiLink: apiLink,
+                    player1Team: selectedTeam,
+                    player2Team: selectedTeam === homeTeam ? awayTeam : homeTeam,
+                    started: false,
+                    ended: false,
+                    player1LastActionNumber: -1,
+                    player2LastActionNumber: -1,
+                    player1Depth: playerDepth.map(player => JSON.stringify({
+                        name: player.name,
+                        PTS: 0,
+                        REB: 0,
+                        AST: 0,
+                        BLK: 0,
+                        STL: 0,
+                        "3PM": 0,
+                        "3PA": 0,
+                    })),
+                    player2Depth: [],
+                    matrix: matrix.map(tile => JSON.stringify(tile)),
+                    timeStart: timeStart,
+                    player1CheckedIn: false,
+                    player2CheckedIn: false,
+                    player1SelectedTiles: [],
+                    player2SelectedTiles: [],
+                    timeoutArray: [],
+                    homeTeam: homeTeam,
+                    awayTeam: awayTeam
+                }
+            }
+        });
+        
 
-        // // console.log("newGame", newGame.data.createGame.id)
+        // console.log("newGame", newGame.data.createGame.id)
 
         // const newUserGame = await client.graphql({
         //     query: createUserGame,
@@ -140,7 +150,7 @@ export const createGameFuncion = async (
         //     }
         // });
         
-        // return newGame.data.createGame;
+        return newGame.data.createGame;
     } catch (error) {
         console.error("CreateGameFunction err", error);
     }

@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
-    const {user, playerStats, teamDataContext} = useMyContext();
+    const {user, playerStats, teamDataContext, setLiveGames} = useMyContext();
 
     const currentTeamData = teamDataContext.find(t => t.abbreviated === "BOS");
     const oppTeamData = teamDataContext.find(t => t.abbreviated === "LAL");
@@ -156,7 +156,7 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
             })
         })
 
-        startSearchForGame(
+        const game = await startSearchForGame(
             user, 
             currentTeamData.name, 
             currentTeamData.name,
@@ -165,6 +165,8 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
             "apiLink",
             playerDepth
         );
+
+        setLiveGames([game]);
     }
 
     return(

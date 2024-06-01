@@ -1,4 +1,4 @@
-type Game = {
+export type Game = {
     player1Id: string,
     player2Id: string,
     apiLink: string,
