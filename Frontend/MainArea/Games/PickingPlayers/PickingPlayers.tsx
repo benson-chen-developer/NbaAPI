@@ -3,16 +3,15 @@ import { View, Text, TouchableOpacity } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { abbreviateThreeLetterName } from "../../../../assets/TeamLogos/getTeamLogo"
 import { useMyContext } from "../../../Context/MyContext"
-import { PlayerData } from "../../../Global/Types/DataTypes"
 import { PlayerCard } from "./PlayerCard"
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { BottomSheetViewMine } from "../../Inventory/BottomSheet/BottomSheetViewMine"
 import { PlayerRow } from "./PlayerRow"
-import { PlayerCardType } from "../../../Global/Types/PickingPlayerTypes"
 import { SaboTage } from "./Sabotage"
 import { ReadyBtn } from "./ReadyBtn"
 import { startSearchForGame } from "../../../functions/GameFunctions/StartFunctions"
 import { UserDepthType } from "../../../Global/Types/GameTypes"
+import { PlayerExtra, PlayerStats } from "../../../Global/Types/PlayerTypes"
 
 interface Props {
     setScreen: Dispatch<SetStateAction<string>>
@@ -25,16 +24,16 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
     const oppTeamData = teamDataContext.find(t => t.abbreviated === "LAL");
 
     const [currentPlayer, setCurrentPlayer] = useState<string>("");
-    const [selectedPlayers, setSelectedPlayers] = useState<PlayerCardType[]>([
-        {name: null, picId: null, level: 0, backgroundColor: null},
-        {name: null, picId: null, level: 0, backgroundColor: null},
-        {name: null, picId: null, level: 0, backgroundColor: null},
+    const [selectedPlayers, setSelectedPlayers] = useState<PlayerExtra[]>([
+        {name: null, picId: null, level: 0, backgroundColor: null, team:null},
+        {name: null, picId: null, level: 0, backgroundColor: null, team:null},
+        {name: null, picId: null, level: 0, backgroundColor: null, team:null},
     ]);
-    const [selectedOpp, setSelectedOpp] = useState<PlayerCardType>(
-        {name: null, picId: null, level: 0, backgroundColor: null}
+    const [selectedOpp, setSelectedOpp] = useState<PlayerExtra>(
+        {name: null, picId: null, level: 0, backgroundColor: null, team:null},
     );
-    const [players, setPlayers] = useState<PlayerData[]>([]);
-    const [oppPlayers, setOppPlayers] = useState<PlayerData[]>([]);
+    const [players, setPlayers] = useState<PlayerStats[]>([]);
+    const [oppPlayers, setOppPlayers] = useState<PlayerStats[]>([]);
     const [onPlayers, setOnPlayers] = useState<boolean>(true);
     const [btnText, setBtnText] = useState<string>("");
     const [highestValues, setHighestValues] = useState({"PTS": 0, "REB": 0, "AST": 0, "BLK": 0, "STL": 0, "TO": 0, "PF": 0});
@@ -91,7 +90,7 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
         }
     }, [selectedPlayers, selectedOpp, oppPlayers, players]);
 
-    const onClickRowNormal = (selectedPlayerData: PlayerData, selectedPlayerLevel: number): void => {
+    const onClickRowNormal = (selectedPlayerData: PlayerStats, selectedPlayerLevel: number): void => {
         let foundPlayerIndex = selectedPlayers.findIndex(p => p.name === selectedPlayerData.name)
         let firstNullIndex = 0;
         for (const p of selectedPlayers) {
@@ -109,7 +108,8 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
                     name: selectedPlayerData.name, 
                     picId: selectedPlayerData.picId, 
                     level: selectedPlayerLevel,
-                    backgroundColor: currentTeamData.mainColor
+                    backgroundColor: currentTeamData.mainColor,
+                    team:''
                 };
                 return arr;
             } else {
@@ -119,22 +119,23 @@ export const PickingPlayers: React.FC<Props> = ({ setScreen }) => {
 
                 let newArr = frontOfArray.concat(backOfArray);
                 while(newArr.length < 3)
-                    newArr.push({"name": null, "picId": null, level: 0, backgroundColor:null});
+                    newArr.push({"name": null, "picId": null, level: 0, backgroundColor:null, team:''});
 
                 return newArr; 
             }
         });
     }
 
-    const onClickRowSabotage = (selectedPlayerData: PlayerData, selectedPlayerLevel: number): void => {
+    const onClickRowSabotage = (selectedPlayerData: PlayerStats, selectedPlayerLevel: number): void => {
         if(selectedOpp.name === selectedPlayerData.name){
-            setSelectedOpp({name: null, picId: null, level: 0, backgroundColor: null});
+            setSelectedOpp({name: null, picId: null, level: 0, backgroundColor: null, team:''});
         } else {
             setSelectedOpp({
                 name: selectedPlayerData.name, 
                 picId: selectedPlayerData.picId, 
                 level: selectedPlayerLevel, 
-                backgroundColor: oppTeamData.mainColor
+                backgroundColor: oppTeamData.mainColor,
+                team: ''
             });
         }
     }

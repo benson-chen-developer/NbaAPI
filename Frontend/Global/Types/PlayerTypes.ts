@@ -24,4 +24,5 @@ export type PlayerExtra = {
     picId: string,
     level: number,
     team: string,
+    backgroundColor: string
 }

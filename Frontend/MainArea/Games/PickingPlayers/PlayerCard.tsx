@@ -2,14 +2,14 @@ import { Dispatch, SetStateAction } from "react"
 import { View, Image, Text } from "react-native"
 import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { PlayerCardType } from "../../../Global/Types/PickingPlayerTypes";
 import { getLevelColor } from "../../../Global/Colors";
+import { PlayerExtra } from "../../../Global/Types/PlayerTypes";
 
 interface Props {
-    player: PlayerCardType
+    player: PlayerExtra
     index: number;
     maxLength: number;
-    setSelectedPlayers: Dispatch<SetStateAction<PlayerCardType[]>>
+    setSelectedPlayers: Dispatch<SetStateAction<PlayerExtra[]>>
 }
 
 export const PlayerCard: React.FC<Props> = ({ player, index, maxLength, setSelectedPlayers }) => {
@@ -71,7 +71,7 @@ export const PlayerCard: React.FC<Props> = ({ player, index, maxLength, setSelec
 
                                 let newArr = frontOfArray.concat(backOfArray);
                                 while(newArr.length < 3)
-                                    newArr.push({"name": null, "picId": null, level:0, backgroundColor:null});
+                                    newArr.push({"name": null, "picId": null, level:0, backgroundColor:null, team:''});
 
                                 return newArr; 
                             });

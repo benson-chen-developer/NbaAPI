@@ -4,6 +4,7 @@ import {updateGame, createGame, updateUser, createUserGame} from '../../../src/g
 import { generateMatrix2 } from '../MatrixFunctions';
 import { getAverages } from '../StatFunctions';
 import { Game, UserDepthType } from '../../Global/Types/GameTypes';
+import { User } from '../../Global/Types/ContextTypes';
 
 const client = generateClient();
 
