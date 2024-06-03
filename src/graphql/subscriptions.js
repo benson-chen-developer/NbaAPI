@@ -272,6 +272,8 @@ export const onCreateGame = /* GraphQL */ `
       matrix
       homeTeam
       awayTeam
+      player1Sabotage
+      player2Sabotage
       createdAt
       updatedAt
       __typename
@@ -306,6 +308,8 @@ export const onUpdateGame = /* GraphQL */ `
       matrix
       homeTeam
       awayTeam
+      player1Sabotage
+      player2Sabotage
       createdAt
       updatedAt
       __typename
@@ -340,6 +344,8 @@ export const onDeleteGame = /* GraphQL */ `
       matrix
       homeTeam
       awayTeam
+      player1Sabotage
+      player2Sabotage
       createdAt
       updatedAt
       __typename
@@ -394,6 +400,8 @@ export const onCreateUserGame = /* GraphQL */ `
         matrix
         homeTeam
         awayTeam
+        player1Sabotage
+        player2Sabotage
         createdAt
         updatedAt
         __typename
@@ -452,6 +460,8 @@ export const onUpdateUserGame = /* GraphQL */ `
         matrix
         homeTeam
         awayTeam
+        player1Sabotage
+        player2Sabotage
         createdAt
         updatedAt
         __typename
@@ -510,6 +520,8 @@ export const onDeleteUserGame = /* GraphQL */ `
         matrix
         homeTeam
         awayTeam
+        player1Sabotage
+        player2Sabotage
         createdAt
         updatedAt
         __typename

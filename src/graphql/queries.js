@@ -191,6 +191,8 @@ export const getGame = /* GraphQL */ `
       matrix
       homeTeam
       awayTeam
+      player1Sabotage
+      player2Sabotage
       createdAt
       updatedAt
       __typename
@@ -226,6 +228,8 @@ export const listGames = /* GraphQL */ `
         matrix
         homeTeam
         awayTeam
+        player1Sabotage
+        player2Sabotage
         createdAt
         updatedAt
         __typename
@@ -283,6 +287,8 @@ export const getUserGame = /* GraphQL */ `
         matrix
         homeTeam
         awayTeam
+        player1Sabotage
+        player2Sabotage
         createdAt
         updatedAt
         __typename

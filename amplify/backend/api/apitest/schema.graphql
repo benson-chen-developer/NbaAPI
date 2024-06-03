@@ -15,6 +15,8 @@ type TeamData @model @auth(rules: [{allow: public}]) {
   mainColor: String
   secondColor: String
   textColor: String
+  imgUrl: String
+  city: String
 }
 
 type User @model @auth(rules: [{allow: public}]) {
@@ -45,11 +47,6 @@ type Game @model @auth(rules: [{allow: public}]) {
   player2Team: String
   player2LastActionNumber: Int
   player1LastActionNumber: Int
-  matrixRow1: [AWSJSON]
-  matrixRow2: [AWSJSON]
-  matrixRow3: [AWSJSON]
-  matrixRow4: [AWSJSON]
-  teams: [String]
   player2Depth: [AWSJSON]
   player1Depth: [AWSJSON]
   timeStart: String
@@ -61,5 +58,9 @@ type Game @model @auth(rules: [{allow: public}]) {
   timeoutArray: [AWSJSON]
   player1SelectedTiles: [AWSJSON]
   player2SelectedTiles: [AWSJSON]
-}
- 
+  matrix: [AWSJSON]
+  homeTeam: String
+  awayTeam: String
+  player1Sabotage: AWSJSON
+  player2Sabotage: AWSJSON
+} 

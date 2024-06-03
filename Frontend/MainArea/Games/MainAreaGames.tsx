@@ -8,12 +8,17 @@ import { GamesCarousel } from './GamesCarousel';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ThemeFonts } from '../../../assets/Themes/ThemeFont';
 import { PickingPlayers } from './PickingPlayers/PickingPlayers';
+import { LiveGame } from './LiveGame/LiveGame';
 
 export default function MainAreaGames({setCurrentGame}) {
+    enum Screens{
+      HOME = "home",
+      PICKING_PLAYERS = "pickingPlayers"
+    }
 
-    const [index, setIndex] = useState(0);
+    const [index, setIndex] = useState<number>(0);
     const [selectedGame, setSelectedGame] = useState(null);
-    const [screen, setScreen] = useState("home");
+    const [screen, setScreen] = useState<Screens>(Screens.HOME);
 
     const {user, setUser, todayGames, setTodayGames, liveGames} = useMyContext();
     
@@ -24,13 +29,17 @@ export default function MainAreaGames({setCurrentGame}) {
 
     }, []);
 
-    if(screen === "pickingPlayers") return (
+    if(liveGames.length > 0) return (
+      <LiveGame />
+    )
+
+    if(screen === Screens.PICKING_PLAYERS) return (
         <PickingPlayers 
           setScreen={setScreen}
         />
     )
 
-    if (selectedGame && todayGames.length > 0 && screen === "home") {
+    if (selectedGame && todayGames.length > 0 && screen === Screens.HOME) {
       return (
         <View style={{ flex: 1, alignItems: 'center', width:"100%"}}>
 
@@ -66,7 +75,7 @@ export default function MainAreaGames({setCurrentGame}) {
             null
           }
 
-          <TouchableOpacity onPress={() => setScreen("pickingPlayers")}>
+          <TouchableOpacity onPress={() => setScreen(Screens.PICKING_PLAYERS)}>
             <Text style={{color:'#fff'}}>Go to pciking players</Text>
           </TouchableOpacity>
 

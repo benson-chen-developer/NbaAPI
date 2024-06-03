@@ -85,17 +85,17 @@ export const getLiveGames = async (userId) => {
     let filteredGames = games.filter(game => !game.ended);
 
     /* Update Games With Current Stats */
-    for (let i = 0; i < filteredGames.length; i++) {
-        const game = filteredGames[i];
-        try {
-            const updatedGame = await (await getLatestActionsAndUpdateGame(game, userId)).updatedGame;
+    // for (let i = 0; i < filteredGames.length; i++) {
+    //     const game = filteredGames[i];
+    //     try {
+    //         const updatedGame = await (await getLatestActionsAndUpdateGame(game, userId)).updatedGame;
             
-            filteredGames[i] = updatedGame;
-        } catch (error) {
-            console.error("Check if game ended err:", error);
-        }
-    }
-
+    //         filteredGames[i] = updatedGame;
+    //     } catch (error) {
+    //         console.error("Check if game ended err:", error);
+    //     }
+    // }
+    console.log("filteredGames", filteredGames)
     // return filteredGames;
-    return games;
+    return filteredGames;
 }

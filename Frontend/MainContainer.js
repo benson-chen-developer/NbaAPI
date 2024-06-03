@@ -17,6 +17,7 @@ import { LoadingScreen } from './LoadingScreen';
 import { AsyncDailyCheck } from './functions/AsyncStorage';
 import { getPlayerStatsToday, getTeamDataAWS } from './functions/AsyncStorage/PlayerStats';
 import {getTodayTmrGames} from './functions/AsyncStorage/TodayTmrGames';
+import { GetLiveGames } from './functions/StartUp/LiveGames';
 
 export default function MainContainer() {
 
@@ -72,9 +73,8 @@ export default function MainContainer() {
         getCurrentUserWithAuth(user).then(userRes => {
             setUser(userRes);
 
-            getLiveGames(userRes.id).then(liveGamesRes => {
+            GetLiveGames(userRes.id).then(liveGamesRes => {
               // console.log("MainContainer: Livegames", JSON.stringify(liveGamesRes, null, 2));
-              
               setLiveGames(liveGamesRes);
               setLiveGameLoading(false);
             })
