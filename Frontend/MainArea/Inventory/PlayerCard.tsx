@@ -1,17 +1,14 @@
-import { Dispatch, SetStateAction } from "react";
 import { Image, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useMyContext } from "../../Context/MyContext";
-import { PlayerData, PlayerLevels } from "../../Global/Types/DataTypes";
+import { PlayerStats } from "../../Global/Types/PlayerTypes";
 
 interface Props {
-    playerData: PlayerData
+    playerData: PlayerStats
     playerLevel: number
-    handleOpenPress: () => void
-    setCurrentPlayer: Dispatch<SetStateAction<string>>
 }
 
-export const PlayerCard: React.FC<Props> = ({playerData, playerLevel, setCurrentPlayer, handleOpenPress}) => {
+export const PlayerCard: React.FC<Props> = ({playerData, playerLevel}) => {
     let backgroundColor: string;
     if (playerLevel >= 20) {
         backgroundColor = '#B01BC0';
@@ -22,13 +19,14 @@ export const PlayerCard: React.FC<Props> = ({playerData, playerLevel, setCurrent
     } else {
         backgroundColor = '#B59773';
     }
+
+    const {setBottomSheetPlayerName} = useMyContext();
     
     return (
         <TouchableOpacity 
             style={{alignItems: 'center', backgroundColor: backgroundColor, width: 150, height: 160, borderTopLeftRadius:15, borderTopRightRadius:15}}
             onPress={() => {
-                setCurrentPlayer(playerData.name)
-                handleOpenPress();
+                setBottomSheetPlayerName(playerData.name);
             }}
         >
             <View style={{position:'absolute', width:"100%", top: -25, alignItems:'center'}}>

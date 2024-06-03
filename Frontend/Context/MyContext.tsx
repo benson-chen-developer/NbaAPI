@@ -6,6 +6,8 @@ interface ContextType {
   user: User;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   todayGames: any[];
+  bottomSheetPlayerName: string;
+  setBottomSheetPlayerName: React.Dispatch<React.SetStateAction<string>>;
   setTodayGames: React.Dispatch<React.SetStateAction<any[]>>;
   liveGames: string[];
   setLiveGames: React.Dispatch<React.SetStateAction<string[]>>;
@@ -36,6 +38,7 @@ export const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }
   const [loading, setLoading] = useState<boolean>(false);
 
   const [todayGames, setTodayGames] = useState<any[]>([]);
+  const [bottomSheetPlayerName, setBottomSheetPlayerName] = useState<string>("");
   const [liveGames, setLiveGames] = useState<string[]>([]);
   const [playerStats, setPlayerStats] = useState<PlayerStats[]>([]);
   const [teamDataContext, setTeamDataContext] = useState<TeamData[]>([]);
@@ -44,6 +47,7 @@ export const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }
     user, setUser,
     todayGames, setTodayGames,
     liveGames, setLiveGames,
+    bottomSheetPlayerName, setBottomSheetPlayerName,
     playerStats, setPlayerStats,
     teamDataContext, setTeamDataContext,
     loading, setLoading
