@@ -6,15 +6,15 @@ import { getLevelColor } from "../../../Global/Colors";
 import { PlayerExtra } from "../../../Global/Types/PlayerTypes";
 
 interface Props {
-    player: PlayerExtra
+    player: PlayerExtra | undefined;
     index: number;
     maxLength: number;
     setSelectedPlayers: Dispatch<SetStateAction<string[]>>
 }
 
 export const PlayerCard: React.FC<Props> = ({ player, index, maxLength, setSelectedPlayers }) => {
-
-    if(player.name === null)
+    
+    if(player === undefined)
     return(
         <View style={{ 
             width: 150, height: 200, backgroundColor:'grey', 

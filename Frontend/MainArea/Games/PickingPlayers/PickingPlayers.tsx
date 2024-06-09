@@ -22,7 +22,7 @@ export const PickingPlayers: React.FC<Props> = ({ gameId, pickedPlayers, setScre
     const currentTeamData = teamDataContext.find(t => t.abbreviated === "BOS");
     const oppTeamData = teamDataContext.find(t => t.abbreviated === "LAL");
     
-    const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]); //Players picked and displayed
+    const [selectedPlayers, setSelectedPlayers] = useState<string[]>(["", "", "", ""]); //Players picked and displayed
     const [selectedOpp, setSelectedOpp] = useState<PlayerExtra>(
         {name: null, picId: null, level: 0, backgroundColor: null, team:null},
     );
@@ -74,7 +74,7 @@ export const PickingPlayers: React.FC<Props> = ({ gameId, pickedPlayers, setScre
             We are just going to fill in the selected and sabotage spots
         */
         if(gameId !== "" && pickedPlayers.length === 4){
-            setSelectedPlayers(["", "", "", ""]);
+            // setSelectedPlayers(["", "", "", ""]);
         } else {
 
         }
@@ -94,11 +94,11 @@ export const PickingPlayers: React.FC<Props> = ({ gameId, pickedPlayers, setScre
         }
     }, [selectedPlayers, selectedOpp, oppPlayers, players]);
 
-    const onClickRowNormal = (selectedPlayerData: PlayerStats, selectedPlayerLevel: number): void => {
+    const onClickRowNormal = (selectedPlayerData: PlayerStats): void => {
         let foundPlayerIndex = selectedPlayers.findIndex(name => name === selectedPlayerData.name)
         let firstNullIndex = 0;
         for (const name of selectedPlayers) {
-            if ((name !== "") || firstNullIndex === 2) {
+            if ((name === "") || firstNullIndex === 2) {
                 break;
             } else {
                 firstNullIndex++;
@@ -106,7 +106,7 @@ export const PickingPlayers: React.FC<Props> = ({ gameId, pickedPlayers, setScre
         }
 
         setSelectedPlayers(p => {
-            //If name is not in array then we can just add it to the end
+            //If name is not in array then we can just add it to the first spot in the array that is empty
             if(foundPlayerIndex === -1){
                 const arr = [...p]; 
                 arr[firstNullIndex] = selectedPlayerData.name;
@@ -196,7 +196,7 @@ export const PickingPlayers: React.FC<Props> = ({ gameId, pickedPlayers, setScre
                     </TouchableOpacity>
                 </View>
 
-                {/* {onPlayers ? 
+                {onPlayers ? 
                     <ScrollView style={{width: "100%"}} horizontal={true} contentContainerStyle={{alignItems:'center'}}>
                         {selectedPlayers.map((name, index) => {
                             return <PlayerCard 
@@ -212,7 +212,7 @@ export const PickingPlayers: React.FC<Props> = ({ gameId, pickedPlayers, setScre
                         player={selectedOpp}
                         setSelectedOpp={setSelectedOpp}
                     />
-                } */}
+                }
             </View>
 
             <ScrollView style={{ width: '100%', maxHeight: '60%', overflow: 'hidden' }}>
