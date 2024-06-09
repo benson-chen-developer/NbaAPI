@@ -9,7 +9,7 @@ interface Props {
     player: PlayerExtra
     index: number;
     maxLength: number;
-    setSelectedPlayers: Dispatch<SetStateAction<PlayerExtra[]>>
+    setSelectedPlayers: Dispatch<SetStateAction<string[]>>
 }
 
 export const PlayerCard: React.FC<Props> = ({ player, index, maxLength, setSelectedPlayers }) => {
@@ -63,15 +63,14 @@ export const PlayerCard: React.FC<Props> = ({ player, index, maxLength, setSelec
                         }} 
                         onPress={() => {
                             setSelectedPlayers(p => {
-                                let foundPlayerIndex = p.findIndex(e => e.name === player.name)
+                                let foundPlayerIndex = p.findIndex(name => name === player.name)
 
                                 const updatedPlayers = [...p];
                                 const frontOfArray = updatedPlayers.slice(0, foundPlayerIndex);
                                 const backOfArray = updatedPlayers.slice(foundPlayerIndex+1, updatedPlayers.length);
 
                                 let newArr = frontOfArray.concat(backOfArray);
-                                while(newArr.length < 3)
-                                    newArr.push({"name": null, "picId": null, level:0, backgroundColor:null, team:''});
+                                while(newArr.length < 3) newArr.push("");
 
                                 return newArr; 
                             });

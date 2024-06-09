@@ -1,10 +1,10 @@
 import { View, Image, Text } from "react-native"
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Colors } from "../../../Global/Enums/color";
+import { Colors } from "../../Global/Enums/color";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SecondHalf } from "./SecondHalf";
-import { PlayerStats } from "../../../Global/Types/PlayerTypes";
+import { PlayerStats } from "../../Global/Types/PlayerTypes";
 
 interface Props {
     playerStats: PlayerStats;

@@ -1,14 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import { View, Text, Animated } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
-import { PlayerData } from "../../../Global/Types/DataTypes"
-import { Colors } from "../../../Global/Enums/color"
-
-type GameData = {
-    date: string,
-    opp: string,
-    players: PlayerData[]
-}
+import { Colors } from "../../Global/Enums/color"
+import { PlayerStats } from "../../Global/Types/PlayerTypes"
 
 type LastFiveData = {
     "PTS": number,
@@ -27,7 +21,7 @@ type MaxStats = {
 }
 
 interface Props {
-    currentPlayer: PlayerData,
+    currentPlayer: PlayerStats,
 }
 
 export const SecondHalf: React.FC<Props> = ({currentPlayer}) => {

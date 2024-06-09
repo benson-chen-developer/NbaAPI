@@ -1,19 +1,20 @@
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import {View, Text, Image} from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 import { useMyContext } from '../../../Context/MyContext';
-import { PlayerData } from '../../../Global/Types/DataTypes';
 import { PlayerExtra } from '../../../Global/Types/PlayerTypes';
+import { EditBtn } from './EditBtn';
 import { PlayerRow } from './PlayerRow';
 
 interface Props {
+    setScreen: Dispatch<SetStateAction<string>>
+    setPickedPlayers: Dispatch<SetStateAction<string[]>>
     ourTeamName: string,
 }
 
 export const LiveGame: React.FC<Props> = ({
-    
+    setScreen, setPickedPlayers
 }) => {
-
     const {liveGames, user} = useMyContext();
     const [ourPlayers, setOurPlayers] = useState<PlayerExtra[]>(
         liveGames[0].player1Id === user.id ?  
@@ -28,6 +29,15 @@ export const LiveGame: React.FC<Props> = ({
                 :
             JSON.parse(liveGames[0].player2Sabotage)
     );
+
+    const editPress = () => {
+        let pickedPlayers = [];
+        ourPlayers.forEach(p => pickedPlayers.push(p.name));
+        pickedPlayers.push(sabotage.name);
+        
+        setPickedPlayers(pickedPlayers);
+        setScreen("pickingPlayers");
+    }
 
     return (
         <View style={{width:"100%", height:'100%', alignItems:'center'}}>
@@ -69,6 +79,7 @@ export const LiveGame: React.FC<Props> = ({
                 </View>
             </View>
 
+            <EditBtn editPress={editPress}/>
         </View>
     )
 }

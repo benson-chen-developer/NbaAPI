@@ -1,5 +1,6 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 import { TeamData, User } from '../Global/Types/ContextTypes';
+import { Game } from '../Global/Types/GameTypes';
 import { PlayerStats } from '../Global/Types/PlayerTypes';
 
 interface ContextType {
@@ -9,8 +10,8 @@ interface ContextType {
   bottomSheetPlayerName: string;
   setBottomSheetPlayerName: React.Dispatch<React.SetStateAction<string>>;
   setTodayGames: React.Dispatch<React.SetStateAction<any[]>>;
-  liveGames: string[];
-  setLiveGames: React.Dispatch<React.SetStateAction<string[]>>;
+  liveGames: Game[];
+  setLiveGames: React.Dispatch<React.SetStateAction<Game[]>>;
   playerStats: PlayerStats[];
   setPlayerStats: React.Dispatch<React.SetStateAction<PlayerStats[]>>;
   teamDataContext: TeamData[];
@@ -39,7 +40,7 @@ export const MyContextProvider: React.FC<MyContextProviderProps> = ({ children }
 
   const [todayGames, setTodayGames] = useState<any[]>([]);
   const [bottomSheetPlayerName, setBottomSheetPlayerName] = useState<string>("");
-  const [liveGames, setLiveGames] = useState<string[]>([]);
+  const [liveGames, setLiveGames] = useState<Game[]>([]);
   const [playerStats, setPlayerStats] = useState<PlayerStats[]>([]);
   const [teamDataContext, setTeamDataContext] = useState<TeamData[]>([]);
 

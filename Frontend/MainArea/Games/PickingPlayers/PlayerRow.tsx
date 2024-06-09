@@ -1,27 +1,24 @@
-import { Dispatch, SetStateAction } from "react"
 import { View, Image, Text, ScrollView } from "react-native"
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { PlayerData } from "../../../Global/Types/DataTypes"
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
-import { PlayerCardType } from "../../../Global/Types/PickingPlayerTypes";
 import { Colors } from "../../../Global/Enums/color";
 import { LinearGradient } from "expo-linear-gradient";
 import { getLevelColor } from "../../../Global/Colors";
+import { PlayerExtra, PlayerStats } from "../../../Global/Types/PlayerTypes";
+import { useMyContext } from "../../../Context/MyContext";
 
 interface Props {
-    playerData: PlayerData
-    playerLevel: number
-    handleOpenPress: () => void
-    setCurrentPlayer: Dispatch<SetStateAction<string>>
+    playerData: PlayerStats
+    playerExtra: PlayerExtra
     isSelected: boolean,
+    playerLevel: number,
     highestValues: {"PTS": number, "REB": number, "AST": number, "BLK": number, "STL": number, "TO": number, "PF": number}
-    onClickRowFunc: (playerData: PlayerData, playerLevel: number) => void
+    onClickRowFunc: (playerData: PlayerStats, playerLevel: number) => void
 }
 
-export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentPlayer, handleOpenPress, highestValues, onClickRowFunc, isSelected}) => {
-    
+export const PlayerRow: React.FC<Props> = ({playerData, playerExtra, playerLevel, highestValues, onClickRowFunc, isSelected}) => {
     const stats = {
         "PTS": (playerData["PTS"] / playerData["Games Played"]).toFixed(1),
         "REB": (playerData["REB"] / playerData["Games Played"]).toFixed(1),
@@ -34,6 +31,8 @@ export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentP
         "PF": (playerData["PF"] / playerData["Games Played"]).toFixed(1),
         "TO": (playerData["TO"] / playerData["Games Played"]).toFixed(1),
     }
+
+    const {setBottomSheetPlayerName} = useMyContext()
 
     return(
         <View style={{
@@ -193,10 +192,7 @@ export const PlayerRow: React.FC<Props> = ({playerData, playerLevel, setCurrentP
                         </Text>
                     </View>
 
-                    <TouchableOpacity onPress={() => {
-                        setCurrentPlayer(playerData["name"]);
-                        handleOpenPress();
-                    }}>
+                    <TouchableOpacity onPress={() => setBottomSheetPlayerName(playerData.name)}>
                         <MaterialCommunityIcons name="chart-bar" size={24} color="white" style={{marginRight: 10}}/>
                     </TouchableOpacity>
                 </View>

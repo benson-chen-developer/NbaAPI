@@ -18,6 +18,7 @@ export default function MainAreaGames({setCurrentGame}) {
 
     const [index, setIndex] = useState<number>(0);
     const [selectedGame, setSelectedGame] = useState(null);
+    const [pickedPlayers, setPickedPlayers] = useState<string[]>([]);
     const [screen, setScreen] = useState<Screens>(Screens.HOME);
 
     const {user, setUser, todayGames, setTodayGames, liveGames} = useMyContext();
@@ -29,14 +30,16 @@ export default function MainAreaGames({setCurrentGame}) {
 
     }, []);
 
-    if(liveGames.length > 0) return (
-      <LiveGame />
+    if(liveGames.length > 0 && screen !== Screens.PICKING_PLAYERS) return (
+      <LiveGame setPickedPlayers={setPickedPlayers} setScreen={setScreen}/>
     )
 
     if(screen === Screens.PICKING_PLAYERS) return (
-        <PickingPlayers 
-          setScreen={setScreen}
-        />
+      <PickingPlayers 
+        gameId={selectedGame.id}
+        pickedPlayers={pickedPlayers}
+        setScreen={setScreen}
+      />
     )
 
     if (selectedGame && todayGames.length > 0 && screen === Screens.HOME) {

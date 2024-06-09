@@ -8,9 +8,9 @@ import LiveMainArea from './Live/LiveMainArea';
 import { Navbar } from './NavBar/NavBar';
 import { NavbarEnums } from '../Global/Enums/navigation';
 import { TopNavBar } from './NavBar/TopNavBar';
-import { BottomSheetViewMine } from './Inventory/BottomSheet/BottomSheetViewMine';
 import { TeamData } from '../Global/Types/ContextTypes';
 import { PlayerStats } from '../Global/Types/PlayerTypes';
+import { BottomSheetViewMine } from './BottomSheet/BottomSheetViewMine';
 
 export default function MainArea() {
 
