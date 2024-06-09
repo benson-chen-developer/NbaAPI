@@ -37,7 +37,7 @@ export default function MainAreaGames({setCurrentGame}) {
     if(screen === Screens.PICKING_PLAYERS) return (
       <PickingPlayers 
         gameId={selectedGame.id}
-        pickedPlayers={pickedPlayers}
+        pickedPlayers={liveGames[0].player1Depth}
         setScreen={setScreen}
       />
     )

@@ -12,7 +12,7 @@ import { GetPlayerStatsOfTeam } from "../../../Global/HelperFunc/GetPlayers"
 
 interface Props {
     gameId: string,
-    pickedPlayers: string[],
+    pickedPlayers: {name:string, level:number}[],
     setScreen: Dispatch<SetStateAction<string>>
 }
 
@@ -73,10 +73,8 @@ export const PickingPlayers: React.FC<Props> = ({ gameId, pickedPlayers, setScre
             This is for if we are editing a slip so the players should already be selected 
             We are just going to fill in the selected and sabotage spots
         */
-        if(gameId !== "" && pickedPlayers.length === 4){
-            // setSelectedPlayers(["", "", "", ""]);
-        } else {
-
+        if(gameId !== ""){
+            setSelectedPlayers(pickedPlayers.map(p => JSON.parse(p).name));
         }
     }, [])
 
@@ -217,7 +215,7 @@ export const PickingPlayers: React.FC<Props> = ({ gameId, pickedPlayers, setScre
 
             <ScrollView style={{ width: '100%', maxHeight: '60%', overflow: 'hidden' }}>
                 {onPlayers ? 
-                    <View style={{ width: '100%', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <View style={{ width: '100%', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginBottom:100 }}>
                         {players.map((player, index) => {
                             let playerExtra = playerExtras.find(p => p.name === player.name);
                             let playerLevel = playerLevels.find(p => p.name === player.name).level;
@@ -235,7 +233,7 @@ export const PickingPlayers: React.FC<Props> = ({ gameId, pickedPlayers, setScre
                         })}
                     </View> 
                         : 
-                    <View style={{ width: '100%', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <View style={{ width: '100%', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', marginBottom:100 }}>
                         {oppPlayers.map((player, index) => {
                             let playerExtra = oppExtras.find(p => p.name === player.name);
                             let playerLevel = oppLevels.find(p => p.name === player.name).level;
