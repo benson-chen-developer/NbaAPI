@@ -9,15 +9,17 @@ export type Game = {
     player1LastActionNumber: number,
     player2LastActionNumber: number,
     matrix: any[],
-    player1Depth: any[],
-    player2Depth: any[],
+    player1Depth: PlayerDepth[],
+    player2Depth: PlayerDepth[],
     timeStart: string,
     ended: boolean,
     player1CheckedIn: boolean,
     player2CheckedIn: boolean,
-    timeoutArray: any[],
-    player1SelectedTiles: any[],
-    player2SelectedTiles: any[],
+    timeoutArray: TimeOut[],
+    player1SelectedTiles: [number, number, number],
+    player2SelectedTiles: [number, number, number],
+    player1Sabotage: PlayerDepth,
+    player2Sabotage: PlayerDepth,
 }
 
 export type UserDepthType = {
@@ -29,19 +31,20 @@ export type UserDepthType = {
     STL: number, 
     "3PM": number, 
     "3PA": number,
+    level: number
 }
 
-export type SelectedTile = {
-    name: string,
-    goal: number,
-    progress: number,
-    swapTile: SelectedTile,
-    index: number,
-    row: number,
-    tileIndex: number,
-    team: string,
-    complete: boolean
-}
+// export type SelectedTile = {
+//     name: string,
+//     goal: number,
+//     progress: number,
+//     swapTile: SelectedTile,
+//     index: number,
+//     row: number,
+//     tileIndex: number,
+//     team: string,
+//     complete: boolean
+// }
 
 export type Tile = {
     team1: string,
@@ -67,12 +70,12 @@ export type MatrixInfo = {
     gameId: string,
     pickedTile: {"name": string, "team1": number, "team1Progress": number, "team2":  number, "team2Progess": number}
     pickedPlayer: Player,
-    selectedTiles: [SelectedTile],
-    oppSelectedTiles: [SelectedTile],
+    selectedTiles: [number, number, number],
+    oppSelectedTiles: [number, number, number],
     teamDepth: [Player],
     oppTeamDepth: [Player],
     teams: [string],
-    allTiles: [Tile],
+    allTiles: Tile[],
     lastActionNumber: number,
     isTimeOut: boolean
 }
@@ -88,4 +91,24 @@ export type Player = {
         tileIndex: number,
         progress: number
     }]
+}
+
+export type PlayerDepth = {
+    name: string,
+    level: number
+}
+
+export type TimeOut = {
+    actionNumber: number,
+    teams:{
+        name: string, 
+        players: {
+            PTS: number, REB: number, AST: number,
+            STL: number, BLK: number,
+            "3PA": number, "3PM": number
+        }[]
+    }[],
+    matrix: Tile[],
+    player1SelectedTiles: [number, number, number],
+    player2SelectedTiles: [number, number, number],
 }

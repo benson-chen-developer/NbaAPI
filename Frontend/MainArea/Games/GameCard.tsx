@@ -6,50 +6,28 @@ import { ThemeFonts } from "../../../assets/Themes/ThemeFont"
 import { useMyContext } from "../../Context/MyContext"
 import { startSearchForGame } from "../../functions/GameFunctions/GameStartFunctions"
 
-export const GameCard = ({game}) => {
+interface Props {
+    game: any,
+    PlayBtn: (ourTeamAbr: string, oppTeamAbr: string) => void;
+}
+
+export const GameCard: React.FC<Props> = ({game, PlayBtn}) => {
 
     const {user, setLoading, liveGames, setLiveGames} = useMyContext();
-    const [pickedTeam, setPickedTeam] = useState(null);
+    const [pickedTeam, setPickedTeam] = useState<string>(null);
     const [pickedTeamNames, setPickedTeamNames] = useState([]);
 
     const date = new Date(game.timeStart);
     const hours = date.getHours();
     const minutes = date.getMinutes() === 0 ? "00" : date.getMinutes()
 
-    useEffect(() => {
-        const teamNames = [];
+    const getOtherTeam = (ourTeam:string ): string => {
+        let isHomeTeamOurString = game.homeTeam.teamName === ourTeam;
 
-        liveGames.forEach((game) => {
-            const playerTeamName = game.player1Id === user.id ? game.player1Team : game.player2Team;
-            teamNames.push(playerTeamName);
-        })
-
-        setPickedTeamNames(teamNames);
-
-    }, [])
-
-    const pressPlay = async () => {
-        if(liveGames.length >= user.maxLiveGames) return;
-
-        setLoading(true);
-
-        const ourDepth = [
-            // {name: "L. James","PTS": 0, "PTSAvailable": 0, "REB": 0, "REBAvailable" : 0, "AST": 0, "ASTAvailable": 0, "BLK": 0, "BLKAvailable": 0, "STL": 0,"STLAvailable":0, "3PM": 0, "3PMAvailable": 0, "3PA": 0},
-            // {name: "A. Davis","PTS": 0, "PTSAvailable": 0, "REB": 0, "REBAvailable" : 0, "AST": 0, "ASTAvailable": 0, "BLK": 0, "BLKAvailable": 0, "STL": 0,"STLAvailable":0, "3PM": 0, "3PMAvailable": 0, "3PA": 0},
-            // {
-            //     name: "D. Russell","PTS": 0, "REB": 0, "AST": 0, "BLK": 0, "STL": 0, "3PM": 0, "3PA": 0,
-            // },
-        ];
-
-        try{    
-            const newGame = await startSearchForGame(user, pickedTeam, game, ourDepth);
-            
-            setLiveGames(p => [...p, newGame]);
-            setPickedTeam(null);
-            setLoading(false);
-        } catch {
-            setLoading(false);
-            console.log("GameCard Error", err);
+        if(isHomeTeamOurString){
+            return game.awayTeam.teamName;
+        } else {
+            return game.homeTeam.teamName;
         }
     }
 
@@ -85,7 +63,7 @@ export const GameCard = ({game}) => {
                 {pickedTeam && (pickedTeam === game.homeTeam.teamName || pickedTeam === game.awayTeam.teamName) && liveGames.length < user.maxLiveGames ?
                     <TouchableOpacity style={{
                         height:40, width:100, backgroundColor:playBtnColor(pickedTeam).shadow, borderRadius:10
-                    }} onPress={() => pressPlay()}>
+                    }} onPress={() => PlayBtn(pickedTeam, getOtherTeam(pickedTeam))}>
                         <View style={{
                             height: 38, width:"100%", backgroundColor: playBtnColor(pickedTeam).main, 
                             borderRadius:10, alignItems:'center', justifyContent:'center'
@@ -128,7 +106,7 @@ const TeamPicAndStats = ({team, otherTeam, isHome, pickedTeam, setPickedTeam, pi
     if(pickedTeamNames.find(teamName => teamName === team.teamName))
         return(
             <View style={{
-                alignItems:'center', paddingTop:10, width: "35%", alignItems:'center', 
+                alignItems:'center', paddingTop:10, width: "35%",
                 justifyContent:'center', height: "100%", opacity: 1
             }}>
 
@@ -149,7 +127,7 @@ const TeamPicAndStats = ({team, otherTeam, isHome, pickedTeam, setPickedTeam, pi
     else if(otherTeamIsPickedAlready || maxLiveGamesReached)
         return(
             <View style={{
-                alignItems:'center', paddingTop:10, width: "35%", alignItems:'center', 
+                alignItems:'center', paddingTop:10, width: "35%",
                 justifyContent:'center', height: "100%", opacity: .25
             }}>
 
@@ -170,7 +148,7 @@ const TeamPicAndStats = ({team, otherTeam, isHome, pickedTeam, setPickedTeam, pi
     else 
         return(
             <TouchableOpacity style={{
-                alignItems:'center', paddingTop:10, width: "35%", alignItems:'center', 
+                alignItems:'center', paddingTop:10, width: "35%", 
                 justifyContent:'center', height: "100%", 
                 opacity: pickedTeam === team.teamName ? 1 : .25
             }} onPress={() => setPickedTeam(team.teamName)}>

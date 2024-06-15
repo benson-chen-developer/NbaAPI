@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useEffect, useState } from 'react'
 import { useMyContext } from '../../Context/MyContext';
-import { fetchLiveGameFeed } from '../../functions/GameFunctions/GamePlayFunctions';
+// import { fetchLiveGameFeed } from '../../functions/GameFunctions/GamePlayFunctions';
 import { GameCard } from './GameCard';
 import { CapacityGames } from './CapacityGames';
 import { GamesCarousel } from './GamesCarousel';
@@ -21,14 +21,22 @@ export default function MainAreaGames({setCurrentGame}) {
     const [pickedPlayers, setPickedPlayers] = useState<string[]>([]);
     const [screen, setScreen] = useState<Screens>(Screens.HOME);
 
+    /* The team names abreviated for picking players */
+    const [ourTeamName, setOurTeamName] = useState<string>("");
+    const [oppTeamName, setOppTeamName] = useState<string>("");
+    
     const {user, setUser, todayGames, setTodayGames, liveGames} = useMyContext();
     
     useEffect(() => {
       // clearGamesToday()
-
       setSelectedGame(todayGames[0]);
-
     }, []);
+
+    const PlayBtn = (ourTeamAbr: string, oppTeamAbr: string) => {
+      setOurTeamName(ourTeamAbr);
+      setOppTeamName(oppTeamAbr);
+      setScreen(Screens.PICKING_PLAYERS);
+    }
 
     if(liveGames.length > 0 && screen !== Screens.PICKING_PLAYERS) return (
       <LiveGame setPickedPlayers={setPickedPlayers} setScreen={setScreen}/>
@@ -37,8 +45,10 @@ export default function MainAreaGames({setCurrentGame}) {
     if(screen === Screens.PICKING_PLAYERS) return (
       <PickingPlayers 
         gameId={selectedGame.id}
-        pickedPlayers={liveGames[0].player1Depth}
+        pickedPlayers={liveGames[0] === undefined ? [] : liveGames[0].player1Depth}
         setScreen={setScreen}
+        ourTeamName={ourTeamName}
+        oppTeamName={oppTeamName}
       />
     )
 
@@ -69,7 +79,7 @@ export default function MainAreaGames({setCurrentGame}) {
           }
 
           {todayGames[0].homeTeam !== "No Games" ?
-            <GameCard key={index} game={selectedGame} /> : null
+            <GameCard key={index} game={selectedGame} PlayBtn={PlayBtn}/> : null
           }
 
           {todayGames[0].homeTeam === "No Games" ? 

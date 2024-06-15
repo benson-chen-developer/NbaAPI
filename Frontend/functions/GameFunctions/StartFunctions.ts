@@ -15,7 +15,8 @@ export const startSearchForGame = async (
     awayTeam: string, 
     timeStart: string, 
     apiLink: string,
-    playerDepth: any
+    playerDepth: UserDepthType[],
+    sabotage: UserDepthType
 ): Promise<Game> => {
     const joiningPlayerId = user.id;
 
@@ -34,6 +35,7 @@ export const startSearchForGame = async (
                 timeStart, 
                 playerDepth, 
                 apiLink,
+                sabotage
             );
         }
 
@@ -95,11 +97,12 @@ export const createGameFuncion = async (
     awayTeam:string, 
     timeStart: string, 
     playerDepth: UserDepthType[], 
-    apiLink:string
+    apiLink:string,
+    sabotage: UserDepthType
 ) => {
     try {
         const matrix = generateMatrix2(playerDepth, selectedTeam);
-        console.log("GaneStartFunction", JSON.stringify(matrix, null, 2));
+        // console.log("GaneStartFunction", JSON.stringify(matrix, null, 2));
 
         const newGame = await client.graphql({
             query: createGame,
@@ -116,24 +119,38 @@ export const createGameFuncion = async (
                     player2LastActionNumber: -1,
                     player1Depth: playerDepth.map(player => JSON.stringify({
                         name: player.name,
-                        PTS: 0,
-                        REB: 0,
-                        AST: 0,
-                        BLK: 0,
-                        STL: 0,
-                        "3PM": 0,
-                        "3PA": 0,
+                        level: player.level
                     })),
                     player2Depth: [],
                     matrix: matrix.map(tile => JSON.stringify(tile)),
                     timeStart: timeStart,
                     player1CheckedIn: false,
                     player2CheckedIn: false,
-                    player1SelectedTiles: [],
-                    player2SelectedTiles: [],
-                    timeoutArray: [],
+                    player1SelectedTiles: [-1, -1, -1],
+                    player2SelectedTiles: [-1, -1, -1],
+                    timeoutArray: JSON.stringify([
+                        {
+                            actionNumber: -1,
+                            teams:{
+                                name: selectedTeam, 
+                                players: playerDepth.map(player => ({
+                                    name: player.name,
+                                    PTS: 0, REB: 0, AST: 0,
+                                    STL: 0, BLK:0, "3PM": 0, "3PA": 0
+                                }))
+                            },
+                            matrix: matrix.map(tile => JSON.stringify(tile)),
+                            player1SelectedTiles: [-1, -1, -1],
+                            player2SelectedTiles: [-1, -1, -1],
+                        }
+                    ]),
                     homeTeam: homeTeam,
-                    awayTeam: awayTeam
+                    awayTeam: awayTeam,
+                    player1Sabotage: JSON.stringify({
+                        name: sabotage.name,
+                        level: sabotage.level
+                    }),
+                    player2Sabotage: null
                 }
             }
         });

@@ -14,13 +14,15 @@ interface Props {
     gameId: string,
     pickedPlayers: {name:string, level:number}[],
     setScreen: Dispatch<SetStateAction<string>>
+    ourTeamName: string,
+    oppTeamName: string
 }
 
-export const PickingPlayers: React.FC<Props> = ({ gameId, pickedPlayers, setScreen }) => {
+export const PickingPlayers: React.FC<Props> = ({ gameId, pickedPlayers, setScreen, ourTeamName, oppTeamName }) => {
     const {user, playerStats, teamDataContext, setLiveGames} = useMyContext();
 
-    const currentTeamData = teamDataContext.find(t => t.abbreviated === "BOS");
-    const oppTeamData = teamDataContext.find(t => t.abbreviated === "LAL");
+    const currentTeamData = teamDataContext.find(t => t.name === ourTeamName);
+    const oppTeamData = teamDataContext.find(t => t.name === oppTeamName);
     
     const [selectedPlayers, setSelectedPlayers] = useState<string[]>(["", "", "", ""]); //Players picked and displayed
     const [selectedOpp, setSelectedOpp] = useState<PlayerExtra>(
@@ -139,9 +141,10 @@ export const PickingPlayers: React.FC<Props> = ({ gameId, pickedPlayers, setScre
     }
 
     const startGame = async (): Promise<void> => {
+        /* Grabing the player stats to fill the matrix with adjusted tile stats */
         let playerDepth = [];
         selectedPlayers.forEach(player => {
-            const foundPlayerData = players.find(p => p.name === player.name);
+            const foundPlayerData = players.find(p => p.name === player);
 
             playerDepth.push({
                 name: foundPlayerData.name,
@@ -152,8 +155,11 @@ export const PickingPlayers: React.FC<Props> = ({ gameId, pickedPlayers, setScre
                 STL: foundPlayerData.STL/foundPlayerData["Games Played"], 
                 "3PM": foundPlayerData["FG3"]/foundPlayerData["Games Played"], 
                 "3PA": foundPlayerData["FG3A"]/foundPlayerData["Games Played"],
+                level: playerLevels.find(pLevel => pLevel.name === foundPlayerData.name).level
             })
         })
+        const sabotage = oppPlayers.find(opp => opp.name === selectedOpp.name);
+
 
         const game = await startSearchForGame(
             user, 
@@ -162,10 +168,12 @@ export const PickingPlayers: React.FC<Props> = ({ gameId, pickedPlayers, setScre
             oppTeamData.name,
             "timeStart",
             "apiLink",
-            playerDepth
+            playerDepth,
+            sabotage
         );
 
         setLiveGames([game]);
+        setScreen("home");
     }
 
     if(

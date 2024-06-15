@@ -56,8 +56,8 @@ type Game @model @auth(rules: [{allow: public}]) {
   player1CheckedIn: Boolean
   player2CheckedIn: Boolean
   timeoutArray: [AWSJSON]
-  player1SelectedTiles: [AWSJSON]
-  player2SelectedTiles: [AWSJSON]
+  player1SelectedTiles: [Int]
+  player2SelectedTiles: [Int]
   matrix: [AWSJSON]
   homeTeam: String
   awayTeam: String
